@@ -2,35 +2,32 @@
 ## 1. Identificacao
 - Numero da sprint:2
 - Periodo: 11/04/2026 - 17/04/2026
-- Data da entrega: (11/04/2026).
+- Data da entrega: 11/04/2026
 - Proprietário do produto: Gustavo Dantas
 - Scrum Master: Carolina Ude
-- Tempo de desenvolvimento: Ângelo Alvarenga, Pedro Martins, Thales
+- Tempo de desenvolvimento: Ângelo Alvarenga, Pedro Martins, Thales Maia
 
 ## 2. Objetivo da sprint
-Conteúdo esperado:
+
 • levantamento inicial de requisitos funcionais e não funcionais;
 • identificação de usuários ou partes interessadas;
 • priorização dos itens do backlog;
 • refinamento do escopo da solução;
 • definição das principais funcionalidades da aplicação web.
 
-Artefatos a serem entregues:
-• lista de requisitos funcionais;
-• lista de requisitos não funcionais;
-• histórias de usuário, casos de uso ou técnica equivalente;
-• critérios de aceitação dos principais itens;
-• Product Backlog atualizado e priorizado;
-• Sprint Backlog da etapa;
-• registro de acompanhamento da sprint;
-• documentação dos requisitos publicada no GitHub;
-• arquivo docs/sprints/sprint-02.md.
-
 ## 3. Itens do Sprint Backlog
--
--
--
-
+| ID | Item | Responsável | Status |
+|---|---|---|---|
+| SB01 | lista de requisitos funcionais |  |  |
+| SB02 | lista de requisitos não funcionais  |  |  |
+| SB03 | histórias de usuário, casos de uso ou técnica equivalente |  |  |
+| SB04 | critérios de aceitação dos principais itens |  |  |  |
+| SB05 | Product Backlog atualizado e priorizado |  |  |
+| SB05 | Sprint Backlog da etapa |  |  |
+| SB05 | Product Backlog atualizado e priorizado |  |  |
+| SB05 | Sprint Backlog da etapa |  |  |
+| SB06 | Redigir relatório `sprint-02.md` |  |  |
+| SB07 | planejamento de Sprint 3  |  |  |
 
 ## 4. Relacao com o conteudo da disciplina
 -
