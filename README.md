@@ -21,7 +21,7 @@ Trabalho Final da disciplina de **Engenharia de Software (GCC188)** — UFLA, 20
 | Carolina Ude | Scrum Master / Dev Team |
 | Ângelo Alvarenga | Dev Team |
 | Pedro Martins | Dev Team |
-| Thales | Dev Team |
+| Thales Maia | Dev Team |
 
 ---
 
