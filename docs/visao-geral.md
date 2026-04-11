@@ -25,4 +25,3 @@ Catálogo centralizado com:
 | Alunos de graduação | Descobrir e se inscrever em oportunidades |
 | Líderes de organizações | Divulgar e recrutar membros |
 | Coordenadores de curso | Acompanhar engajamento dos alunos |
-

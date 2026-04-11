@@ -1,83 +1,86 @@
 # 02. Scrum e Organização do Grupo
 
 ## 1. Integrantes
+
 | Nome | Papel no Scrum | Responsabilidades principais |
 |---|---|---|
-| [Nome] | Product Owner | [Preencher] |
-| [Nome] | Scrum Master | [Preencher] |
-| [Nome] | Dev Team | [Preencher] |
-| [Nome] | Dev Team | [Opcional] |
-| [Nome] | Dev Team | [Opcional] |
+| Gustavo Dantas | Product Owner | Manter a visão do produto, priorizar o backlog, validar entregas |
+| Carolina Ude | Scrum Master / Dev Team | Organizar sprints, remover impedimentos, contribuir com desenvolvimento |
+| Ângelo Alvarenga | Dev Team | Análise, modelagem, implementação e documentação |
+| Pedro Martins | Dev Team | Análise, modelagem, implementação e documentação |
+| Thales | Dev Team | Análise, modelagem, implementação e documentação |
 
-> Em contexto acadêmico, os papéis podem ser adaptados, mas devem estar explicitados.
+> Em contexto acadêmico, os papéis são adaptados. A Scrum Master também atua como desenvolvedora. Todos os integrantes participam ativamente de todas as entregas.
 
 ---
 
 ## 2. Organização de trabalho
-**Duração da sprint:** `[Semanal ou quinzenal]`
+
+**Duração da sprint:** Semanal (conforme cronograma da disciplina)
 
 **Ferramentas adotadas:**
-- GitHub
-- [Trello/Jira/Projects]
-- [Google Meet/WhatsApp/Discord]
-- [Outras]
+- GitHub (versionamento, issues, project board)
+- WhatsApp / Discord (comunicação cotidiana)
+- Google Meet (reuniões de planejamento e revisão)
 
 **Ritual de planejamento:**  
-[Como o grupo planejará cada sprint.]
+No início de cada sprint, o PO apresenta os itens prioritários do backlog. O time seleciona o que será trabalhado, quebra em tarefas e define responsáveis.
 
 **Ritual de acompanhamento:**  
-[Como o grupo acompanhará progresso, impedimentos e mudanças.]
+Check-in assíncrono via WhatsApp/Discord para relatar progresso, impedimentos e mudanças de escopo.
 
 **Ritual de revisão:**  
-[Como o grupo validará o incremento gerado.]
+Ao final de cada sprint, o time demonstra os artefatos produzidos, verifica se os critérios de aceitação foram atendidos e atualiza o backlog.
 
 **Ritual de retrospectiva:**  
-[Como o grupo refletirá sobre melhorias no processo.]
+Após a revisão, o time reflete brevemente sobre o que funcionou, o que não funcionou e o que melhorar na próxima sprint. Registrado no arquivo da sprint correspondente.
 
 ---
 
 ## 3. Definition of Done (DoD)
+
 Um item será considerado concluído quando:
-- estiver documentado;
-- tiver sido revisado pelo grupo;
-- atender aos critérios de aceitação;
-- estiver versionado no GitHub;
-- estiver alinhado com a sprint e com a entrega da disciplina.
+- estiver documentado no repositório;
+- tiver sido revisado por pelo menos um integrante além do autor;
+- atender aos critérios de aceitação definidos no backlog;
+- estiver versionado no GitHub com commit identificável;
+- estiver alinhado com o objetivo da sprint e com a entrega da disciplina.
 
 ---
 
 ## 4. Critérios de priorização do backlog
-Exemplo:
-1. valor para o usuário;
-2. urgência acadêmica;
-3. dependências técnicas;
-4. complexidade;
-5. risco.
+
+1. Valor para o usuário (impacto direto na experiência)
+2. Urgência acadêmica (alinhamento com o cronograma da disciplina)
+3. Dependências técnicas (itens que desbloqueiam outros)
+4. Complexidade estimada (story points)
+5. Risco (incerteza técnica ou de requisito)
 
 ---
 
 ## 5. Convenções do repositório
-- branch principal: `main`
-- branches de trabalho: `feature/nome-curto`
-- mensagens de commit: verbos no infinitivo ou imperativo
-- PR com descrição objetiva
-- registro de decisões importantes em arquivos da pasta `docs`
+
+- Branch principal: `main`
+- Branches de trabalho: `feature/nome-curto` (ex: `feature/sprint-01`)
+- Mensagens de commit: convenção *conventional commits* (ex: `docs:`, `feat:`, `fix:`)
+- PRs com descrição objetiva e checklist de itens entregues
+- Decisões importantes registradas em `docs/`
 
 ---
 
 ## 6. Exemplo de cerimônias
+
 ### Planejamento
-- seleção dos itens prioritários;
-- quebra em tarefas;
-- estimativa;
-- definição de responsáveis.
+- PO apresenta itens priorizados do backlog
+- Time seleciona itens para a sprint
+- Itens são quebrados em tarefas com responsáveis definidos
 
 ### Revisão
-- demonstração do que foi produzido;
-- checagem do objetivo da sprint;
-- registro do que foi aceito.
+- Demonstração dos artefatos produzidos
+- Verificação do objetivo da sprint
+- Registro do que foi aceito e do que ficou pendente
 
 ### Retrospectiva
-- o que funcionou;
-- o que não funcionou;
-- o que melhorar na próxima sprint.
+- O que funcionou bem nesta sprint?
+- O que não funcionou?
+- O que o time vai melhorar na próxima sprint?
