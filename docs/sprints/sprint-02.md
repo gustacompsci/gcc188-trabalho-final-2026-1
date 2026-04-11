@@ -3,6 +3,9 @@
 - Numero da sprint:2
 - Periodo: 11/04/2026 - 17/04/2026
 - Data da entrega: (11/04/2026).
+- Proprietário do produto: Gustavo Dantas
+- Scrum Master: Carolina Ude
+- Tempo de desenvolvimento: Ângelo Alvarenga, Pedro Martins, Thales
 
 ## 2. Objetivo da sprint
 Conteúdo esperado:
@@ -11,9 +14,9 @@ Conteúdo esperado:
 • priorização dos itens do backlog;
 • refinamento do escopo da solução;
 • definição das principais funcionalidades da aplicação web.
+
 Artefatos a serem entregues:
 • lista de requisitos funcionais;
-10
 • lista de requisitos não funcionais;
 • histórias de usuário, casos de uso ou técnica equivalente;
 • critérios de aceitação dos principais itens;
@@ -27,6 +30,8 @@ Artefatos a serem entregues:
 -
 -
 -
+
+
 ## 4. Relacao com o conteudo da disciplina
 -
 ## 5. Artefatos produzidos
