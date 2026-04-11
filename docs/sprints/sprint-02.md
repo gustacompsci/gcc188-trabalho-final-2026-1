@@ -23,11 +23,11 @@
 | SB03 | histórias de usuário, casos de uso ou técnica equivalente |  |  |
 | SB04 | critérios de aceitação dos principais itens |  |  |  |
 | SB05 | Product Backlog atualizado e priorizado |  |  |
-| SB05 | Sprint Backlog da etapa |  |  |
-| SB05 | Product Backlog atualizado e priorizado |  |  |
-| SB05 | Sprint Backlog da etapa |  |  |
-| SB06 | Redigir relatório `sprint-02.md` |  |  |
-| SB07 | planejamento de Sprint 3  |  |  |
+| SB06 | Sprint Backlog da etapa |  |  |
+| SB07 | Product Backlog atualizado e priorizado |  |  |
+| SB08 | Sprint Backlog da etapa |  |  |
+| SB09 | Redigir relatório `sprint-02.md` |  |  |
+| SB10 | planejamento de Sprint 3  |  |  |
 
 ## 4. Relacao com o conteudo da disciplina
 -
