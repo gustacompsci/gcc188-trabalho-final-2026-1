@@ -27,8 +27,8 @@ Utilizamos a abordagem **MoSCoW** (Must / Should / Could / Won't) combinada com 
 | PB05 | História de usuário | Como aluno, quero filtrar organizações por tipo, para encontrar o que procuro | Filtro por: empresa júnior, extensão, núcleo de estudo | Should | Filtro funcional; resultado atualiza sem recarregar página | 3 pts | 4 |
 | PB06 | História de usuário | Como líder de organização, quero cadastrar minha organização, para que alunos me encontrem | Formulário de cadastro com dados da organização | Should | Organização aparece no catálogo após aprovação/cadastro | 5 pts | 5 |
 | PB07 | História de usuário | Como aluno, quero receber notificações de prazos, para ser avisado sobre inscrições | Alertas de datas próximas (e-mail ou in-app) | Could | Aluno recebe alerta com X dias de antecedência | 8 pts | 6 |
-| PB08 | Requisito técnico | Configurar infraestrutura do projeto | Setup de frontend, backend e banco de dados | Must | Ambiente local funcional; CI/CD básico configurado | 5 pts | 2 |
-| PB09 | Requisito técnico | Definir modelo de dados e contratos de API | Entidades, relacionamentos e endpoints | Must | Diagrama de entidades definido; endpoints documentados | 3 pts | 2–3 |
+| PB08 | Requisito técnico | Configurar infraestrutura do projeto | Setup de frontend, backend e banco de dados | Must | Ambiente local funcional; CI/CD básico configurado | 5 pts | 3 |
+| PB09 | Requisito técnico | Definir modelo de dados e contratos de API | Entidades, relacionamentos e endpoints | Must | Diagrama de entidades definido; endpoints documentados | 3 pts | 3 |
 | PB10 | Documentação | Documentação da Sprint 1 | Problema, visão, Scrum, backlog, sprint-01.md | Must | Todos os artefatos da Sprint 1 entregues no GitHub | 2 pts | 1 |
 
 ---
