@@ -55,7 +55,6 @@ Esta sprint está diretamente relacionada com o tópico de **Engenharia de Requi
 Nesta sprint não houve evolução do código da aplicação. O foco foi exclusivamente na documentação de requisitos, que serve como base para as sprints de modelagem (Sprint 3) e implementação futura.
 
 ## 8. Dificuldades encontradas
-- Atraso na execução da sprint (período original: 11/04–17/04, executada em 25/04)
 - Necessidade de derivar requisitos sem acesso direto a stakeholders externos ao grupo
 - Alinhamento da granularidade dos requisitos — equilibrar detalhamento suficiente para modelagem sem sobrecarregar a documentação
 

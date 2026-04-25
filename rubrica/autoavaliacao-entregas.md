@@ -36,5 +36,5 @@ A cada sprint, o grupo deve avaliar a própria entrega usando os critérios abai
 | Qualidade da documentação | ✅ | 15 RFs, 7 RNFs, 5 RNs, 5 casos de uso, rastreabilidade |
 | Backlog atualizado e rastreável | ✅ | Product Backlog atualizado; tabela de rastreabilidade completa |
 | Scrum organizado (PO, SM, Dev) | ⚠️ | Sprint focada em documentação e requisitos; dev da aplicação começa na Sprint 3 |
-| Commits rastreáveis | ⚠️ | PO elaborou o planejamento e realizou reunião com a equipe em 22/04 para decidir os requisitos; issues criadas no GitHub para cada requisito; commits limitados a documentação (código começa na Sprint 3) |
+| Commits rastreáveis | ⚠️ | PO elaborou o planejamento e realizou reunião com a equipe em 21/04 para decidir os requisitos; issues criadas no GitHub para cada requisito; commits limitados a documentação (código começa na Sprint 3) |
 | sprint-02.md com 10 seções | ✅ | Todas as seções preenchidas |

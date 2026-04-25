@@ -77,7 +77,6 @@ Realizar o levantamento inicial de requisitos funcionais e não funcionais, iden
 - ✅ Relatório sprint-02.md completo
 
 **Dificuldades encontradas:**
-- Atraso na execução da sprint em relação ao cronograma original
 - Necessidade de derivar requisitos sem acesso direto a stakeholders externos ao grupo
 
 **Aprendizados:**
