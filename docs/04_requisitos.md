@@ -2,12 +2,12 @@
 
 ## 1. Levantamento de requisitos
 
-Os requisitos foram identificados a partir das seguintes fontes:
+Os requisitos foram identificados e definidos colaborativamente por toda a equipe durante a Sprint 2, a partir das seguintes fontes:
 
 - **Análise do problema:** discussão em grupo sobre a fragmentação de informações sobre atividades extracurriculares na UFLA, registrada no documento `01_problema_e_visao_do_produto.md`.
-- **Discussão em grupo:** sessões de brainstorming com todos os membros da equipe durante o planejamento da Sprint 2, utilizando o Product Backlog inicial como base.
-- **Observação do domínio:** análise de como os alunos atualmente descobrem empresas juniores, projetos de extensão e núcleos de estudo (grupos de WhatsApp, murais, boca a boca).
-- **Refinamento do backlog:** os itens PB01–PB09 do Product Backlog foram decompostos em requisitos funcionais, não funcionais e regras de negócio.
+- **Discussão em grupo:** sessões de brainstorming com todos os membros da equipe (Gustavo Dantas, Carolina Ude, Ângelo Alvarenga, Pedro Martins, Thales Maia) durante o planejamento e execução da Sprint 2, utilizando o Product Backlog inicial como base para decompor os itens em requisitos detalhados.
+- **Observação do domínio:** análise coletiva de como os alunos atualmente descobrem empresas juniores, projetos de extensão e núcleos de estudo (grupos de WhatsApp, murais, boca a boca).
+- **Refinamento do backlog:** os itens PB01–PB09 do Product Backlog foram decompostos em requisitos funcionais, não funcionais e regras de negócio pela equipe.
 
 ---
 
