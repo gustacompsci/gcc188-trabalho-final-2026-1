@@ -13,6 +13,6 @@
 | PB05 | Filtro por tipo (EJ, extensão, núcleo) | Should | 4 |
 | PB06 | Cadastro de organização por líder | Should | 5 |
 | PB07 | Notificações de prazos | Could | 6 |
-| PB08 | Setup de infraestrutura (frontend + backend + banco) | Must | 2 |
-| PB09 | Modelo de dados e contratos de API | Must | 2–3 |
+| PB08 | Setup de infraestrutura (frontend + backend + banco) | Must | 3 |
+| PB09 | Modelo de dados e contratos de API | Must | 3 |
 | PB10 | Documentação Sprint 1 | Must | 1 |

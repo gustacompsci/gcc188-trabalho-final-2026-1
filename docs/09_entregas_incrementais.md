@@ -11,7 +11,7 @@ Este documento consolida as entregas realizadas ao longo do semestre, sprint a s
 | Sprint | Período | Objetivo | Artefatos gerados | Status |
 |---|---|---|---|---|
 | Sprint 1 | 04/04 – 10/04/2026 | Definição do problema, visão do produto, Scrum e backlog inicial | `01_problema_e_visao_do_produto.md`, `02_scrum_e_organizacao_do_grupo.md`, `03_product_backlog.md`, `sprints/sprint-01.md` | ✅ Concluída |
-| Sprint 2 | 11/04/2026 | Levantamento e priorização de requisitos, definição da aplicação web | `04_requisitos.md`, `sprints/sprint-02.md` | Planejada |
+| Sprint 2 | 11/04 – 25/04/2026 | Levantamento e priorização de requisitos, definição da aplicação web | `04_requisitos.md`, `sprints/sprint-02.md` | ✅ Concluída |
 | Sprint 3 | 25/04/2026 | Modelagem do sistema | `05_modelagem.md`, `modelagem/modelagem.md`, `sprints/sprint-03.md` | Planejada |
 | Sprint 4 | 02/05/2026 | Princípios de projeto e decisões de solução | `06_arquitetura_e_projeto.md`, `projeto/decisoes-de-projeto.md`, `sprints/sprint-04.md` | Planejada |
 | Sprint 5 | 09/05/2026 | Aplicação de padrões de projeto | `07_padroes_de_projeto.md`, `padroes/padroes-de-projeto.md`, `sprints/sprint-05.md` | Planejada |
@@ -53,8 +53,35 @@ Definir o problema escolhido, estabelecer a visão do produto ExtraUFLA, organiz
 - A importância de documentar premissas e restrições desde o início
 - Como o Scrum estrutura o trabalho mesmo em contexto acadêmico
 
-### Sprint 2
-*(A ser preenchido após a sprint)*
+### Sprint 2 — Levantamento de requisitos
+
+**Meta da sprint:**
+Realizar o levantamento inicial de requisitos funcionais e não funcionais, identificar stakeholders, priorizar o backlog e definir as principais funcionalidades da aplicação web ExtraUFLA.
+
+**Itens planejados:**
+- Levantar requisitos funcionais
+- Levantar requisitos não funcionais
+- Definir histórias de usuário e casos de uso
+- Definir critérios de aceitação dos principais itens
+- Atualizar e priorizar o Product Backlog
+- Redigir relatório `sprint-02.md`
+
+**Itens entregues:**
+- ✅ 15 requisitos funcionais (RF01–RF15) identificados e documentados
+- ✅ 7 requisitos não funcionais (RNF01–RNF07) definidos
+- ✅ 5 regras de negócio (RN01–RN05) estabelecidas
+- ✅ 5 casos de uso com fluxo principal e alternativos
+- ✅ Critérios de aceitação para as funcionalidades principais
+- ✅ Tabela de rastreabilidade (problema ↔ backlog ↔ requisito ↔ caso de uso ↔ RN)
+- ✅ Product Backlog atualizado
+- ✅ Relatório sprint-02.md completo
+
+**Dificuldades encontradas:**
+- Necessidade de derivar requisitos sem acesso direto a stakeholders externos ao grupo
+
+**Aprendizados:**
+- A importância da rastreabilidade para conectar requisitos ao problema e ao backlog
+- Como decompor histórias de usuário em requisitos funcionais e regras de negócio
 
 ---
 
