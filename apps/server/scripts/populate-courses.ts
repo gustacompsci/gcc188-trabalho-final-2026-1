@@ -33,9 +33,11 @@ async function main() {
   const courses: ScrapedCourse[] = []
   const seen = new Set<string>()
 
-  $("h4").each((_, el) => {
-    const name = $(el).text().trim()
+  $("li.course-item").each((_, el) => {
+    const h3 = $(el).find("h3")
+    const name = h3.text().trim()
     if (!name) return
+    if (name.includes("Paraíso")) return
 
     const id = slugify(name)
     if (seen.has(id)) return

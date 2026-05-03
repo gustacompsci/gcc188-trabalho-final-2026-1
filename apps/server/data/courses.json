@@ -1,0 +1,222 @@
+[
+  {
+    "id": "abi-letras",
+    "name": "ABI - Letras"
+  },
+  {
+    "id": "administracao",
+    "name": "Administração"
+  },
+  {
+    "id": "administracao-publica",
+    "name": "Administração Pública"
+  },
+  {
+    "id": "administracao-publica-ead",
+    "name": "Administração Pública EaD"
+  },
+  {
+    "id": "agronomia",
+    "name": "Agronomia"
+  },
+  {
+    "id": "automacao-industrial",
+    "name": "Automação Industrial"
+  },
+  {
+    "id": "bict-inovacao-ciencia-e-tecnologia-lavras",
+    "name": "BICT – Inovação, Ciência e Tecnologia (Lavras)"
+  },
+  {
+    "id": "ciencia-da-computacao",
+    "name": "Ciência da Computação"
+  },
+  {
+    "id": "ciencias-biologicas-licenciatura",
+    "name": "Ciências Biológicas (Licenciatura)"
+  },
+  {
+    "id": "ciencias-biologicas-bacharelado",
+    "name": "Ciências Biológicas (Bacharelado)"
+  },
+  {
+    "id": "ciencias-sociais",
+    "name": "Ciências Sociais"
+  },
+  {
+    "id": "comunicacao-integrada-e-midias-digitais",
+    "name": "Comunicação Integrada e Mídias Digitais"
+  },
+  {
+    "id": "direito",
+    "name": "Direito"
+  },
+  {
+    "id": "educacao-fisica-licenciatura",
+    "name": "Educação Física (Licenciatura)"
+  },
+  {
+    "id": "educacao-fisica-bacharelado",
+    "name": "Educação Física (Bacharelado)"
+  },
+  {
+    "id": "enfermagem",
+    "name": "Enfermagem"
+  },
+  {
+    "id": "engenharia-agricola",
+    "name": "Engenharia Agrícola"
+  },
+  {
+    "id": "engenharia-ambiental-e-sanitaria",
+    "name": "Engenharia Ambiental e Sanitária"
+  },
+  {
+    "id": "engenharia-civil",
+    "name": "Engenharia Civil"
+  },
+  {
+    "id": "engenharia-de-alimentos",
+    "name": "Engenharia de Alimentos"
+  },
+  {
+    "id": "engenharia-de-controle-e-automacao",
+    "name": "Engenharia de Controle e Automação"
+  },
+  {
+    "id": "engenharia-de-materiais",
+    "name": "Engenharia de Materiais"
+  },
+  {
+    "id": "engenharia-de-producao",
+    "name": "Engenharia de Produção"
+  },
+  {
+    "id": "engenharia-de-software",
+    "name": "Engenharia de Software"
+  },
+  {
+    "id": "engenharia-eletrica",
+    "name": "Engenharia Elétrica"
+  },
+  {
+    "id": "engenharia-financeira-e-inovacao-digital",
+    "name": "Engenharia Financeira e Inovação Digital"
+  },
+  {
+    "id": "engenharia-fisica",
+    "name": "Engenharia Física"
+  },
+  {
+    "id": "engenharia-florestal",
+    "name": "Engenharia Florestal"
+  },
+  {
+    "id": "engenharia-mecanica",
+    "name": "Engenharia Mecânica"
+  },
+  {
+    "id": "engenharia-quimica",
+    "name": "Engenharia Química"
+  },
+  {
+    "id": "estatistica",
+    "name": "Estatística"
+  },
+  {
+    "id": "filosofia",
+    "name": "Filosofia"
+  },
+  {
+    "id": "fisica",
+    "name": "Física"
+  },
+  {
+    "id": "fonoaudiologia",
+    "name": "Fonoaudiologia"
+  },
+  {
+    "id": "gestao-do-agronegocio",
+    "name": "Gestão do Agronegócio"
+  },
+  {
+    "id": "inteligencia-artificial",
+    "name": "Inteligência Artificial"
+  },
+  {
+    "id": "jogos-digitais",
+    "name": "Jogos Digitais"
+  },
+  {
+    "id": "letras-portugues-e-suas-literaturas",
+    "name": "Letras – Português e suas Literaturas"
+  },
+  {
+    "id": "letras-portugues-ingles-e-suas-literaturas",
+    "name": "Letras – Português/Inglês e suas Literaturas"
+  },
+  {
+    "id": "letras-portugues-ead",
+    "name": "Letras – Português EaD"
+  },
+  {
+    "id": "matematica",
+    "name": "Matemática"
+  },
+  {
+    "id": "medicina",
+    "name": "Medicina"
+  },
+  {
+    "id": "medicina-veterinaria",
+    "name": "Medicina Veterinária"
+  },
+  {
+    "id": "nutricao",
+    "name": "Nutrição"
+  },
+  {
+    "id": "pedagogia",
+    "name": "Pedagogia"
+  },
+  {
+    "id": "pedagogia-ead",
+    "name": "Pedagogia EaD"
+  },
+  {
+    "id": "quimica-licenciatura",
+    "name": "Química (Licenciatura)"
+  },
+  {
+    "id": "quimica-bacharelado",
+    "name": "Química (Bacharelado)"
+  },
+  {
+    "id": "seguranca-cibernetica",
+    "name": "Segurança Cibernética"
+  },
+  {
+    "id": "sistemas-de-informacao",
+    "name": "Sistemas de Informação"
+  },
+  {
+    "id": "sistemas-para-internet",
+    "name": "Sistemas para Internet"
+  },
+  {
+    "id": "terapia-ocupacional",
+    "name": "Terapia Ocupacional"
+  },
+  {
+    "id": "viticultura-e-enologia",
+    "name": "Viticultura e Enologia"
+  },
+  {
+    "id": "zootecnia",
+    "name": "Zootecnia"
+  },
+  {
+    "id": "saiba-mais",
+    "name": "Saiba mais"
+  }
+]
