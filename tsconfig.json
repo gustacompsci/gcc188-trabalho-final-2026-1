@@ -1,0 +1,3 @@
+{
+  "extends": "@extraufla/config/tsconfig.base.json"
+}
