@@ -20,6 +20,7 @@ export default function SignUpForm({ onSwitchToSignIn }: { onSwitchToSignIn: () 
     defaultValues: {
       email: "",
       password: "",
+      confirmPassword: "",
       name: "",
     },
     onSubmit: async ({ value }) => {
@@ -32,22 +33,35 @@ export default function SignUpForm({ onSwitchToSignIn }: { onSwitchToSignIn: () 
         {
           onSuccess: () => {
             navigate({
-              to: "/dashboard",
+              to: "/login",
             });
-            toast.success("Sign up successful");
+            toast.success("Cadastro realizado com sucesso! Faça login para continuar.");
           },
           onError: (error) => {
-            toast.error(error.error.message || error.error.statusText);
+            const msg = error.error.message || "";
+            if (msg.toLowerCase().includes("already exists")) {
+              toast.error("E-mail já cadastrado. Faça login ou recupere sua senha.");
+            } else {
+              toast.error(msg || error.error.statusText);
+            }
           },
         },
       );
     },
     validators: {
-      onSubmit: z.object({
-        name: z.string().min(2, "Name must be at least 2 characters"),
-        email: z.email("Invalid email address"),
-        password: z.string().min(8, "Password must be at least 8 characters"),
-      }),
+      onSubmit: z
+        .object({
+          name: z.string().min(2, "O nome deve ter pelo menos 2 caracteres"),
+          email: z
+            .email("E-mail inválido")
+            .refine((email) => email.endsWith(".ufla.br"), "Utilize seu e-mail institucional (@ufla.br) para se cadastrar."),
+          password: z.string().min(8, "A senha deve ter no mínimo 8 caracteres."),
+          confirmPassword: z.string().min(1, "Confirme sua senha."),
+        })
+        .refine((data) => data.password === data.confirmPassword, {
+          message: "As senhas não conferem.",
+          path: ["confirmPassword"],
+        }),
     },
   });
 
@@ -57,7 +71,7 @@ export default function SignUpForm({ onSwitchToSignIn }: { onSwitchToSignIn: () 
 
   return (
     <div className="mx-auto w-full mt-10 max-w-md p-6">
-      <h1 className="mb-6 text-center text-3xl font-bold">Create Account</h1>
+      <h1 className="mb-6 text-center text-3xl font-bold">Criar Conta</h1>
 
       <form
         onSubmit={(e) => {
@@ -71,7 +85,7 @@ export default function SignUpForm({ onSwitchToSignIn }: { onSwitchToSignIn: () 
           <form.Field name="name">
             {(field) => (
               <div className="space-y-2">
-                <Label htmlFor={field.name}>Name</Label>
+                <Label htmlFor={field.name}>Nome</Label>
                 <Input
                   id={field.name}
                   name={field.name}
@@ -93,7 +107,7 @@ export default function SignUpForm({ onSwitchToSignIn }: { onSwitchToSignIn: () 
           <form.Field name="email">
             {(field) => (
               <div className="space-y-2">
-                <Label htmlFor={field.name}>Email</Label>
+                <Label htmlFor={field.name}>E-mail</Label>
                 <Input
                   id={field.name}
                   name={field.name}
@@ -116,7 +130,30 @@ export default function SignUpForm({ onSwitchToSignIn }: { onSwitchToSignIn: () 
           <form.Field name="password">
             {(field) => (
               <div className="space-y-2">
-                <Label htmlFor={field.name}>Password</Label>
+                <Label htmlFor={field.name}>Senha</Label>
+                <Input
+                  id={field.name}
+                  name={field.name}
+                  type="password"
+                  value={field.state.value}
+                  onBlur={field.handleBlur}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                />
+                {field.state.meta.errors.map((error) => (
+                  <p key={error?.message} className="text-red-500">
+                    {error?.message}
+                  </p>
+                ))}
+              </div>
+            )}
+          </form.Field>
+        </div>
+
+        <div>
+          <form.Field name="confirmPassword">
+            {(field) => (
+              <div className="space-y-2">
+                <Label htmlFor={field.name}>Confirmar Senha</Label>
                 <Input
                   id={field.name}
                   name={field.name}
@@ -140,7 +177,7 @@ export default function SignUpForm({ onSwitchToSignIn }: { onSwitchToSignIn: () 
         >
           {({ canSubmit, isSubmitting }) => (
             <Button type="submit" className="w-full" disabled={!canSubmit || isSubmitting}>
-              {isSubmitting ? "Submitting..." : "Sign Up"}
+              {isSubmitting ? "Enviando..." : "Cadastrar"}
             </Button>
           )}
         </form.Subscribe>
@@ -152,7 +189,7 @@ export default function SignUpForm({ onSwitchToSignIn }: { onSwitchToSignIn: () 
           onClick={onSwitchToSignIn}
           className="text-indigo-600 hover:text-indigo-800"
         >
-          Already have an account? Sign In
+          Já tem uma conta? Entrar
         </Button>
       </div>
     </div>
