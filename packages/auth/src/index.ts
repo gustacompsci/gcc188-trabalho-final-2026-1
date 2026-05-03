@@ -1,5 +1,5 @@
 import { createDb } from "@extraufla/db";
-import * as schema from "@extraufla/db/schema/auth";
+import * as schema from "@extraufla/db/schema";
 import { env } from "@extraufla/env/server";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";

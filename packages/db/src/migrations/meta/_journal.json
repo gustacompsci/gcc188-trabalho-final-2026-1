@@ -8,6 +8,13 @@
       "when": 1777772102840,
       "tag": "0000_previous_nicolaos",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1777778818017,
+      "tag": "0001_rapid_tyger_tiger",
+      "breakpoints": true
     }
   ]
 }

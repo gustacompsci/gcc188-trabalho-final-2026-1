@@ -40,7 +40,17 @@ Para criar o banco local e aplicar o schema:
 
 ```bash
 bun run db:local
-bun run db:push
+bun run db:migrate
+```
+
+## Cursos
+
+Os cursos de graduação da UFLA são carregados automaticamente no banco ao iniciar o servidor (seeder idempotente). O arquivo de dados é `apps/server/data/courses.json`.
+
+Para atualizar a lista de cursos a partir do site da UFLA:
+
+```bash
+cd apps/server && bun run scrape:courses
 ```
 
 ## Rodando o projeto
@@ -74,6 +84,7 @@ packages/
 | `bun run dev:web` | Inicia só o frontend |
 | `bun run dev:server` | Inicia só o backend |
 | `bun run db:push` | Aplica o schema no banco |
+| `bun run db:migrate` | Roda as migrações pendentes |
 | `bun run db:studio` | Abre o Drizzle Studio |
 | `bun run db:local` | Cria banco SQLite local |
 | `bun run check` | Formata e corrige com Biome |
