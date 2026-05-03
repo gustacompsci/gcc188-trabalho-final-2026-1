@@ -32,18 +32,27 @@ export default function SignInForm({ onSwitchToSignUp }: { onSwitchToSignUp: () 
             navigate({
               to: "/dashboard",
             });
-            toast.success("Sign in successful");
+            toast.success("Login realizado com sucesso!");
           },
           onError: (error) => {
-            toast.error(error.error.message || error.error.statusText);
+            const msg = (error.error.message || "").toLowerCase();
+            if (
+              msg.includes("invalid") ||
+              msg.includes("credential") ||
+              msg.includes("unauthorized")
+            ) {
+              toast.error("E-mail ou senha incorretos.");
+            } else {
+              toast.error(error.error.message || error.error.statusText);
+            }
           },
         },
       );
     },
     validators: {
       onSubmit: z.object({
-        email: z.email("Invalid email address"),
-        password: z.string().min(8, "Password must be at least 8 characters"),
+        email: z.email("E-mail inválido"),
+        password: z.string().min(8, "A senha deve ter no mínimo 8 caracteres."),
       }),
     },
   });
@@ -54,7 +63,7 @@ export default function SignInForm({ onSwitchToSignUp }: { onSwitchToSignUp: () 
 
   return (
     <div className="mx-auto w-full mt-10 max-w-md p-6">
-      <h1 className="mb-6 text-center text-3xl font-bold">Welcome Back</h1>
+      <h1 className="mb-6 text-center text-3xl font-bold">Entrar</h1>
 
       <form
         onSubmit={(e) => {
@@ -68,7 +77,7 @@ export default function SignInForm({ onSwitchToSignUp }: { onSwitchToSignUp: () 
           <form.Field name="email">
             {(field) => (
               <div className="space-y-2">
-                <Label htmlFor={field.name}>Email</Label>
+                <Label htmlFor={field.name}>E-mail</Label>
                 <Input
                   id={field.name}
                   name={field.name}
@@ -91,7 +100,7 @@ export default function SignInForm({ onSwitchToSignUp }: { onSwitchToSignUp: () 
           <form.Field name="password">
             {(field) => (
               <div className="space-y-2">
-                <Label htmlFor={field.name}>Password</Label>
+                <Label htmlFor={field.name}>Senha</Label>
                 <Input
                   id={field.name}
                   name={field.name}
@@ -115,7 +124,7 @@ export default function SignInForm({ onSwitchToSignUp }: { onSwitchToSignUp: () 
         >
           {({ canSubmit, isSubmitting }) => (
             <Button type="submit" className="w-full" disabled={!canSubmit || isSubmitting}>
-              {isSubmitting ? "Submitting..." : "Sign In"}
+              {isSubmitting ? "Entrando..." : "Entrar"}
             </Button>
           )}
         </form.Subscribe>
@@ -127,7 +136,7 @@ export default function SignInForm({ onSwitchToSignUp }: { onSwitchToSignUp: () 
           onClick={onSwitchToSignUp}
           className="text-indigo-600 hover:text-indigo-800"
         >
-          Need an account? Sign Up
+          Não tem uma conta? Cadastre-se
         </Button>
       </div>
     </div>
