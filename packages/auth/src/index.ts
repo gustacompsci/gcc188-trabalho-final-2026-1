@@ -27,6 +27,17 @@ export function createAuth() {
       },
     },
     plugins: [],
+    databaseHooks: {
+      user: {
+        create: {
+          before: async (user) => {
+            if (!user.email.endsWith(".ufla.br")) {
+              return false;
+            }
+          },
+        },
+      },
+    },
   });
 }
 
