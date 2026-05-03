@@ -3,9 +3,19 @@
   "type": "module",
   "exports": {
     ".": {
+      "types": "./src/index.ts",
       "default": "./src/index.ts"
     },
+    "./schema": {
+      "types": "./src/schema/index.ts",
+      "default": "./src/schema/index.ts"
+    },
+    "./schema/*": {
+      "types": "./src/schema/*.ts",
+      "default": "./src/schema/*.ts"
+    },
     "./*": {
+      "types": "./src/*.ts",
       "default": "./src/*.ts"
     }
   },
