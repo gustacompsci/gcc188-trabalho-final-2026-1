@@ -12,7 +12,7 @@ Este documento consolida as entregas realizadas ao longo do semestre, sprint a s
 |---|---|---|---|---|
 | Sprint 1 | 04/04 – 10/04/2026 | Definição do problema, visão do produto, Scrum e backlog inicial | `01_problema_e_visao_do_produto.md`, `02_scrum_e_organizacao_do_grupo.md`, `03_product_backlog.md`, `sprints/sprint-01.md` | ✅ Concluída |
 | Sprint 2 | 11/04 – 25/04/2026 | Levantamento e priorização de requisitos, definição da aplicação web | `04_requisitos.md`, `sprints/sprint-02.md` | ✅ Concluída |
-| Sprint 3 | 25/04/2026 | Modelagem do sistema | `05_modelagem.md`, `modelagem/modelagem.md`, `sprints/sprint-03.md` | Planejada |
+| Sprint 3 | 25/04 – 02/05/2026 | Modelagem do sistema | `05_modelagem.md`, `modelagem/modelagem.md`, `sprints/sprint-03.md` | ✅ Concluída |
 | Sprint 4 | 02/05/2026 | Princípios de projeto e decisões de solução | `06_arquitetura_e_projeto.md`, `projeto/decisoes-de-projeto.md`, `sprints/sprint-04.md` | Planejada |
 | Sprint 5 | 09/05/2026 | Aplicação de padrões de projeto | `07_padroes_de_projeto.md`, `padroes/padroes-de-projeto.md`, `sprints/sprint-05.md` | Planejada |
 | Sprint 6 | 16/05/2026 | Definição da arquitetura de software | `arquitetura/arquitetura.md`, `sprints/sprint-06.md` | Planejada |
@@ -82,6 +82,35 @@ Realizar o levantamento inicial de requisitos funcionais e não funcionais, iden
 **Aprendizados:**
 - A importância da rastreabilidade para conectar requisitos ao problema e ao backlog
 - Como decompor histórias de usuário em requisitos funcionais e regras de negócio
+
+### Sprint 3 — Modelagem do sistema
+
+**Meta da sprint:**
+Elaborar diagramas de casos de uso, classes/domínio e sequência, vinculando requisitos aos modelos produzidos.
+
+**Itens planejados:**
+- Diagrama de casos de uso (#33)
+- Diagrama de classes / domínio (#34)
+- Diagrama de sequência e/ou atividade (#35)
+- Vínculo entre requisitos e modelos (#36)
+- Relatório sprint-03.md (#37)
+- Gerar PDF de entrega (#41)
+
+**Itens entregues:**
+- ✅ Diagrama de casos de uso com 4 atores e 13 casos de uso (MermaidJS)
+- ✅ Diagrama de classes com 8 classes e 4 enums
+- ✅ 2 diagramas de sequência (cadastro/autenticação e criação de organização)
+- ✅ 3 tabelas de rastreabilidade (RF, RNF, RN → modelos)
+- ✅ Relatório sprint-03.md com 12 seções
+- ✅ PDF de entrega gerado
+
+**Dificuldades encontradas:**
+- MermaidJS não possui tipo nativo para casos de uso — adaptação com flowchart
+- Modelagem de entidades não implementadas exigiu derivação dos requisitos
+
+**Aprendizados:**
+- Diagramas de sequência ajudam a validar a completude dos requisitos
+- Rastreabilidade garante cobertura de todos os requisitos nos modelos
 
 ---
 
