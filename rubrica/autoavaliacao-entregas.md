@@ -8,12 +8,12 @@ A cada sprint, o grupo deve avaliar a própria entrega usando os critérios abai
 
 | Critério | Sprint 1 | Sprint 2 | Sprint 3 | Sprint 4 | Sprint 5 | Sprint 6 | Sprint 7 | Sprint 8 |
 |---|---|---|---|---|---|---|---|---|
-| Artefatos entregues conforme planejado | | ✅ | ✅ | | | | | |
-| Qualidade e clareza da documentação | | ✅ | ✅ | | | | | |
-| Backlog atualizado e rastreável | | ✅ | ✅ | | | | | |
-| Uso adequado do Scrum | | ⚠️ | ❌ | | | | | |
-| Commits de todos os integrantes | | ❌ | ❌ | | | | | |
-| Arquivo sprint-XX.md completo | | ✅ | ✅ | | | | | |
+| Artefatos entregues conforme planejado | | ✅ | ✅ | ✅ | | | | |
+| Qualidade e clareza da documentação | | ✅ | ✅ | ✅ | | | | |
+| Backlog atualizado e rastreável | | ✅ | ✅ | ✅ | | | | |
+| Uso adequado do Scrum | | ⚠️ | ❌ | ✅ | | | | |
+| Commits de todos os integrantes | | ❌ | ❌ | ⚠️ | | | | |
+| Arquivo sprint-XX.md completo | | ✅ | ✅ | ✅ | | | | |
 
 **Legenda:** ✅ Concluído | ⚠️ Parcial | ❌ Pendente
 
@@ -36,7 +36,7 @@ A cada sprint, o grupo deve avaliar a própria entrega usando os critérios abai
 | Qualidade da documentação | ✅ | 15 RFs, 7 RNFs, 5 RNs, 5 casos de uso, rastreabilidade |
 | Backlog atualizado e rastreável | ✅ | Product Backlog atualizado; tabela de rastreabilidade completa |
 | Scrum organizado (PO, SM, Dev) | ⚠️ | Sprint focada em documentação e requisitos; dev da aplicação começa na Sprint 3 |
-| Commits rastreáveis | ⚠️ | PO elaborou o planejamento e realizou reunião com a equipe em 21/04 para decidir os requisitos; issues criadas no GitHub para cada requisito; commits limitados a documentação (código começa na Sprint 3) |
+| Commits rastreáveis | ⚠️ | PO elaborou o planejamento e realizou reunião com a equipe em 21/04 para decidir os requisitos; issues criadas no GitHub para cada requisito; commits limitados a documentação |
 | sprint-02.md com 10 seções | ✅ | Todas as seções preenchidas |
 
 ## Sprint 3 — Autoavaliação
@@ -49,3 +49,14 @@ A cada sprint, o grupo deve avaliar a própria entrega usando os critérios abai
 | Scrum organizado (PO, SM, Dev) | ❌ | Por imprevistos, a equipe não conseguiu se reunir durante a sprint; decisões e entregas ficaram concentradas no PO |
 | Commits rastreáveis | ⚠️ | Commits realizados apenas por um membro em múltiplas branches; |
 | sprint-03.md com 12 seções | ✅ | Todas as seções preenchidas |
+
+## Sprint 4 — Autoavaliação
+
+| Critério | Status | Observação |
+|---|---|---|
+| Entrega dos 5 artefatos previstos da Sprint 4 | ✅ | `decisoes-de-projeto.md`, `06_arquitetura_e_projeto.md`, `sprint-04.md`, `09_entregas_incrementais.md`, `autoavaliacao-entregas.md` atualizados |
+| Aderência ao escopo (somente documentação) | ✅ | Não houve mudança funcional de código nesta sprint |
+| Qualidade e consistência das decisões de projeto | ✅ | Decisões justificadas com contexto técnico e impactos |
+| Rastreabilidade RF01-RF15 x módulos | ✅ | Tabela completa com módulo principal, arquivo-chave e status |
+| Coerência com implementação atual do monorepo | ✅ | Documentação alinhada ao estado real (implementado/parcial/planejado) |
+| Relatório `sprint-04.md` completo (10 seções) | ✅ | Estrutura final preenchida conforme padrão da disciplina |
