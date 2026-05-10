@@ -210,10 +210,10 @@ Os requisitos foram identificados e definidos colaborativamente por toda a equip
 
 | Problema | Backlog | Requisito | Caso de uso | Regra de negócio |
 |---|---|---|---|---|
-| Alunos não conseguem acessar a plataforma | PB01 | RF01, RF02, RF14 | CU1 | RN01 |
+| Alunos não conseguem acessar a plataforma | PB01 | RF01, RF02, RF14 | UC1 | RN01 |
 | Alunos não recebem recomendações relevantes | PB02 | RF03, RF12, RF13 | — | — |
-| Informações sobre organizações estão fragmentadas | PB03 | RF04, RF05, RF08, RF15 | CU2 | RN04 |
-| Alunos perdem prazos de processos seletivos | PB04 | RF06, RF11 | CU3 | RN02 |
-| Alunos não conseguem filtrar organizações | PB05 | RF07, RF08 | CU2 | RN04 |
-| Líderes não têm canal para divulgar sua organização | PB06 | RF09, RF10 | CU4, CU5 | RN03, RN04 |
+| Informações sobre organizações estão fragmentadas | PB03 | RF04, RF05, RF08, RF15 | UC2 | RN04 |
+| Alunos perdem prazos de processos seletivos | PB04 | RF06, RF11 | UC3 | RN02 |
+| Alunos não conseguem filtrar organizações | PB05 | RF07, RF08 | UC2 | RN04 |
+| Líderes não têm canal para divulgar sua organização | PB06 | RF09, RF10 | UC4, UC5 | RN03, RN04 |
 | Alunos não são avisados sobre prazos | PB07 | RF11 | — | RN02 |

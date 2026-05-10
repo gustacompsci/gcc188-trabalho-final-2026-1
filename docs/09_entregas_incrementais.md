@@ -13,7 +13,7 @@ Este documento consolida as entregas realizadas ao longo do semestre, sprint a s
 | Sprint 1 | 04/04 – 10/04/2026 | Definição do problema, visão do produto, Scrum e backlog inicial | `01_problema_e_visao_do_produto.md`, `02_scrum_e_organizacao_do_grupo.md`, `03_product_backlog.md`, `sprints/sprint-01.md` | ✅ Concluída |
 | Sprint 2 | 11/04 – 25/04/2026 | Levantamento e priorização de requisitos, definição da aplicação web | `04_requisitos.md`, `sprints/sprint-02.md` | ✅ Concluída |
 | Sprint 3 | 25/04 – 02/05/2026 | Modelagem do sistema | `05_modelagem.md`, `modelagem/modelagem.md`, `sprints/sprint-03.md` | ✅ Concluída |
-| Sprint 4 | 02/05/2026 | Princípios de projeto e decisões de solução | `06_arquitetura_e_projeto.md`, `projeto/decisoes-de-projeto.md`, `sprints/sprint-04.md` | Planejada |
+| Sprint 4 | 02/05/2026 | Princípios de projeto e decisões de solução | `06_arquitetura_e_projeto.md`, `projeto/decisoes-de-projeto.md`, `sprints/sprint-04.md` | ✅ Concluída |
 | Sprint 5 | 09/05/2026 | Aplicação de padrões de projeto | `07_padroes_de_projeto.md`, `padroes/padroes-de-projeto.md`, `sprints/sprint-05.md` | Planejada |
 | Sprint 6 | 16/05/2026 | Definição da arquitetura de software | `arquitetura/arquitetura.md`, `sprints/sprint-06.md` | Planejada |
 | Sprint 7 | 23/05/2026 | Planejamento e documentação de testes | `testes/plano-de-testes.md`, `08_testes.md`, `sprints/sprint-07.md` | Planejada |
@@ -26,7 +26,7 @@ Este documento consolida as entregas realizadas ao longo do semestre, sprint a s
 
 ### Sprint 1 — Documentação fundacional
 
-**Meta da sprint:**  
+**Meta da sprint:**
 Definir o problema escolhido, estabelecer a visão do produto ExtraUFLA, organizar o grupo segundo Scrum e criar o Product Backlog inicial.
 
 **Itens planejados:**
@@ -67,9 +67,9 @@ Realizar o levantamento inicial de requisitos funcionais e não funcionais, iden
 - Redigir relatório `sprint-02.md`
 
 **Itens entregues:**
-- ✅ 15 requisitos funcionais (RF01–RF15) identificados e documentados
-- ✅ 7 requisitos não funcionais (RNF01–RNF07) definidos
-- ✅ 5 regras de negócio (RN01–RN05) estabelecidas
+- ✅ 15 requisitos funcionais (RF01-RF15) identificados e documentados
+- ✅ 7 requisitos não funcionais (RNF01-RNF07) definidos
+- ✅ 5 regras de negócio (RN01-RN05) estabelecidas
 - ✅ 5 casos de uso com fluxo principal e alternativos
 - ✅ Critérios de aceitação para as funcionalidades principais
 - ✅ Tabela de rastreabilidade (problema ↔ backlog ↔ requisito ↔ caso de uso ↔ RN)
@@ -112,11 +112,38 @@ Elaborar diagramas de casos de uso, classes/domínio e sequência, vinculando re
 - Diagramas de sequência ajudam a validar a completude dos requisitos
 - Rastreabilidade garante cobertura de todos os requisitos nos modelos
 
+### Sprint 4 — Princípios de projeto e decisões de solução
+
+**Meta da sprint:**
+Consolidar as decisões de projeto do ExtraUFLA com base no código existente e nos requisitos definidos, estabelecendo a base arquitetural para as próximas implementações.
+
+**Itens planejados:**
+- Reescrever `docs/projeto/decisoes-de-projeto.md`
+- Preencher `docs/06_arquitetura_e_projeto.md`
+- Redigir `docs/sprints/sprint-04.md`
+- Atualizar rastreabilidade RF x módulos
+- Atualizar documentação de entregas e autoavaliação
+
+**Itens entregues:**
+- ✅ Documento de decisões de projeto com princípios, decomposição modular e 8 decisões justificadas
+- ✅ Análise comparativa de alternativas (banco, frontend, arquitetura, ORM, auth)
+- ✅ Rastreabilidade completa de RF01-RF15 para módulos e arquivos-chave
+- ✅ Documento `06_arquitetura_e_projeto.md` totalmente preenchido
+- ✅ Relatório da Sprint 4 finalizado (`sprint-04.md`)
+
+**Dificuldades encontradas:**
+- Alinhar documentação ao estado real de implementação sem antecipar funcionalidades futuras
+- Tratar a pendência da Sprint 3 (modelagem) mantendo coerência arquitetural
+
+**Aprendizados:**
+- Decisões arquiteturais explícitas reduzem ambiguidades na implementação das próximas sprints
+- Marcar claramente o status por requisito (implementado/parcial/planejado) melhora governança do backlog
+
 ---
 
 ## 4. Evolução do produto
 
-*(A ser preenchido ao longo das sprints)*
+Até o fim da Sprint 4, a evolução principal foi documental e arquitetural. A aplicação possui base funcional de autenticação (RF01 e RF02) e estrutura inicial de dashboard/rotas para expansão dos requisitos de catálogo e perfil nas próximas sprints.
 
 ---
 
@@ -124,10 +151,10 @@ Elaborar diagramas de casos de uso, classes/domínio e sequência, vinculando re
 
 | Mudança | Motivo | Impacto |
 |---|---|---|
-| — | — | — |
+| Sprint 3 mantida como pendência parcial de modelagem | Priorização de fundamentos de requisitos e arquitetura | Decisões da Sprint 4 foram derivadas do código real e dos requisitos, com modelagem formal a ser refinada |
 
 ---
 
 ## 6. Conclusão
 
-*(A ser preenchido na Sprint 8)*
+A Sprint 4 foi concluída com foco integral em documentação técnica, cumprindo o objetivo de registrar princípios de projeto, decisões de solução e rastreabilidade para guiar a etapa de implementação.
