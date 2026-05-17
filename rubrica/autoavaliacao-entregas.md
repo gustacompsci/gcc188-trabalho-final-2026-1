@@ -8,12 +8,12 @@ A cada sprint, o grupo deve avaliar a própria entrega usando os critérios abai
 
 | Critério | Sprint 1 | Sprint 2 | Sprint 3 | Sprint 4 | Sprint 5 | Sprint 6 | Sprint 7 | Sprint 8 |
 |---|---|---|---|---|---|---|---|---|
-| Artefatos entregues conforme planejado | | ✅ | ✅ | ✅ | | | | |
-| Qualidade e clareza da documentação | | ✅ | ✅ | ✅ | | | | |
-| Backlog atualizado e rastreável | | ✅ | ✅ | ✅ | | | | |
-| Uso adequado do Scrum | | ⚠️ | ❌ | ✅ | | | | |
-| Commits de todos os integrantes | | ❌ | ❌ | ⚠️ | | | | |
-| Arquivo sprint-XX.md completo | | ✅ | ✅ | ✅ | | | | |
+| Artefatos entregues conforme planejado | | ✅ | ✅ | ✅ | ✅ | | | |
+| Qualidade e clareza da documentação | | ✅ | ✅ | ✅ | ✅ | | | |
+| Backlog atualizado e rastreável | | ✅ | ✅ | ✅ | ✅ | | | |
+| Uso adequado do Scrum | | ⚠️ | ❌ | ✅ | ✅ | | | |
+| Commits de todos os integrantes | | ❌ | ❌ | ⚠️ | ⚠️ | | | |
+| Arquivo sprint-XX.md completo | | ✅ | ✅ | ✅ | ✅ | | | |
 
 **Legenda:** ✅ Concluído | ⚠️ Parcial | ❌ Pendente
 
@@ -60,3 +60,17 @@ A cada sprint, o grupo deve avaliar a própria entrega usando os critérios abai
 | Rastreabilidade RF01-RF15 x módulos | ✅ | Tabela completa com módulo principal, arquivo-chave e status |
 | Coerência com implementação atual do monorepo | ✅ | Documentação alinhada ao estado real (implementado/parcial/planejado) |
 | Relatório `sprint-04.md` completo (10 seções) | ✅ | Estrutura final preenchida conforme padrão da disciplina |
+
+## Sprint 5 — Autoavaliação
+
+| Critério | Status | Observação |
+|---|---|---|
+| Entrega dos artefatos previstos | ✅ | `padroes/padroes-de-projeto.md`, `07_padroes_de_projeto.md`, `sprints/sprint-05.md`, refactor `apps/server/src/modules/course/`, atualização de `09_entregas_incrementais.md` e desta rubrica |
+| Padrões com evidência de código | ✅ | 4 padrões aplicados (Service Layer, Layered Architecture por feature, Factory Method, Facade) referenciados a arquivos concretos |
+| Padrões adiados com justificativa explícita | ✅ | Repository e Strategy listados como avaliados/adiados com condição clara de adoção futura |
+| Refactor mínimo sem *overspecification* | ✅ | Módulo `course/` com 3 arquivos pequenos + slim `index.ts`; nenhum framework opinativo introduzido |
+| Build e type-check | ✅ | `bun run check-types` e `bun run --filter server build` passam após o refactor |
+| Análise de alternativas | ✅ | Tabela com 4 alternativas avaliadas (Package by Layer, NestJS, Repository já agora, Strategy já agora) e motivo de não adoção |
+| Rastreabilidade RF ↔ padrão | ✅ | Tabela vinculando RF01-RF12 aos padrões aplicáveis (aplicado / planejado) |
+| Relatório `sprint-05.md` completo (11 seções) | ✅ | Inclui Kanban e segue o template do Apêndice B do regulamento |
+| Commits rastreáveis por integrante | ⚠️ | Refactor e documentação concentrados em um único integrante; meta para Sprint 6 é distribuir mais |
