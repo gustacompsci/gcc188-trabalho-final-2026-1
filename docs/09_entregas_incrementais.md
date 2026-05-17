@@ -14,7 +14,7 @@ Este documento consolida as entregas realizadas ao longo do semestre, sprint a s
 | Sprint 2 | 11/04 – 25/04/2026 | Levantamento e priorização de requisitos, definição da aplicação web | `04_requisitos.md`, `sprints/sprint-02.md` | ✅ Concluída |
 | Sprint 3 | 25/04 – 02/05/2026 | Modelagem do sistema | `05_modelagem.md`, `modelagem/modelagem.md`, `sprints/sprint-03.md` | ✅ Concluída |
 | Sprint 4 | 02/05/2026 | Princípios de projeto e decisões de solução | `06_arquitetura_e_projeto.md`, `projeto/decisoes-de-projeto.md`, `sprints/sprint-04.md` | ✅ Concluída |
-| Sprint 5 | 09/05/2026 | Aplicação de padrões de projeto | `07_padroes_de_projeto.md`, `padroes/padroes-de-projeto.md`, `sprints/sprint-05.md` | Planejada |
+| Sprint 5 | 09/05 – 16/05/2026 | Aplicação de padrões de projeto | `07_padroes_de_projeto.md`, `padroes/padroes-de-projeto.md`, `sprints/sprint-05.md`, refactor `apps/server/src/modules/course/` | ✅ Concluída |
 | Sprint 6 | 16/05/2026 | Definição da arquitetura de software | `arquitetura/arquitetura.md`, `sprints/sprint-06.md` | Planejada |
 | Sprint 7 | 23/05/2026 | Planejamento e documentação de testes | `testes/plano-de-testes.md`, `08_testes.md`, `sprints/sprint-07.md` | Planejada |
 | Sprint 8 | 30/05/2026 | Consolidação, evidências finais e revisão | `testes/evidencias-testes.md`, `sprints/sprint-08.md` | Planejada |
@@ -139,11 +139,42 @@ Consolidar as decisões de projeto do ExtraUFLA com base no código existente e 
 - Decisões arquiteturais explícitas reduzem ambiguidades na implementação das próximas sprints
 - Marcar claramente o status por requisito (implementado/parcial/planejado) melhora governança do backlog
 
+### Sprint 5 — Aplicação de padrões de projeto
+
+**Meta da sprint:**
+Identificar e aplicar padrões de projeto pertinentes à solução ExtraUFLA, priorizando padrões com evidência concreta no código sobre padrões puramente especulativos, com um refactor mínimo do servidor para demonstrar *Service Layer* e *Layered Architecture por feature*.
+
+**Itens planejados:**
+- Analisar problemas recorrentes de projeto na proposta
+- Selecionar padrões pertinentes (aplicados e avaliados)
+- Refatorar `apps/server` introduzindo `modules/course/`
+- Preencher `docs/padroes/padroes-de-projeto.md` e `docs/07_padroes_de_projeto.md`
+- Redigir relatório `docs/sprints/sprint-05.md`
+- Atualizar entregas incrementais e autoavaliação
+
+**Itens entregues:**
+- ✅ Refactor de `apps/server` com módulo `course/` (model + service + controller) e `index.ts` enxuto
+- ✅ Endpoint `GET /courses` funcional
+- ✅ 4 padrões aplicados documentados com evidência de código: Service Layer, Layered Architecture por feature, Factory Method, Facade
+- ✅ 2 padrões avaliados e adiados com justificativa: Repository, Strategy
+- ✅ Documento detalhado em `docs/padroes/padroes-de-projeto.md` (8 seções)
+- ✅ Documento síntese em `docs/07_padroes_de_projeto.md` (5 seções)
+- ✅ Relatório `sprint-05.md` finalizado
+
+**Dificuldades encontradas:**
+- Risco de *overspecification* — tendência inicial de propor 5-6 padrões GoF sem evidência foi corrigida priorizando padrões com problema real resolvido
+- Diferença entre dev e build no `tsdown` exigiu manter a resolução de caminho de filesystem no entry point, isolando o service de I/O
+- Build composite do TypeScript exigiu anotação de tipo explícita no controller (`TS2883`)
+
+**Aprendizados:**
+- Padrões catalogados sem evidência inflam a arquitetura sem agregar valor — adiamento explícito é mais honesto
+- *Package by feature* dá molde replicável para os módulos futuros (`organization/`, `selection-process/`)
+
 ---
 
 ## 4. Evolução do produto
 
-Até o fim da Sprint 4, a evolução principal foi documental e arquitetural. A aplicação possui base funcional de autenticação (RF01 e RF02) e estrutura inicial de dashboard/rotas para expansão dos requisitos de catálogo e perfil nas próximas sprints.
+Até o fim da Sprint 5, a aplicação evoluiu de uma base puramente documental para um servidor com organização modular por feature. A autenticação (RF01, RF02) permanece funcional; RF03 ganhou base de backend com o endpoint `GET /courses` (UI prevista para próximas sprints).
 
 ---
 

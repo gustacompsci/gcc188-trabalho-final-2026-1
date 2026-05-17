@@ -7,5 +7,6 @@ dist/
 build/
 .vite/
 .turbo/cache/
+.turbo/preferences/
 
 local.db
