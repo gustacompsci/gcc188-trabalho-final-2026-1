@@ -1,7 +1,7 @@
-import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
-import { DATABASE, DrizzleDB } from '../database/database.module';
-import { course } from '../database/schema';
-import coursesData from '../../data/courses.json';
+import { Inject, Injectable, OnModuleInit } from "@nestjs/common";
+import coursesData from "../../data/courses.json";
+import { DATABASE, DrizzleDB } from "../database/database.module";
+import { course } from "../database/schema";
 
 @Injectable()
 export class CoursesService implements OnModuleInit {
@@ -17,10 +17,7 @@ export class CoursesService implements OnModuleInit {
 
   async seedCourses() {
     for (const c of coursesData) {
-      await this.db
-        .insert(course)
-        .values({ id: c.id, name: c.name })
-        .onConflictDoNothing();
+      await this.db.insert(course).values({ id: c.id, name: c.name }).onConflictDoNothing();
     }
   }
 }

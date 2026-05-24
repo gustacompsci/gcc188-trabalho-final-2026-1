@@ -54,7 +54,10 @@ export default function SignUpForm({ onSwitchToSignIn }: { onSwitchToSignIn: () 
           name: z.string().min(2, "O nome deve ter pelo menos 2 caracteres"),
           email: z
             .email("E-mail inválido")
-            .refine((email) => email.endsWith(".ufla.br"), "Utilize seu e-mail institucional (@ufla.br) para se cadastrar."),
+            .refine(
+              (email) => email.endsWith(".ufla.br"),
+              "Utilize seu e-mail institucional (@ufla.br) para se cadastrar.",
+            ),
           password: z.string().min(8, "A senha deve ter no mínimo 8 caracteres."),
           confirmPassword: z.string().min(1, "Confirme sua senha."),
         })
@@ -70,8 +73,8 @@ export default function SignUpForm({ onSwitchToSignIn }: { onSwitchToSignIn: () 
   }
 
   return (
-    <div className="mx-auto w-full mt-10 max-w-md p-6">
-      <h1 className="mb-6 text-center text-3xl font-bold">Criar Conta</h1>
+    <div className="mx-auto mt-10 w-full max-w-md p-6">
+      <h1 className="mb-6 text-center font-bold text-3xl">Criar Conta</h1>
 
       <form
         onSubmit={(e) => {
