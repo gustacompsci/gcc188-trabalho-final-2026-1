@@ -6,8 +6,8 @@ Trabalho Final da disciplina de **Engenharia de Software (GCC188)** — UFLA, 20
 
 ## Pré-requisitos
 
-- [Bun](https://bun.sh) >= 1.3
-- Node.js >= 20
+- [Bun](https://bun.sh) >= 1.3 (package manager)
+- Node.js >= 22.6 (runtime)
 
 ## Instalação
 

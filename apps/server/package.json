@@ -21,7 +21,7 @@
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
-    "scrape:courses": "tsx scripts/populate-courses.ts"
+    "scrape:courses": "node --experimental-strip-types --disable-warning=ExperimentalWarning scripts/populate-courses.ts"
   },
   "dependencies": {
     "@libsql/client": "^0.14.0",
