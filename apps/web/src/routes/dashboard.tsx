@@ -23,8 +23,8 @@ function RouteComponent() {
 
   return (
     <div className="container mx-auto max-w-3xl px-4 py-8">
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold">Painel</h1>
+      <div className="mb-6 flex items-center justify-between">
+        <h1 className="font-bold text-2xl">Painel</h1>
         <Button
           variant="outline"
           onClick={() => {
@@ -41,12 +41,8 @@ function RouteComponent() {
         </Button>
       </div>
       <section className="rounded-lg border p-4">
-        <h2 className="mb-2 font-medium">
-          Bem-vindo(a), {session.data?.user.name}
-        </h2>
-        <p className="text-sm text-muted-foreground">
-          {session.data?.user.email}
-        </p>
+        <h2 className="mb-2 font-medium">Bem-vindo(a), {session.data?.user.name}</h2>
+        <p className="text-muted-foreground text-sm">{session.data?.user.email}</p>
       </section>
     </div>
   );

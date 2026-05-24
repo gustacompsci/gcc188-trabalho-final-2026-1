@@ -1,10 +1,10 @@
-import { Global, Module } from '@nestjs/common';
-import { createClient } from '@libsql/client';
-import { drizzle } from 'drizzle-orm/libsql';
-import { env } from '../common/env';
-import * as schema from './schema';
+import { createClient } from "@libsql/client";
+import { Global, Module } from "@nestjs/common";
+import { drizzle } from "drizzle-orm/libsql";
+import { env } from "../common/env";
+import * as schema from "./schema";
 
-export const DATABASE = 'DATABASE' as const;
+export const DATABASE = "DATABASE" as const;
 
 export type DrizzleDB = ReturnType<typeof drizzle<typeof schema>>;
 

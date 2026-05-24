@@ -1,10 +1,9 @@
-import { Injectable } from '@nestjs/common';
-import { betterAuth } from 'better-auth';
-import { drizzleAdapter } from 'better-auth/adapters/drizzle';
-import { env } from '../common/env';
-import { DATABASE, DrizzleDB } from '../database/database.module';
-import * as schema from '../database/schema';
-import { Inject } from '@nestjs/common';
+import { Inject, Injectable } from "@nestjs/common";
+import { betterAuth } from "better-auth";
+import { drizzleAdapter } from "better-auth/adapters/drizzle";
+import { env } from "../common/env";
+import { DATABASE, DrizzleDB } from "../database/database.module";
+import * as schema from "../database/schema";
 
 @Injectable()
 export class AuthService {
@@ -12,14 +11,14 @@ export class AuthService {
 
   constructor(@Inject(DATABASE) private readonly db: DrizzleDB) {
     this._auth = betterAuth({
-      database: drizzleAdapter(this.db, { provider: 'sqlite', schema }),
+      database: drizzleAdapter(this.db, { provider: "sqlite", schema }),
       trustedOrigins: [env.CORS_ORIGIN],
       emailAndPassword: { enabled: true },
       secret: env.BETTER_AUTH_SECRET,
       baseURL: env.BETTER_AUTH_URL,
       advanced: {
         defaultCookieAttributes: {
-          sameSite: 'none',
+          sameSite: "none",
           secure: true,
           httpOnly: true,
         },
@@ -29,7 +28,7 @@ export class AuthService {
         user: {
           create: {
             before: async (user) => {
-              if (!user.email.endsWith('.ufla.br')) return false;
+              if (!user.email.endsWith(".ufla.br")) return false;
             },
           },
         },
