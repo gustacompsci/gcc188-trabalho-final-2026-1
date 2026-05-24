@@ -22,10 +22,12 @@ Crie os arquivos `.env` em `apps/server/` e `apps/web/` com as variáveis necess
 **`apps/server/.env`**
 
 ```
-DATABASE_URL=file:../../local.db
-BETTER_AUTH_SECRET=<gere-uma-chave-aleatória>
+DATABASE_URL=file:./local.db
+BETTER_AUTH_SECRET=<gere-uma-chave-aleatória-de-32+-chars>
 BETTER_AUTH_URL=http://localhost:3000
-CORS_ORIGIN=http://localhost:3001
+CORS_ORIGIN=http://localhost:5173
+NODE_ENV=development
+PORT=3000
 ```
 
 **`apps/web/.env`**
@@ -36,10 +38,9 @@ VITE_SERVER_URL=http://localhost:3000
 
 ## Banco de dados
 
-Para criar o banco local e aplicar o schema:
+Para aplicar as migrações:
 
 ```bash
-bun run db:local
 bun run db:migrate
 ```
 
@@ -67,12 +68,10 @@ bun run dev
 ```
 apps/
 ├── web/          # Frontend (React + TanStack Router + Tailwind)
-└── server/       # Backend (Express)
+└── server/       # Backend (NestJS + Drizzle + Better Auth)
 packages/
 ├── ui/           # Componentes compartilhados (shadcn/ui)
-├── auth/         # Autenticação (Better Auth)
-├── db/           # Schema e queries (Drizzle + SQLite)
-└── env/          # Validação de variáveis de ambiente
+└── config/       # Configurações base (TypeScript)
 ```
 
 ## Scripts
@@ -82,11 +81,10 @@ packages/
 | `bun run dev` | Inicia todos os apps em modo desenvolvimento |
 | `bun run build` | Build de produção |
 | `bun run dev:web` | Inicia só o frontend |
-| `bun run dev:server` | Inicia só o backend |
+| `bun run dev:server` | Inicia só o backend (NestJS) |
 | `bun run db:push` | Aplica o schema no banco |
 | `bun run db:migrate` | Roda as migrações pendentes |
 | `bun run db:studio` | Abre o Drizzle Studio |
-| `bun run db:local` | Cria banco SQLite local |
 | `bun run check` | Formata e corrige com Biome |
 | `bun run check-types` | Verifica tipos TypeScript |
 

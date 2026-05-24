@@ -11,8 +11,8 @@
     "check-types": "vite build && tsc --noEmit"
   },
   "dependencies": {
-    "@extraufla/env": "workspace:*",
     "@extraufla/ui": "workspace:*",
+    "@t3-oss/env-core": "^0.13.0",
     "@hookform/resolvers": "^5.2.2",
     "@tailwindcss/vite": "^4.2.2",
     "@tanstack/react-form": "^1.28.0",

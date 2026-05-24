@@ -12,27 +12,27 @@ arquitetura para uma aplicação ainda em fase inicial de implementação.
 A análise do código existente e dos requisitos (RF01-RF15) permitiu identificar
 três problemas recorrentes que motivam a aplicação de padrões:
 
-1. **Acoplamento entre transporte HTTP e regra de negócio.** O arquivo
-   [apps/server/src/index.ts](../../apps/server/src/index.ts) concentrava
-   bootstrap, configuração de CORS, rotas e lógica de domínio (seed de cursos)
-   no mesmo módulo, dificultando teste e evolução por funcionalidade.
+1. **Acoplamento entre transporte HTTP e regra de negócio.** Antes da migração
+   para NestJS, o arquivo `apps/server/src/index.ts` concentrava bootstrap,
+   configuração de CORS, rotas e lógica de domínio (seed de cursos) no mesmo
+   módulo, dificultando teste e evolução por funcionalidade.
 2. **Construção de dependências com configuração externa.** Tanto a conexão com
    o banco quanto a instância de autenticação dependem de variáveis de ambiente
-   e precisam ser inicializadas em momentos diferentes (ex.: bootstrap, scripts
-   de seed, testes futuros).
-3. **Exposição direta de bibliotecas externas para o restante do monorepo.**
-   Aplicações e pacotes consumiam `better-auth`, `drizzle-orm` e `libsql`
-   diretamente, espalhando detalhes de fornecedor por toda a base.
+   e precisam ser inicializadas no bootstrap do NestJS via providers com
+   `useFactory`.
+3. **Exposição direta de bibliotecas externas para o restante da aplicação.**
+   Sem uma camada de módulo, os services consumiam `better-auth`, `drizzle-orm`
+   e `libsql` diretamente, espalhando detalhes de fornecedor por toda a base.
 
 ## 3. Padrões selecionados
 
 | Padrão | Categoria | Onde é usado | Problema que resolve | Status |
 |---|---|---|---|---|
-| Service Layer (Fowler, PoEAA) | Arquitetural | `apps/server/src/modules/course/` | Separar regra de negócio de transporte HTTP | Aplicado |
-| Layered Architecture (por feature) | Arquitetural | `apps/server/src/modules/<feature>/{controller,service,model}.ts` | Estruturar cada módulo em camadas de responsabilidade clara | Aplicado |
-| Factory Method (GoF) | Criacional | `createDb()` em [packages/db/src/index.ts](../../packages/db/src/index.ts); `createAuth()` em [packages/auth/src/index.ts](../../packages/auth/src/index.ts) | Encapsular a construção de instâncias dependentes de configuração | Aplicado |
-| Facade (GoF) | Estrutural | Pacotes `@extraufla/auth`, `@extraufla/db`, `@extraufla/env` | Oferecer ao restante do monorepo uma API mínima sobre `better-auth`, `drizzle-orm` e validação de ambiente | Aplicado |
-| Repository (PoEAA) | Arquitetural | (planejado) `apps/server/src/modules/<feature>/<feature>.repository.ts` | Abstrair acesso a dados quando crescer além de CRUD trivial | Avaliado / adiado |
+| Service Layer (Fowler, PoEAA) | Arquitetural | `apps/server/src/courses/` | Separar regra de negócio de transporte HTTP | Aplicado |
+| Layered Architecture (por feature) | Arquitetural | `apps/server/src/courses/{courses.module,courses.controller,courses.service}.ts` | Estruturar cada módulo NestJS em camadas de responsabilidade clara | Aplicado |
+| Factory Method (GoF) | Criacional | `DatabaseModule` e `AuthModule` em `apps/server/src/` com providers `useFactory` | Encapsular a construção de instâncias dependentes de configuração | Aplicado |
+| Facade (GoF) | Estrutural | `DatabaseModule` (facade sobre `drizzle-orm` + `@libsql/client`) e `AuthModule` (facade sobre `better-auth`) | Oferecer ao restante da aplicação uma API mínima sobre as bibliotecas externas | Aplicado |
+| Repository (PoEAA) | Arquitetural | (planejado) `apps/server/src/<feature>/<feature>.repository.ts` | Abstrair acesso a dados quando crescer além de CRUD trivial | Avaliado / adiado |
 | Strategy (GoF) | Comportamental | (planejado) processos seletivos (RF11, RF12) | Selecionar critérios de ranqueamento de candidatos | Avaliado / adiado |
 
 ## 4. Padrões aplicados — descrição e evidência
@@ -40,36 +40,35 @@ três problemas recorrentes que motivam a aplicação de padrões:
 ### 4.1 Service Layer + Layered Architecture por feature
 
 **Contexto.** A função `seedCourses` originalmente vivia no `index.ts` do
-servidor, misturada ao bootstrap do Express. Para acomodar o crescimento
-previsto (RF03, RF09, RF11, RF12, RF13), foi adotada organização *package by
-feature*: cada funcionalidade ocupa um diretório próprio, e dentro dele a
-responsabilidade é estratificada em três camadas.
+servidor, misturada ao bootstrap. Para acomodar o crescimento previsto (RF03,
+RF09, RF11, RF12, RF13), foi adotada organização *package by feature* com NestJS:
+cada funcionalidade ocupa um diretório próprio com um Module, Controller e
+Service, e dentro dele a responsabilidade é estratificada em três camadas.
 
 **Aplicação no projeto.** A estrutura introduzida nesta sprint é:
 
 ```text
 apps/server/src/
-├── index.ts                         # bootstrap (Express, CORS, seed inicial)
-└── modules/
-    └── course/
-        ├── course.model.ts          # tipos e referência ao schema Drizzle
-        ├── course.service.ts        # regra de negócio (listCourses, seedCourses)
-        └── course.controller.ts     # roteador Express (GET /courses)
+├── main.ts                          # bootstrap (NestJS, CORS, seed inicial)
+└── courses/
+    ├── courses.module.ts            # @Module({ controllers, providers })
+    ├── courses.controller.ts        # @Controller('courses') — GET /courses
+    └── courses.service.ts           # @Injectable() — listCourses, seedCourses
 ```
 
 Arquivos de referência:
 
-- [apps/server/src/modules/course/course.model.ts](../../apps/server/src/modules/course/course.model.ts)
-- [apps/server/src/modules/course/course.service.ts](../../apps/server/src/modules/course/course.service.ts)
-- [apps/server/src/modules/course/course.controller.ts](../../apps/server/src/modules/course/course.controller.ts)
-- [apps/server/src/index.ts](../../apps/server/src/index.ts)
+- [apps/server/src/courses/courses.module.ts](../../apps/server/src/courses/courses.module.ts)
+- [apps/server/src/courses/courses.service.ts](../../apps/server/src/courses/courses.service.ts)
+- [apps/server/src/courses/courses.controller.ts](../../apps/server/src/courses/courses.controller.ts)
+- [apps/server/src/main.ts](../../apps/server/src/main.ts)
 
 **Benefícios esperados.**
 
-- O `index.ts` volta a ter responsabilidade única (bootstrap).
-- Lógica de domínio (`course.service.ts`) fica testável sem subir o Express.
-- Novos requisitos passam a ter um molde claro: criar `modules/<feature>/` com
-  os três arquivos.
+- O `main.ts` volta a ter responsabilidade única (bootstrap do NestJS).
+- Lógica de domínio (`courses.service.ts`) fica testável via injeção de dependência sem subir o servidor HTTP.
+- Novos requisitos passam a ter um molde claro: criar `<feature>/` com
+  os três arquivos NestJS (`module`, `controller`, `service`).
 - Frontend pode adotar a mesma divisão em `apps/web/src/features/<feature>/`
   quando os RFs correspondentes forem implementados (estrutura prevista, ainda
   não aplicada).
@@ -78,46 +77,49 @@ Arquivos de referência:
 
 **Contexto.** Tanto o banco (`drizzle` + `libsql`) quanto a autenticação
 (`better-auth` + `drizzleAdapter`) precisam ler variáveis de ambiente, montar
-clientes e devolver instâncias prontas. Expor o construtor diretamente
-acoplaria o restante do monorepo aos detalhes dessas bibliotecas.
+clientes e devolver instâncias prontas. No NestJS, esse padrão é expresso
+naturalmente através de providers com `useFactory`, que encapsulam a lógica de
+construção e permitem injeção de dependências.
 
 **Aplicação no projeto.**
 
-- [packages/db/src/index.ts:7-13](../../packages/db/src/index.ts) define
-  `createDb()`, que monta o cliente libSQL com `env.DATABASE_URL` e devolve a
-  instância Drizzle. O módulo também exporta uma instância default já criada
-  (`export const db = createDb()`), usada pela maior parte do código.
-- [packages/auth/src/index.ts:7-42](../../packages/auth/src/index.ts) define
-  `createAuth()`, que monta o `betterAuth` parametrizado por
-  `env.BETTER_AUTH_SECRET`, `env.BETTER_AUTH_URL`, hooks de domínio e o adapter
-  Drizzle.
+- `DatabaseModule` em `apps/server/src/database/` define um provider com
+  `useFactory` que monta o cliente libSQL com `DATABASE_URL` e devolve a
+  instância Drizzle pronta para ser injetada em outros módulos.
+- `AuthModule` em `apps/server/src/auth/` define um provider com `useFactory`
+  que monta o `betterAuth` parametrizado por `BETTER_AUTH_SECRET`,
+  `BETTER_AUTH_URL`, hooks de domínio e o adapter Drizzle, recebendo a instância
+  do banco via DI do NestJS.
 
 **Benefícios esperados.**
 
 - A criação fica em um único ponto, simplificando manutenção.
-- Permite, no futuro, instanciar variantes (ex.: banco em memória para testes)
-  sem alterar consumidores.
+- O container de DI do NestJS garante que as instâncias sejam criadas na ordem
+  correta e reutilizadas onde necessário.
+- Permite, no futuro, substituir o provider de banco por uma variante em memória
+  para testes sem alterar consumidores.
 
 ### 4.3 Facade modular
 
-**Contexto.** O monorepo depende de bibliotecas externas com superfícies de API
-grandes (`better-auth`, `drizzle-orm`, `zod`/env). Importar essas bibliotecas
-diretamente em `apps/*` espalharia detalhes de fornecedor pela base.
+**Contexto.** A aplicação depende de bibliotecas externas com superfícies de API
+grandes (`better-auth`, `drizzle-orm`, `@libsql/client`). Importar essas
+bibliotecas diretamente em todos os services espalharia detalhes de fornecedor
+pela base.
 
-**Aplicação no projeto.** Cada pacote em `packages/*` funciona como uma fachada
-fina:
+**Aplicação no projeto.** Cada módulo NestJS em `apps/server/src/` funciona
+como uma fachada fina:
 
-- `@extraufla/db` esconde `drizzle-orm`, `@libsql/client` e o schema.
-- `@extraufla/auth` esconde `better-auth` e a integração com Drizzle via
-  `drizzleAdapter`.
-- `@extraufla/env` esconde a validação Zod de variáveis de ambiente para
-  servidor e web.
+- `DatabaseModule` esconde `drizzle-orm`, `@libsql/client` e o schema; exporta
+  apenas o token `DATABASE` (instância Drizzle) para injeção.
+- `AuthModule` esconde `better-auth` e a integração com Drizzle via
+  `drizzleAdapter`; exporta apenas o token `AUTH` (instância BetterAuth).
 
 **Benefícios esperados.**
 
 - Trocar `libsql` por outro driver SQLite, ou `better-auth` por outra
-  biblioteca, fica concentrado em um único pacote.
-- O restante do código consome um contrato estável do monorepo, não da lib.
+  biblioteca, fica concentrado em um único módulo.
+- O restante do código consome tokens de DI com contratos estáveis, não as libs
+  diretamente.
 
 ## 5. Padrões avaliados e adiados
 
@@ -132,18 +134,18 @@ fina:
 
 | Alternativa | Motivo para não adoção |
 |---|---|
-| Package by Layer (`src/controllers/`, `src/services/`, `src/models/`) | Para um monorepo com múltiplas features futuras, dispersa arquivos da mesma funcionalidade em diretórios distintos, dificultando navegação |
-| Framework opinativo (NestJS) | Acrescentaria peso (decorators, DI container, módulos) desproporcional ao escopo acadêmico; o padrão Service Layer pode ser aplicado sem framework |
+| Package by Layer (`src/controllers/`, `src/services/`, `src/models/`) | Para uma aplicação com múltiplas features futuras, dispersa arquivos da mesma funcionalidade em diretórios distintos, dificultando navegação |
+| Express com Service Layer manual | Possível, mas exigiria implementar à mão o que o NestJS oferece nativamente (DI, módulos, decoradores); foi a abordagem anterior, substituída pela migração NestJS |
 | DDD completo (entities, aggregates, domain events) | Excessivo para o tamanho atual da regra de negócio |
-| Implementar Repository no curso de cursos | Apenas `select * from course` e `insert` simples; encapsular em repositório agora seria *overengineering* |
+| Implementar Repository no módulo de cursos | Apenas `select * from course` e `insert` simples; encapsular em repositório agora seria *overengineering* |
 
 ## 7. Relação com requisitos
 
 | Requisito | Padrão aplicável | Status |
 |---|---|---|
-| RF01 (Cadastro de aluno) | Facade (`@extraufla/auth`) | Aplicado |
-| RF02 (Autenticação) | Facade (`@extraufla/auth`), Factory (`createAuth`) | Aplicado |
-| RF03 (Seleção de curso) | Service Layer (`course.service`), Layered (controller + service + model) | Aplicado parcialmente (endpoint pronto; UI pendente) |
+| RF01 (Cadastro de aluno) | Facade (`AuthModule`), Factory Method (provider `useFactory`) | Aplicado |
+| RF02 (Autenticação) | Facade (`AuthModule`), Factory Method (provider `useFactory`) | Aplicado |
+| RF03 (Seleção de curso) | Service Layer (`CoursesService`), Layered Architecture (module + controller + service) | Aplicado parcialmente (endpoint pronto; UI pendente) |
 | RF05-RF07 (Catálogo/filtros/busca) | Service Layer + Repository (futuro) | Planejado |
 | RF11-RF12 (Processo seletivo) | Service Layer + Strategy (futuro) | Planejado |
 
@@ -158,9 +160,9 @@ mensuráveis da solução:
 2. **Coesão por feature.** A organização *package by feature* mantém juntos
    todos os arquivos de uma mesma funcionalidade, reduzindo o custo cognitivo
    de navegação.
-3. **Baixo acoplamento a fornecedores.** Os pacotes `@extraufla/*` atuam como
-   fachadas e encapsulam decisões de biblioteca, permitindo trocas futuras sem
-   reescrita ampla.
+3. **Baixo acoplamento a fornecedores.** Os módulos `DatabaseModule` e
+   `AuthModule` atuam como fachadas e encapsulam decisões de biblioteca,
+   permitindo trocas futuras sem reescrita ampla.
 
 A lista foi mantida deliberadamente curta: três padrões aplicados com evidência
 de código e dois padrões avaliados mas adiados com justificativa. Essa
