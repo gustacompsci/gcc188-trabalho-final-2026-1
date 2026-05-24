@@ -20,7 +20,7 @@ A abordagem atende ao estágio atual do projeto (acadêmico e incremental), redu
 | Camada/Módulo | Responsabilidade |
 |---|---|
 | Apresentação | Interface web com React, TanStack Router e Tailwind; telas públicas e autenticadas; formulários de login/cadastro; feedback visual ao usuário |
-| Aplicação | API Express, middleware CORS, endpoint de autenticação, orquestração de fluxo HTTP e seeding de dados iniciais |
+| Aplicação | API NestJS (módulos, controllers, services), middleware CORS, endpoint de autenticação, orquestração de fluxo HTTP e seeding de dados iniciais |
 | Domínio | Tipos e regras de negócio representados em TypeScript, validações com Zod e modelagem de entidades (usuário, sessão, curso) |
 | Persistência | Conexão com SQLite/libSQL via Drizzle, schema relacional e migrações versionadas |
 
@@ -36,7 +36,7 @@ A abordagem atende ao estágio atual do projeto (acadêmico e incremental), redu
 | Better Auth para autenticação | Implementar RF01/RF02 com menos boilerplate | Fluxo de sessão padronizado e integrado ao banco |
 | React + TanStack Router | Rotas tipadas e controle de acesso no frontend | Navegação mais previsível e proteção de rotas |
 | Tailwind + `@extraufla/ui` | Consistência visual e velocidade de construção de telas | Reuso de componentes e padronização de UI |
-| Validação de ambiente com `@extraufla/env` | Evitar erro silencioso de configuração | Fail-fast e maior confiabilidade no runtime |
+| Validação de ambiente no NestJS (`apps/server`) | Evitar erro silencioso de configuração | Fail-fast e maior confiabilidade no runtime |
 
 ---
 
@@ -53,7 +53,7 @@ A abordagem atende ao estágio atual do projeto (acadêmico e incremental), redu
 | TanStack Form | Gerenciamento de formulários | Validação integrada e controle de estado |
 | Tailwind CSS | Estilização utilitária | Agilidade e consistência visual |
 | shadcn/ui (`@extraufla/ui`) | Componentes reutilizáveis | Padronização e reuso entre telas |
-| Express | Servidor HTTP da API | Simplicidade para endpoints e middleware |
+| NestJS | Servidor HTTP da API | Arquitetura modular com DI nativa, controllers e services declarativos |
 | Better Auth | Autenticação e sessão | Integração direta com TypeScript e Drizzle |
 | Drizzle ORM | ORM e migrações | SQL tipado e controle explícito de schema |
 | SQLite/libSQL | Persistência de dados | Baixo custo e setup rápido para fase atual |
@@ -67,13 +67,13 @@ A abordagem atende ao estágio atual do projeto (acadêmico e incremental), redu
 | Risco | Probabilidade | Impacto | Mitigação |
 |---|---|---|---|
 | Limitação de escala do SQLite em alta concorrência | Média | Alta | Planejar estratégia de migração para PostgreSQL quando carga aumentar |
-| Dependência de biblioteca de auth em evolução (Better Auth) | Média | Média | Isolar autenticação em `packages/auth` para facilitar substituição futura |
+| Dependência de biblioteca de auth em evolução (Better Auth) | Média | Média | Isolar autenticação em `AuthModule` dentro de `apps/server` para facilitar substituição futura |
 | Sprint 3 de modelagem pendente | Alta | Média | Usar schema real + requisitos como base e manter rastreabilidade explícita |
 | Diferença entre requisitos planejados e funcionalidades implementadas | Alta | Média | Marcar status por RF (implementado/parcial/planejado) nos documentos |
-| Configuração incorreta de variáveis de ambiente | Média | Alta | Validação obrigatória com `@extraufla/env` e exemplos de `.env` no repositório |
+| Configuração incorreta de variáveis de ambiente | Média | Alta | Validação obrigatória no bootstrap do NestJS e exemplos de `.env` no repositório |
 
 ---
 
 ## 6. Exemplo resumido
 
-> O usuário acessa o frontend React (camada de apresentação), envia login/cadastro via rotas da aplicação; o backend Express (camada de aplicação) delega autenticação ao Better Auth; as regras e entidades de domínio são validadas por TypeScript/Zod e persistidas no SQLite/libSQL por Drizzle (camada de persistência), mantendo a solução modular e rastreável entre requisitos e implementação.
+> O usuário acessa o frontend React (camada de apresentação), envia login/cadastro via rotas da aplicação; o backend NestJS (camada de aplicação), com seus módulos `DatabaseModule`, `AuthModule` e `CoursesModule`, delega autenticação ao Better Auth; as regras e entidades de domínio são validadas por TypeScript/Zod e persistidas no SQLite/libSQL por Drizzle (camada de persistência), mantendo a solução modular e rastreável entre requisitos e implementação.
