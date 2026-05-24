@@ -15,7 +15,7 @@ Este documento consolida as entregas realizadas ao longo do semestre, sprint a s
 | Sprint 3 | 25/04 – 02/05/2026 | Modelagem do sistema | `05_modelagem.md`, `modelagem/modelagem.md`, `sprints/sprint-03.md` | ✅ Concluída |
 | Sprint 4 | 02/05/2026 | Princípios de projeto e decisões de solução | `06_arquitetura_e_projeto.md`, `projeto/decisoes-de-projeto.md`, `sprints/sprint-04.md` | ✅ Concluída |
 | Sprint 5 | 09/05 – 16/05/2026 | Aplicação de padrões de projeto | `07_padroes_de_projeto.md`, `padroes/padroes-de-projeto.md`, `sprints/sprint-05.md`, refactor `apps/server/src/modules/course/` | ✅ Concluída |
-| Sprint 6 | 16/05/2026 | Definição da arquitetura de software | `arquitetura/arquitetura.md`, `sprints/sprint-06.md` | Planejada |
+| Sprint 6 | 16/05 – 23/05/2026 | Definição da arquitetura de software e migração para NestJS | `arquitetura/arquitetura.md`, `sprints/sprint-06.md` | ✅ Concluída |
 | Sprint 7 | 23/05/2026 | Planejamento e documentação de testes | `testes/plano-de-testes.md`, `08_testes.md`, `sprints/sprint-07.md` | Planejada |
 | Sprint 8 | 30/05/2026 | Consolidação, evidências finais e revisão | `testes/evidencias-testes.md`, `sprints/sprint-08.md` | Planejada |
 | Apresentação Final | 15/06/2026 | Exposição oral da solução e resultados | Slides, demo da aplicação | Planejada |
@@ -170,11 +170,50 @@ Identificar e aplicar padrões de projeto pertinentes à solução ExtraUFLA, pr
 - Padrões catalogados sem evidência inflam a arquitetura sem agregar valor — adiamento explícito é mais honesto
 - *Package by feature* dá molde replicável para os módulos futuros (`organization/`, `selection-process/`)
 
+### Sprint 6 — Arquitetura de software
+
+**Meta da sprint:**
+Definir e documentar a arquitetura de software do ExtraUFLA, formalizando
+camadas, módulos e serviços — e executar a migração arquitetural do backend de
+Express/Bun para NestJS/Node.js, tornando a arquitetura explícita e diagramável.
+
+**Itens planejados:**
+- Migrar `apps/server` para NestJS com Node.js
+- Implementar módulos NestJS: `DatabaseModule`, `AuthModule`, `CoursesModule`
+- Absorver `packages/db`, `packages/auth`, `packages/env` como módulos internos
+- Preencher `docs/arquitetura/arquitetura.md`
+- Atualizar documentação técnica das sprints anteriores
+- Redigir relatório `docs/sprints/sprint-06.md`
+
+**Itens entregues:**
+- ✅ Migração completa de `apps/server` para NestJS/Node.js (PR #75)
+- ✅ `DatabaseModule` (@Global, provider `'DATABASE'`, Drizzle + libSQL)
+- ✅ `AuthModule` (Better Auth com adapter Drizzle, restrição `@*.ufla.br`)
+- ✅ `CoursesModule` (seeding idempotente + `GET /courses`)
+- ✅ Pacotes separados removidos; monorepo simplificado
+- ✅ Script `scrape:courses` restaurado e migrado para `node --experimental-strip-types`
+- ✅ Documento `arquitetura/arquitetura.md` com visão em camadas, diagramas Mermaid, relação com RNFs e decisões arquiteturais
+- ✅ Documentação técnica das sprints 4 e 5 atualizada para refletir NestJS
+- ✅ Relatório `sprint-06.md` finalizado
+
+**Dificuldades encontradas:**
+- Scaffold NestJS CLI sobrescreveu artefatos existentes (populate-courses.ts recuperado do histórico git)
+- Conflito de gerenciadores de pacotes (pnpm vs Bun) resolvido removendo artefatos pnpm gerados pelo CLI
+- Adaptação do script de scraping para `node --experimental-strip-types` sem `tsx`
+
+**Aprendizados:**
+- NestJS torna a arquitetura em camadas explícita por convenção, sem precisar de documentação extra para comunicar a estrutura
+- `@Global()` em DatabaseModule elimina imports repetitivos sem comprometer coesão
+
 ---
 
 ## 4. Evolução do produto
 
-Até o fim da Sprint 5, a aplicação evoluiu de uma base puramente documental para um servidor com organização modular por feature. A autenticação (RF01, RF02) permanece funcional; RF03 ganhou base de backend com o endpoint `GET /courses` (UI prevista para próximas sprints).
+Até o fim da Sprint 6, a aplicação evoluiu de um servidor Express com módulos
+externos para um servidor NestJS auto-contido com injeção de dependências,
+módulos bem definidos e arquitetura documentada. A autenticação (RF01, RF02)
+permanece funcional; RF03 tem base de backend (endpoint `GET /courses`) — UI
+prevista para próximas sprints.
 
 ---
 
