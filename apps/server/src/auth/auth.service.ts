@@ -2,12 +2,13 @@ import { Inject, Injectable } from "@nestjs/common";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { env } from "../common/env";
-import { DATABASE, DrizzleDB } from "../database/database.module";
+import { DATABASE, type DrizzleDB } from "../database/database.module";
 import * as schema from "../database/schema";
 
 @Injectable()
 export class AuthService {
-  private readonly _auth: ReturnType<typeof betterAuth>;
+  // biome-ignore lint/suspicious/noExplicitAny: inferred from betterAuth
+  private readonly _auth: ReturnType<typeof betterAuth<any>>;
 
   constructor(@Inject(DATABASE) private readonly db: DrizzleDB) {
     this._auth = betterAuth({
