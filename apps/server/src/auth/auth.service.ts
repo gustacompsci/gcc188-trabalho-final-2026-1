@@ -29,7 +29,8 @@ export class AuthService {
         user: {
           create: {
             before: async (user) => {
-              if (!user.email.endsWith(".ufla.br")) return false;
+              if (!user.email.endsWith("@ufla.br") && !user.email.endsWith("@estudante.ufla.br"))
+                return false;
             },
           },
         },

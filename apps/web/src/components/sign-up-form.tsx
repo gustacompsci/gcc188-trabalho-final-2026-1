@@ -47,8 +47,8 @@ export default function SignUpForm({
           email: z
             .email("E-mail inválido")
             .refine(
-              (email) => email.endsWith(".ufla.br"),
-              "Utilize seu e-mail institucional (@ufla.br) para se cadastrar.",
+              (email) => email.endsWith("@ufla.br") || email.endsWith("@estudante.ufla.br"),
+              "Utilize seu e-mail institucional (@ufla.br ou @estudante.ufla.br).",
             ),
           password: z.string().min(8, "A senha deve ter no mínimo 8 caracteres."),
           confirmPassword: z.string().min(1, "Confirme sua senha."),
