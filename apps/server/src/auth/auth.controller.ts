@@ -51,11 +51,11 @@ export class AuthController {
   }
 
   @Get("get-session")
-  async getSession(@Req() req: Request) {
+  async getSession(@Req() req: Request, @Res() res: Response) {
     const session = await this.authService.auth.api.getSession({
       headers: new Headers({ cookie: req.headers.cookie ?? "" }),
     });
-    return session;
+    res.status(200).json(session);
   }
 
   private forwardSetCookie(from: globalThis.Response, to: Response) {
