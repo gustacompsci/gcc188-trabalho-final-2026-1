@@ -36,7 +36,7 @@
     "@types/node": "catalog:",
     "husky": "^9.1.7",
     "lint-staged": "^16.1.2",
-    "turbo": "^2.8.12",
+    "turbo": "2.9.16",
     "typescript": "catalog:"
   },
   "lint-staged": {
