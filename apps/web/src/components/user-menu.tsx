@@ -37,11 +37,15 @@ export default function UserMenu() {
       <DropdownMenuTrigger render={<Button variant="outline" />}>
         {session.user.name}
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="bg-card">
+      <DropdownMenuContent className="w-56 bg-card">
         <DropdownMenuGroup>
           <DropdownMenuLabel>Minha Conta</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>{session.user.email}</DropdownMenuItem>
+          <DropdownMenuItem className="text-muted-foreground text-xs">
+            {session.user.email}
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={() => navigate({ to: "/app" })}>Painel</DropdownMenuItem>
           <DropdownMenuItem
             variant="destructive"
             onClick={() => signOut(undefined, { onSuccess: () => navigate({ to: "/" }) })}

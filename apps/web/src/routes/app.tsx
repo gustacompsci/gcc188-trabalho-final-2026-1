@@ -4,7 +4,7 @@ import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
 
 import { sessionQuery, signOutMutation } from "@/lib/auth.queries";
 
-export const Route = createFileRoute("/dashboard")({
+export const Route = createFileRoute("/app")({
   beforeLoad: async ({ context: { queryClient } }) => {
     const session = await queryClient.ensureQueryData(sessionQuery());
     if (!session) redirect({ to: "/login", throw: true });

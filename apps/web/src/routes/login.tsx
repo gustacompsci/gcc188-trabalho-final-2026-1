@@ -8,7 +8,7 @@ import { sessionQuery } from "@/lib/auth.queries";
 export const Route = createFileRoute("/login")({
   beforeLoad: async ({ context: { queryClient } }) => {
     const session = await queryClient.ensureQueryData(sessionQuery());
-    if (session) redirect({ to: "/dashboard", throw: true });
+    if (session) redirect({ to: "/app", throw: true });
   },
   component: RouteComponent,
 });

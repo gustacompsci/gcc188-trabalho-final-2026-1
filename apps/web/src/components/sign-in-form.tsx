@@ -27,7 +27,7 @@ export default function SignInForm({
     onSubmit: async ({ value }) => {
       try {
         await signIn(value);
-        navigate({ to: "/dashboard" });
+        navigate({ to: "/app" });
         toast.success("Login realizado com sucesso!");
       } catch (error) {
         const message = error instanceof Error ? error.message : "Erro ao fazer login.";
