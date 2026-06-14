@@ -3,14 +3,12 @@ import { useState } from "react";
 
 import SignInForm from "@/components/sign-in-form";
 import SignUpForm from "@/components/sign-up-form";
-import { authClient } from "@/lib/auth-client";
+import { sessionQuery } from "@/lib/auth.queries";
 
 export const Route = createFileRoute("/login")({
-  beforeLoad: async () => {
-    const session = await authClient.getSession();
-    if (session.data) {
-      redirect({ to: "/dashboard", throw: true });
-    }
+  beforeLoad: async ({ context: { queryClient } }) => {
+    const session = await queryClient.ensureQueryData(sessionQuery());
+    if (session) redirect({ to: "/dashboard", throw: true });
   },
   component: RouteComponent,
 });

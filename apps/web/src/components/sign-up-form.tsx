@@ -4,11 +4,13 @@ import { Input } from "@extraufla/ui/components/input";
 import { Label } from "@extraufla/ui/components/label";
 import { cn } from "@extraufla/ui/lib/utils";
 import { useForm } from "@tanstack/react-form";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
 import z from "zod";
 
-import { authClient } from "@/lib/auth-client";
+import { signUpMutation } from "@/lib/auth.queries";
+import { ApiError } from "@/lib/http";
 
 export default function SignUpForm({
   onSwitchToSignIn,
@@ -18,27 +20,24 @@ export default function SignUpForm({
   className?: string;
 }) {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const { mutateAsync: signUp } = useMutation(signUpMutation(queryClient));
 
   const form = useForm({
     defaultValues: { name: "", email: "", password: "", confirmPassword: "" },
     onSubmit: async ({ value }) => {
-      await authClient.signUp.email(
-        { email: value.email, password: value.password, name: value.name },
-        {
-          onSuccess: () => {
-            navigate({ to: "/login" });
-            toast.success("Cadastro realizado! Faça login para continuar.");
-          },
-          onError: (error) => {
-            const msg = error.error.message || "";
-            if (msg.toLowerCase().includes("already exists")) {
-              toast.error("E-mail já cadastrado. Faça login ou recupere sua senha.");
-            } else {
-              toast.error(msg || error.error.statusText);
-            }
-          },
-        },
-      );
+      try {
+        await signUp({ email: value.email, password: value.password, name: value.name });
+        navigate({ to: "/login" });
+        toast.success("Cadastro realizado! Faça login para continuar.");
+      } catch (error) {
+        if (error instanceof ApiError && error.status === 409) {
+          toast.error("E-mail já cadastrado. Faça login ou recupere sua senha.");
+        } else {
+          const message = error instanceof Error ? error.message : "Erro ao criar conta.";
+          toast.error(message);
+        }
+      }
     },
     validators: {
       onSubmit: z

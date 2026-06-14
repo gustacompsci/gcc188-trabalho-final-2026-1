@@ -9,13 +9,16 @@ import {
   DropdownMenuTrigger,
 } from "@extraufla/ui/components/dropdown-menu";
 import { Skeleton } from "@extraufla/ui/components/skeleton";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, useNavigate } from "@tanstack/react-router";
 
-import { authClient } from "@/lib/auth-client";
+import { sessionQuery, signOutMutation } from "@/lib/auth.queries";
 
 export default function UserMenu() {
   const navigate = useNavigate();
-  const { data: session, isPending } = authClient.useSession();
+  const queryClient = useQueryClient();
+  const { data: session, isPending } = useQuery(sessionQuery());
+  const { mutate: signOut } = useMutation(signOutMutation(queryClient));
 
   if (isPending) {
     return <Skeleton className="h-9 w-24" />;
@@ -41,17 +44,7 @@ export default function UserMenu() {
           <DropdownMenuItem>{session.user.email}</DropdownMenuItem>
           <DropdownMenuItem
             variant="destructive"
-            onClick={() => {
-              authClient.signOut({
-                fetchOptions: {
-                  onSuccess: () => {
-                    navigate({
-                      to: "/",
-                    });
-                  },
-                },
-              });
-            }}
+            onClick={() => signOut(undefined, { onSuccess: () => navigate({ to: "/" }) })}
           >
             Sair
           </DropdownMenuItem>

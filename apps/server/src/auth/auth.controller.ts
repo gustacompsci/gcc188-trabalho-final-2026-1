@@ -1,5 +1,4 @@
-import { All, Controller, Req, Res } from "@nestjs/common";
-import { toNodeHandler } from "better-auth/node";
+import { Body, Controller, Get, HttpException, Post, Req, Res } from "@nestjs/common";
 import type { Request, Response } from "express";
 import { AuthService } from "./auth.service";
 
@@ -7,8 +6,60 @@ import { AuthService } from "./auth.service";
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @All("*path")
-  async handleAuth(@Req() req: Request, @Res() res: Response) {
-    return toNodeHandler(this.authService.auth)(req, res);
+  @Post("sign-in/email")
+  async signInEmail(
+    @Body() body: { email: string; password: string },
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const response = await this.authService.auth.api.signInEmail({
+      body,
+      asResponse: true,
+    });
+    this.forwardSetCookie(response, res);
+    if (!response.ok) {
+      const data = (await response.json()) as { message?: string };
+      throw new HttpException(data.message ?? "Credenciais inválidas", response.status);
+    }
+    return response.json();
+  }
+
+  @Post("sign-up/email")
+  async signUpEmail(
+    @Body() body: { email: string; password: string; name: string },
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const response = await this.authService.auth.api.signUpEmail({
+      body,
+      asResponse: true,
+    });
+    this.forwardSetCookie(response, res);
+    if (!response.ok) {
+      const data = (await response.json()) as { message?: string };
+      throw new HttpException(data.message ?? "Erro ao criar conta", response.status);
+    }
+    return response.json();
+  }
+
+  @Post("sign-out")
+  async signOut(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
+    const response = await this.authService.auth.api.signOut({
+      headers: new Headers({ cookie: req.headers.cookie ?? "" }),
+      asResponse: true,
+    });
+    this.forwardSetCookie(response, res);
+    return { success: true };
+  }
+
+  @Get("get-session")
+  async getSession(@Req() req: Request) {
+    const session = await this.authService.auth.api.getSession({
+      headers: new Headers({ cookie: req.headers.cookie ?? "" }),
+    });
+    return session;
+  }
+
+  private forwardSetCookie(from: globalThis.Response, to: Response) {
+    const cookies = from.headers.getSetCookie?.() ?? [];
+    if (cookies.length > 0) to.setHeader("Set-Cookie", cookies);
   }
 }

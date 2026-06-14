@@ -4,11 +4,12 @@ import { Input } from "@extraufla/ui/components/input";
 import { Label } from "@extraufla/ui/components/label";
 import { cn } from "@extraufla/ui/lib/utils";
 import { useForm } from "@tanstack/react-form";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
 import z from "zod";
 
-import { authClient } from "@/lib/auth-client";
+import { signInMutation } from "@/lib/auth.queries";
 
 export default function SignInForm({
   onSwitchToSignUp,
@@ -18,28 +19,20 @@ export default function SignInForm({
   className?: string;
 }) {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const { mutateAsync: signIn } = useMutation(signInMutation(queryClient));
 
   const form = useForm({
     defaultValues: { email: "", password: "" },
     onSubmit: async ({ value }) => {
-      await authClient.signIn.email(value, {
-        onSuccess: () => {
-          navigate({ to: "/dashboard" });
-          toast.success("Login realizado com sucesso!");
-        },
-        onError: (error) => {
-          const msg = (error.error.message || "").toLowerCase();
-          if (
-            msg.includes("invalid") ||
-            msg.includes("credential") ||
-            msg.includes("unauthorized")
-          ) {
-            toast.error("E-mail ou senha incorretos.");
-          } else {
-            toast.error(error.error.message || error.error.statusText);
-          }
-        },
-      });
+      try {
+        await signIn(value);
+        navigate({ to: "/dashboard" });
+        toast.success("Login realizado com sucesso!");
+      } catch (error) {
+        const message = error instanceof Error ? error.message : "Erro ao fazer login.";
+        toast.error(message);
+      }
     },
     validators: {
       onSubmit: z.object({

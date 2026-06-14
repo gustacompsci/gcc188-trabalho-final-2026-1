@@ -1,25 +1,22 @@
 import { Button } from "@extraufla/ui/components/button";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
 
-import { authClient } from "@/lib/auth-client";
+import { sessionQuery, signOutMutation } from "@/lib/auth.queries";
 
 export const Route = createFileRoute("/dashboard")({
-  component: RouteComponent,
-  beforeLoad: async () => {
-    const session = await authClient.getSession();
-    if (!session.data) {
-      redirect({
-        to: "/login",
-        throw: true,
-      });
-    }
-    return { session };
+  beforeLoad: async ({ context: { queryClient } }) => {
+    const session = await queryClient.ensureQueryData(sessionQuery());
+    if (!session) redirect({ to: "/login", throw: true });
   },
+  component: RouteComponent,
 });
 
 function RouteComponent() {
-  const { session } = Route.useRouteContext();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const { data: session } = useQuery(sessionQuery());
+  const { mutate: signOut } = useMutation(signOutMutation(queryClient));
 
   return (
     <div className="container mx-auto max-w-3xl px-4 py-8">
@@ -27,22 +24,14 @@ function RouteComponent() {
         <h1 className="font-bold text-2xl">Painel</h1>
         <Button
           variant="outline"
-          onClick={() => {
-            authClient.signOut({
-              fetchOptions: {
-                onSuccess: () => {
-                  navigate({ to: "/" });
-                },
-              },
-            });
-          }}
+          onClick={() => signOut(undefined, { onSuccess: () => navigate({ to: "/" }) })}
         >
           Sair
         </Button>
       </div>
       <section className="rounded-lg border p-4">
-        <h2 className="mb-2 font-medium">Bem-vindo(a), {session.data?.user.name}</h2>
-        <p className="text-muted-foreground text-sm">{session.data?.user.email}</p>
+        <h2 className="mb-2 font-medium">Bem-vindo(a), {session?.user.name}</h2>
+        <p className="text-muted-foreground text-sm">{session?.user.email}</p>
       </section>
     </div>
   );
