@@ -1,5 +1,6 @@
 import { organizationTypeLabels } from "@extraufla/shared";
 import { Button } from "@extraufla/ui/components/button";
+import { Input } from "@extraufla/ui/components/input";
 import {
   Select,
   SelectContent,
@@ -9,7 +10,8 @@ import {
 } from "@extraufla/ui/components/select";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, Link, redirect, useNavigate } from "@tanstack/react-router";
-
+import { useState } from "react";
+import { toast } from "sonner";
 import { sessionQuery, signOutMutation } from "@/lib/auth.queries";
 import { coursesQuery, organizationsQuery, patchUserMutation } from "@/lib/organizations.queries";
 
@@ -20,6 +22,57 @@ export const Route = createFileRoute("/app")({
   },
   component: RouteComponent,
 });
+
+function EditNameInline({ currentName }: { currentName: string }) {
+  const [editing, setEditing] = useState(false);
+  const [name, setName] = useState(currentName);
+  const queryClient = useQueryClient();
+  const { mutate: patchUser, isPending } = useMutation(patchUserMutation(queryClient));
+
+  if (!editing) {
+    return (
+      <button
+        type="button"
+        onClick={() => setEditing(true)}
+        className="mt-1 text-muted-foreground text-xs hover:text-foreground"
+      >
+        Editar nome
+      </button>
+    );
+  }
+
+  return (
+    <div className="mt-2 flex items-center gap-2">
+      <Input
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        className="h-7 w-48 text-sm"
+        autoFocus
+      />
+      <Button
+        size="sm"
+        disabled={isPending || name.length < 2}
+        onClick={() =>
+          patchUser(
+            { name },
+            {
+              onSuccess: () => {
+                setEditing(false);
+                toast.success("Nome atualizado!");
+              },
+              onError: () => toast.error("Erro ao atualizar nome."),
+            },
+          )
+        }
+      >
+        Salvar
+      </Button>
+      <Button size="sm" variant="ghost" onClick={() => setEditing(false)}>
+        Cancelar
+      </Button>
+    </div>
+  );
+}
 
 function RouteComponent() {
   const navigate = useNavigate();
@@ -55,6 +108,7 @@ function RouteComponent() {
           )}
         </h2>
         <p className="text-muted-foreground text-sm">{session?.user.email}</p>
+        <EditNameInline currentName={session?.user.name ?? ""} />
       </section>
 
       <section className="mb-6 rounded-2xl border p-4 ring-1 ring-foreground/5 dark:ring-foreground/10">
@@ -83,6 +137,23 @@ function RouteComponent() {
           </div>
         )}
       </section>
+
+      {["leader", "admin"].includes(session?.user.role ?? "") && (
+        <section className="mb-6 rounded-2xl border border-primary/20 bg-primary/5 p-4">
+          <div className="mb-3 flex items-center justify-between">
+            <h2 className="font-medium">Área do Líder</h2>
+            <Link
+              to="/organizations/new"
+              className="rounded-md bg-primary px-3 py-1 text-primary-foreground text-xs hover:bg-primary/90"
+            >
+              + Nova organização
+            </Link>
+          </div>
+          <p className="text-muted-foreground text-sm">
+            Acesse uma organização que você lidera para abrir um processo seletivo.
+          </p>
+        </section>
+      )}
 
       {openOrgs.length > 0 && (
         <section>

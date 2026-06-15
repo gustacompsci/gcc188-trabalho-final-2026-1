@@ -15,7 +15,9 @@ import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as OrganizationsIndexRouteImport } from './routes/organizations/index'
+import { Route as OrganizationsNewRouteImport } from './routes/organizations/new'
 import { Route as OrganizationsOrganizationIdRouteImport } from './routes/organizations/$organizationId'
+import { Route as OrganizationsOrganizationIdNewProcessRouteImport } from './routes/organizations/$organizationId.new-process'
 
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
@@ -47,11 +49,22 @@ const OrganizationsIndexRoute = OrganizationsIndexRouteImport.update({
   path: '/organizations/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OrganizationsNewRoute = OrganizationsNewRouteImport.update({
+  id: '/organizations/new',
+  path: '/organizations/new',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OrganizationsOrganizationIdRoute =
   OrganizationsOrganizationIdRouteImport.update({
     id: '/organizations/$organizationId',
     path: '/organizations/$organizationId',
     getParentRoute: () => rootRouteImport,
+  } as any)
+const OrganizationsOrganizationIdNewProcessRoute =
+  OrganizationsOrganizationIdNewProcessRouteImport.update({
+    id: '/new-process',
+    path: '/new-process',
+    getParentRoute: () => OrganizationsOrganizationIdRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
@@ -60,8 +73,10 @@ export interface FileRoutesByFullPath {
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/reset-password': typeof ResetPasswordRoute
-  '/organizations/$organizationId': typeof OrganizationsOrganizationIdRoute
+  '/organizations/$organizationId': typeof OrganizationsOrganizationIdRouteWithChildren
+  '/organizations/new': typeof OrganizationsNewRoute
   '/organizations/': typeof OrganizationsIndexRoute
+  '/organizations/$organizationId/new-process': typeof OrganizationsOrganizationIdNewProcessRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -69,8 +84,10 @@ export interface FileRoutesByTo {
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/reset-password': typeof ResetPasswordRoute
-  '/organizations/$organizationId': typeof OrganizationsOrganizationIdRoute
+  '/organizations/$organizationId': typeof OrganizationsOrganizationIdRouteWithChildren
+  '/organizations/new': typeof OrganizationsNewRoute
   '/organizations': typeof OrganizationsIndexRoute
+  '/organizations/$organizationId/new-process': typeof OrganizationsOrganizationIdNewProcessRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -79,8 +96,10 @@ export interface FileRoutesById {
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/reset-password': typeof ResetPasswordRoute
-  '/organizations/$organizationId': typeof OrganizationsOrganizationIdRoute
+  '/organizations/$organizationId': typeof OrganizationsOrganizationIdRouteWithChildren
+  '/organizations/new': typeof OrganizationsNewRoute
   '/organizations/': typeof OrganizationsIndexRoute
+  '/organizations/$organizationId/new-process': typeof OrganizationsOrganizationIdNewProcessRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -91,7 +110,9 @@ export interface FileRouteTypes {
     | '/login'
     | '/reset-password'
     | '/organizations/$organizationId'
+    | '/organizations/new'
     | '/organizations/'
+    | '/organizations/$organizationId/new-process'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -100,7 +121,9 @@ export interface FileRouteTypes {
     | '/login'
     | '/reset-password'
     | '/organizations/$organizationId'
+    | '/organizations/new'
     | '/organizations'
+    | '/organizations/$organizationId/new-process'
   id:
     | '__root__'
     | '/'
@@ -109,7 +132,9 @@ export interface FileRouteTypes {
     | '/login'
     | '/reset-password'
     | '/organizations/$organizationId'
+    | '/organizations/new'
     | '/organizations/'
+    | '/organizations/$organizationId/new-process'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -118,7 +143,8 @@ export interface RootRouteChildren {
   ForgotPasswordRoute: typeof ForgotPasswordRoute
   LoginRoute: typeof LoginRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
-  OrganizationsOrganizationIdRoute: typeof OrganizationsOrganizationIdRoute
+  OrganizationsOrganizationIdRoute: typeof OrganizationsOrganizationIdRouteWithChildren
+  OrganizationsNewRoute: typeof OrganizationsNewRoute
   OrganizationsIndexRoute: typeof OrganizationsIndexRoute
 }
 
@@ -166,6 +192,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OrganizationsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/organizations/new': {
+      id: '/organizations/new'
+      path: '/organizations/new'
+      fullPath: '/organizations/new'
+      preLoaderRoute: typeof OrganizationsNewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/organizations/$organizationId': {
       id: '/organizations/$organizationId'
       path: '/organizations/$organizationId'
@@ -173,8 +206,30 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OrganizationsOrganizationIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/organizations/$organizationId/new-process': {
+      id: '/organizations/$organizationId/new-process'
+      path: '/new-process'
+      fullPath: '/organizations/$organizationId/new-process'
+      preLoaderRoute: typeof OrganizationsOrganizationIdNewProcessRouteImport
+      parentRoute: typeof OrganizationsOrganizationIdRoute
+    }
   }
 }
+
+interface OrganizationsOrganizationIdRouteChildren {
+  OrganizationsOrganizationIdNewProcessRoute: typeof OrganizationsOrganizationIdNewProcessRoute
+}
+
+const OrganizationsOrganizationIdRouteChildren: OrganizationsOrganizationIdRouteChildren =
+  {
+    OrganizationsOrganizationIdNewProcessRoute:
+      OrganizationsOrganizationIdNewProcessRoute,
+  }
+
+const OrganizationsOrganizationIdRouteWithChildren =
+  OrganizationsOrganizationIdRoute._addFileChildren(
+    OrganizationsOrganizationIdRouteChildren,
+  )
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -182,7 +237,9 @@ const rootRouteChildren: RootRouteChildren = {
   ForgotPasswordRoute: ForgotPasswordRoute,
   LoginRoute: LoginRoute,
   ResetPasswordRoute: ResetPasswordRoute,
-  OrganizationsOrganizationIdRoute: OrganizationsOrganizationIdRoute,
+  OrganizationsOrganizationIdRoute:
+    OrganizationsOrganizationIdRouteWithChildren,
+  OrganizationsNewRoute: OrganizationsNewRoute,
   OrganizationsIndexRoute: OrganizationsIndexRoute,
 }
 export const routeTree = rootRouteImport

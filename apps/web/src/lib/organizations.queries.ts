@@ -1,5 +1,7 @@
 import type {
   Course,
+  CreateOrganizationDto,
+  CreateSelectiveProcessDto,
   ListOrganizationsQuery,
   OrganizationDetail,
   OrganizationListItem,
@@ -36,4 +38,16 @@ export const coursesQuery = () => ({
 export const patchUserMutation = (queryClient: QueryClient) => ({
   mutationFn: (dto: PatchUserDto) => http.patch("/users/me", { body: JSON.stringify(dto) }),
   onSuccess: () => queryClient.invalidateQueries({ queryKey: ["auth", "session"] }),
+});
+
+export const createOrganizationMutation = (queryClient: QueryClient) => ({
+  mutationFn: (dto: CreateOrganizationDto) =>
+    http.post<{ id: string }>("/organizations", { body: JSON.stringify(dto) }),
+  onSuccess: () => queryClient.invalidateQueries({ queryKey: ["organizations"] }),
+});
+
+export const createProcessMutation = (queryClient: QueryClient, organizationId: string) => ({
+  mutationFn: (dto: CreateSelectiveProcessDto) =>
+    http.post(`/organizations/${organizationId}/processes`, { body: JSON.stringify(dto) }),
+  onSuccess: () => queryClient.invalidateQueries({ queryKey: ["organizations", organizationId] }),
 });
