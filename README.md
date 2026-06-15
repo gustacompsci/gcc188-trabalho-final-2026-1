@@ -91,3 +91,99 @@ packages/
 ---
 
 Projeto criado com [Better-T-Stack](https://github.com/AmanVarshney01/create-better-t-stack).
+
+---
+
+## Arquitetura
+
+Monorepo com dois apps e dois pacotes compartilhados. Frontend e backend se comunicam exclusivamente via HTTP REST.
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  APRESENTAÇÃO  │  React + TanStack Router    (apps/web)       │
+├──────────────────────────────────────────────────────────────┤
+│  APLICAÇÃO     │  NestJS Controllers                          │
+├──────────────────────────────────────────────────────────────┤
+│  DOMÍNIO       │  NestJS Services + Better Auth               │
+├──────────────────────────────────────────────────────────────┤
+│  PERSISTÊNCIA  │  Drizzle ORM + libSQL (SQLite / Turso)       │
+└──────────────────────────────────────────────────────────────┘
+```
+
+```mermaid
+graph TD
+  subgraph "apps/web — React + Vite (porta 5173)"
+    W_Public["Rotas públicas\n/ · /organizations · /organizations/:id"]
+    W_Auth["Rotas de auth\n/sign-in · /sign-up"]
+    W_App["Rotas autenticadas\n/app · /app/organizations/new\n/app/organizations/:id/new-process"]
+    W_Shared["packages/shared\n(Zod schemas + tipos)"]
+    W_UI["packages/ui\n(shadcn/ui)"]
+  end
+
+  subgraph "apps/server — NestJS + Node.js (porta 3000)"
+    DB["DatabaseModule @Global\nDrizzle + libSQL"]
+    Auth["AuthModule\nBetter Auth · roles student/leader/admin"]
+    Courses["CoursesModule\nGET /courses · seeder"]
+    Orgs["OrganizationsModule\nGET /organizations · GET /organizations/:id\nPOST /organizations · POST /organizations/:id/processes"]
+    Users["UsersModule\nPATCH /users/me"]
+  end
+
+  SQLite[("SQLite / Turso")]
+
+  W_Public -- "HTTP REST" --> Orgs
+  W_Auth -- "HTTP REST" --> Auth
+  W_App -- "HTTP REST" --> Orgs
+  W_App -- "HTTP REST" --> Users
+  W_App -- "HTTP REST" --> Courses
+
+  Auth --> DB
+  Courses --> DB
+  Orgs --> DB
+  Users --> DB
+  DB --> SQLite
+
+  W_Public --> W_Shared
+  W_App --> W_Shared
+  W_Public --> W_UI
+  W_App --> W_UI
+```
+
+---
+
+## Apresentação (GCC188)
+
+### Roteiro de demonstração
+
+**1. Catálogo público — sem login**
+- Abrir `/organizations` e mostrar os cards (Comp Júnior, NESCAU, Robótica Júnior…)
+- Filtrar por tipo ("Empresa Júnior") com chips — sem reload de página
+- Buscar por nome ("comp") — resultado filtrado em tempo real
+- Clicar em uma organização → página de detalhes com processos seletivos, status e links
+
+**2. Cadastro e login de aluno**
+- Tentar e-mail fora do domínio → validação inline `@ufla.br`
+- Cadastrar com e-mail `@ufla.br` → login → dashboard
+
+**3. Dashboard personalizado**
+- Saudação com nome do aluno
+- Selecionar curso (persiste via `PATCH /users/me`)
+- Widget de processos seletivos abertos
+
+**4. Fluxo do líder**
+- Logar com conta de role `leader`
+- Criar organização → formulário com validação onBlur por campo → toast de sucesso
+- Acessar a organização criada → "Novo processo seletivo" → preencher datas e vagas → processo aparece com status "Aberto"
+
+**5. UX / RNF07**
+- Simular conexão lenta (DevTools → Network → Slow 3G) → skeletons de carregamento
+- Submeter formulário vazio → erros inline por campo
+- Toast de feedback em sucesso e erro
+
+### Contas para a demo
+
+Crie previamente no banco (via seed ou pelo próprio cadastro):
+
+| Role | E-mail sugerido | Observação |
+|---|---|---|
+| `student` | `aluno@ufla.br` | Cadastro normal pelo `/sign-up` |
+| `leader` | `lider@ufla.br` | Promover via Drizzle Studio ou seed |
