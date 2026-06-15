@@ -89,8 +89,10 @@ function RouteComponent() {
   const { data: courses, isPending: coursesLoading } = useQuery(coursesQuery());
   const { mutate: patchUser } = useMutation(patchUserMutation(queryClient));
 
+  const [selectedCourseId, setSelectedCourseId] = useState<string>("");
   const openOrgs = organizations?.filter((o) => o.hasOpenProcess).slice(0, 3) ?? [];
   const currentCourse = courses?.find((c) => c.id === session?.user.courseId);
+  const selectedCourseName = courses?.find((c) => c.id === selectedCourseId)?.name;
 
   return (
     <div className="container mx-auto max-w-3xl px-4 py-8">
@@ -127,8 +129,10 @@ function RouteComponent() {
           <div className="flex flex-col gap-2">
             <p className="text-muted-foreground text-sm">Selecione seu curso:</p>
             <Select<string>
+              value={selectedCourseId}
               onValueChange={(value) => {
-                if (value)
+                if (value) {
+                  setSelectedCourseId(value);
                   patchUser(
                     { courseId: value },
                     {
@@ -136,10 +140,13 @@ function RouteComponent() {
                       onError: () => toast.error("Erro ao atualizar curso."),
                     },
                   );
+                }
               }}
             >
               <SelectTrigger className="w-full max-w-sm">
-                <SelectValue placeholder="Selecionar curso..." />
+                <SelectValue placeholder="Selecionar curso...">
+                  {selectedCourseName ?? undefined}
+                </SelectValue>
               </SelectTrigger>
               <SelectContent>
                 {courses?.map((course) => (
