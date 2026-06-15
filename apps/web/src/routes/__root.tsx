@@ -1,7 +1,7 @@
 import { Toaster } from "@extraufla/ui/components/sonner";
 import type { QueryClient } from "@tanstack/react-query";
 import { createRootRouteWithContext, HeadContent, Outlet } from "@tanstack/react-router";
-import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
+// import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 
 import Header from "@/components/header";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -48,7 +48,6 @@ function RootComponent() {
         </div>
         <Toaster richColors />
       </ThemeProvider>
-      <TanStackRouterDevtools position="bottom-left" />
     </>
   );
 }
