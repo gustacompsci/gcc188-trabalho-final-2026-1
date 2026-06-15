@@ -71,10 +71,6 @@ export const patchUserSchema = z.object({
 export type PatchUserDto = z.infer<typeof patchUserSchema>;
 
 export const createOrganizationSchema = z.object({
-  id: z
-    .string()
-    .min(2)
-    .regex(/^[a-z0-9-]+$/, "Use apenas letras minúsculas, números e hífens"),
   name: z.string().min(2, "Nome deve ter ao menos 2 caracteres"),
   type: organizationTypeSchema,
   description: z.string().min(10, "Descrição deve ter ao menos 10 caracteres"),

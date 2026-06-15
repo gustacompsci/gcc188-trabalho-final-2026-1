@@ -21,6 +21,17 @@ import { DATABASE, type DrizzleDB } from "../database/database.module";
 import { organization } from "./organizations.sql";
 import { selectiveProcess } from "./selective_process.sql";
 
+function slugify(name: string): string {
+  return name
+    .normalize("NFD")
+    .replace(/\p{M}/gu, "")
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-");
+}
+
 function deriveStatus(startDate: Date, endDate: Date): SelectiveProcessStatus {
   const now = Date.now();
   const start = startDate.getTime();
@@ -136,17 +147,26 @@ export class OrganizationsService implements OnModuleInit {
   }
 
   async createOrganization(dto: CreateOrganizationDto, leaderId: string) {
-    const existing = await this.db
-      .select({ id: organization.id })
+    let id = slugify(dto.name);
+
+    const [existing] = await this.db
+      .select({ id: organization.id, name: organization.name })
       .from(organization)
-      .where(eq(organization.id, dto.id));
-    if (existing.length > 0)
-      throw new ConflictException(`Organização com id '${dto.id}' já existe`);
+      .where(eq(organization.id, id));
+
+    if (existing) {
+      if (existing.name.toLowerCase() === dto.name.toLowerCase())
+        throw new ConflictException(`Organização '${dto.name}' já existe`);
+
+      const suffix = Math.random().toString(36).slice(2, 5);
+      id = `${id}-${suffix}`;
+    }
 
     const [org] = await this.db
       .insert(organization)
       .values({
         ...dto,
+        id,
         socialLinks: dto.socialLinks ?? null,
         logoUrl: dto.logoUrl ?? null,
         leaderId,
