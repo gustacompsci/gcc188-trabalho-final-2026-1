@@ -14,6 +14,7 @@ export type AuthSession = {
     name: string;
     email: string;
     emailVerified: boolean;
+    courseId: string | null;
     createdAt: string;
     updatedAt: string;
   };
