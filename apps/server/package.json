@@ -14,6 +14,8 @@
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "test": "jest",
+    "test:unit": "jest --testPathPatterns=\"(?<!integration)\\.spec\\.ts$\"",
+    "test:integration": "NODE_OPTIONS='--experimental-vm-modules' jest --config jest.integration.config.cjs --runInBand",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
@@ -63,18 +65,51 @@
   "jest": {
     "moduleFileExtensions": [
       "js",
+      "mjs",
       "json",
       "ts"
     ],
-    "rootDir": "src",
-    "testRegex": ".*\\.spec\\.ts$",
+    "rootDir": ".",
+    "testRegex": "src/.*\\.spec\\.ts$",
     "transform": {
-      "^.+\\.(t|j)s$": "ts-jest"
+      "^.+\\.(t|j)s$": [
+        "ts-jest",
+        {
+          "tsconfig": {
+            "module": "CommonJS",
+            "moduleResolution": "node",
+            "resolvePackageJsonExports": false,
+            "allowJs": true
+          }
+        }
+      ],
+      "^.+\\.mjs$": [
+        "ts-jest",
+        {
+          "tsconfig": {
+            "module": "CommonJS",
+            "moduleResolution": "node",
+            "resolvePackageJsonExports": false,
+            "allowJs": true
+          }
+        }
+      ]
     },
-    "collectCoverageFrom": [
-      "**/*.(t|j)s"
+    "moduleNameMapper": {
+      "^@extraufla/shared$": "<rootDir>/../../packages/shared/src/index.ts",
+      "^(\\.{1,2}/.*)\\.js$": "$1"
+    },
+    "transformIgnorePatterns": [
+      "/node_modules/"
     ],
-    "coverageDirectory": "../coverage",
+    "setupFiles": [
+      "<rootDir>/src/test/setup.ts"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.(t|j)s",
+      "!src/**/*.spec.ts"
+    ],
+    "coverageDirectory": "coverage",
     "testEnvironment": "node"
   }
 }
