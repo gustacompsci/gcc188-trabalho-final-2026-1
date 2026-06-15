@@ -57,7 +57,7 @@ export default function SignInForm({
                 </p>
               </div>
 
-              <form.Field name="email">
+              <form.Field name="email" validators={{ onBlur: signInSchema.shape.email }}>
                 {(field) => (
                   <div className="flex flex-col gap-2">
                     <Label htmlFor={field.name}>E-mail</Label>
@@ -79,7 +79,7 @@ export default function SignInForm({
                 )}
               </form.Field>
 
-              <form.Field name="password">
+              <form.Field name="password" validators={{ onBlur: signInSchema.shape.password }}>
                 {(field) => (
                   <div className="flex flex-col gap-2">
                     <div className="flex items-center justify-between">
