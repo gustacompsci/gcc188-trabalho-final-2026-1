@@ -1,8 +1,10 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
+import { admin } from "better-auth/plugins/admin";
 import { eq } from "drizzle-orm";
 import { Resend } from "resend";
+import { ac, adminRole, leaderRole, studentRole } from "../common/access-control";
 import { env } from "../common/env";
 import { DATABASE, type DrizzleDB } from "../database/database.module";
 import * as schema from "../database/schema";
@@ -46,7 +48,14 @@ export class AuthService {
           httpOnly: true,
         },
       },
-      plugins: [],
+      plugins: [
+        admin({
+          ac,
+          roles: { student: studentRole, leader: leaderRole, admin: adminRole },
+          defaultRole: "student",
+          adminRoles: ["admin"],
+        }),
+      ],
       databaseHooks: {
         user: {
           create: {
