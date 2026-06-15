@@ -4,7 +4,7 @@ import { Input } from "@extraufla/ui/components/input";
 import { Label } from "@extraufla/ui/components/label";
 import { useForm } from "@tanstack/react-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, redirect, useNavigate, useRouter } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { z } from "zod";
 
@@ -37,6 +37,7 @@ const processFormSchema = z
 function NewProcessPage() {
   const { organizationId } = Route.useParams();
   const navigate = useNavigate();
+  const router = useRouter();
   const queryClient = useQueryClient();
   const { mutateAsync: createProcess } = useMutation(
     createProcessMutation(queryClient, organizationId),
@@ -197,15 +198,20 @@ function NewProcessPage() {
               </form.Field>
             </div>
 
-            <form.Subscribe
-              selector={(s) => ({ canSubmit: s.canSubmit, isSubmitting: s.isSubmitting })}
-            >
-              {({ canSubmit, isSubmitting }) => (
-                <Button type="submit" disabled={!canSubmit || isSubmitting}>
-                  {isSubmitting ? "Criando..." : "Criar processo"}
-                </Button>
-              )}
-            </form.Subscribe>
+            <div className="flex gap-2">
+              <form.Subscribe
+                selector={(s) => ({ canSubmit: s.canSubmit, isSubmitting: s.isSubmitting })}
+              >
+                {({ canSubmit, isSubmitting }) => (
+                  <Button type="submit" disabled={!canSubmit || isSubmitting}>
+                    {isSubmitting ? "Criando..." : "Criar processo"}
+                  </Button>
+                )}
+              </form.Subscribe>
+              <Button type="button" variant="outline" onClick={() => router.history.back()}>
+                Cancelar
+              </Button>
+            </div>
           </form>
         </CardContent>
       </Card>
