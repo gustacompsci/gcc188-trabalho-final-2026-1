@@ -61,7 +61,14 @@ function OrganizationDetailPage() {
         {socialLinks ? (
           <ul className="flex flex-wrap gap-3">
             {Object.entries(socialLinks).map(([key, url]) => {
-              const safeUrl = /^https?:\/\//i.test(url) ? url : null;
+              const safeUrl = (() => {
+                try {
+                  const p = new URL(url);
+                  return ["http:", "https:"].includes(p.protocol) ? p.toString() : null;
+                } catch {
+                  return null;
+                }
+              })();
               return (
                 <li key={key}>
                   {safeUrl ? (
