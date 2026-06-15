@@ -24,7 +24,7 @@ export const Route = createFileRoute("/app/organizations/$organizationId/new-pro
 const processFormSchema = z
   .object({
     title: z.string().min(3, "Título deve ter ao menos 3 caracteres"),
-    description: z.string().min(10, "Descrição deve ter ao menos 10 caracteres"),
+    description: z.string().min(1, "Descrição obrigatória"),
     vacancies: z.number().int().positive("Vagas deve ser um número positivo"),
     startDate: z.string().min(1, "Data de início obrigatória"),
     endDate: z.string().min(1, "Data de encerramento obrigatória"),
@@ -112,7 +112,7 @@ function NewProcessPage() {
             <form.Field
               name="description"
               validators={{
-                onBlur: z.string().min(10, "Descrição deve ter ao menos 10 caracteres"),
+                onBlur: z.string().min(1, "Descrição obrigatória"),
               }}
             >
               {(field) => (
