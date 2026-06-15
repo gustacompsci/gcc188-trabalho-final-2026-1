@@ -1,4 +1,8 @@
-import { createOrganizationSchema, organizationTypeLabels } from "@extraufla/shared";
+import {
+  createOrganizationSchema,
+  type OrganizationType,
+  organizationTypeLabels,
+} from "@extraufla/shared";
 import { Button } from "@extraufla/ui/components/button";
 import { Card, CardContent } from "@extraufla/ui/components/card";
 import { Input } from "@extraufla/ui/components/input";
@@ -30,7 +34,6 @@ export const Route = createFileRoute("/organizations/new")({
   component: NewOrganizationPage,
 });
 
-// Form validator that matches defaultValues (all fields are strings)
 const formSchema = createOrganizationSchema.extend({
   socialLinks: z.string(),
   logoUrl: z.string(),
@@ -43,7 +46,6 @@ function NewOrganizationPage() {
 
   const form = useForm({
     defaultValues: {
-      id: "",
       name: "",
       type: "" as "junior_company" | "extension_project" | "study_group",
       description: "",
@@ -82,47 +84,25 @@ function NewOrganizationPage() {
             }}
             className="flex flex-col gap-4"
           >
-            <div className="grid grid-cols-2 gap-4">
-              <form.Field name="id" validators={{ onBlur: createOrganizationSchema.shape.id }}>
-                {(field) => (
-                  <div className="flex flex-col gap-2">
-                    <Label htmlFor={field.name}>ID (slug)</Label>
-                    <Input
-                      id={field.name}
-                      placeholder="comp-junior"
-                      value={field.state.value}
-                      onBlur={field.handleBlur}
-                      onChange={(e) => field.handleChange(e.target.value)}
-                    />
-                    {field.state.meta.errors.map((e) => (
-                      <p key={e?.message} className="text-destructive text-xs">
-                        {e?.message}
-                      </p>
-                    ))}
-                  </div>
-                )}
-              </form.Field>
-
-              <form.Field name="name" validators={{ onBlur: createOrganizationSchema.shape.name }}>
-                {(field) => (
-                  <div className="flex flex-col gap-2">
-                    <Label htmlFor={field.name}>Nome</Label>
-                    <Input
-                      id={field.name}
-                      placeholder="Comp Júnior"
-                      value={field.state.value}
-                      onBlur={field.handleBlur}
-                      onChange={(e) => field.handleChange(e.target.value)}
-                    />
-                    {field.state.meta.errors.map((e) => (
-                      <p key={e?.message} className="text-destructive text-xs">
-                        {e?.message}
-                      </p>
-                    ))}
-                  </div>
-                )}
-              </form.Field>
-            </div>
+            <form.Field name="name" validators={{ onBlur: createOrganizationSchema.shape.name }}>
+              {(field) => (
+                <div className="flex flex-col gap-2">
+                  <Label htmlFor={field.name}>Nome</Label>
+                  <Input
+                    id={field.name}
+                    placeholder="Comp Júnior"
+                    value={field.state.value}
+                    onBlur={field.handleBlur}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                  />
+                  {field.state.meta.errors.map((e) => (
+                    <p key={e?.message} className="text-destructive text-xs">
+                      {e?.message}
+                    </p>
+                  ))}
+                </div>
+              )}
+            </form.Field>
 
             <form.Field name="type">
               {(field) => (
@@ -133,7 +113,11 @@ function NewOrganizationPage() {
                     onValueChange={(v) => field.handleChange(v as typeof field.state.value)}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Selecionar tipo..." />
+                      <SelectValue placeholder="Selecionar tipo...">
+                        {field.state.value
+                          ? organizationTypeLabels[field.state.value as OrganizationType]
+                          : undefined}
+                      </SelectValue>
                     </SelectTrigger>
                     <SelectContent>
                       {(
