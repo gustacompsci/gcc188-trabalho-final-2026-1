@@ -139,23 +139,34 @@ export class OrganizationsService implements OnModuleInit {
 
       const orgs = [
         {
-          id: "representacao-jr",
-          name: "RepresentAção Jr",
+          id: "comp-junior",
+          name: "Comp Júnior",
           type: "junior_company" as const,
           description:
-            "Empresa júnior de representação e consultoria da UFLA, focada em soluções de gestão e comunicação.",
-          area: "Gestão e Comunicação",
-          contact: "representacao@ufla.br",
+            "Empresa júnior de Ciência da Computação da UFLA, oferecendo soluções em tecnologia e inovação para empresas e pessoas.",
+          area: "Tecnologia",
+          contact: "contato@compjunior.com.br",
+          socialLinks: JSON.stringify({ Site: "https://compjunior.com.br/" }),
           leaderId: "system",
         },
         {
-          id: "projeto-verde-campus",
-          name: "Projeto Verde Campus",
-          type: "extension_project" as const,
+          id: "nescau-ufla",
+          name: "NESCAU",
+          type: "study_group" as const,
           description:
-            "Projeto de extensão voltado à sustentabilidade e meio ambiente no campus da UFLA.",
-          area: "Meio Ambiente",
-          contact: "verde@ufla.br",
+            "Núcleo de Estudos em Segurança Computacional e Auditoria da UFLA, dedicado à pesquisa e prática em segurança da informação, CTF e auditoria de sistemas.",
+          area: "Segurança da Informação",
+          contact: "nescau@ufla.br",
+          leaderId: "system",
+        },
+        {
+          id: "robotica-junior",
+          name: "Robótica Júnior",
+          type: "junior_company" as const,
+          description:
+            "Empresa Júnior do curso de Engenharia de Controle e Automação da UFLA, orientada por professores do Departamento de Engenharia e federada à FEJEMG. Missão: fornecer qualidade de vida por meio de soluções em automação.",
+          area: "Engenharia e Automação",
+          contact: "roboticajr@ufla.br",
           leaderId: "system",
         },
         {
@@ -166,16 +177,6 @@ export class OrganizationsService implements OnModuleInit {
             "Grupo de estudos dedicado à inteligência artificial, aprendizado de máquina e ciência de dados.",
           area: "Tecnologia",
           contact: "ia@ufla.br",
-          leaderId: "system",
-        },
-        {
-          id: "biotech-jr",
-          name: "BioTech Jr",
-          type: "junior_company" as const,
-          description:
-            "Empresa júnior de biotecnologia da UFLA, prestando consultoria e serviços na área biológica.",
-          area: "Biotecnologia",
-          contact: "biotech@ufla.br",
           leaderId: "system",
         },
         {
@@ -196,13 +197,33 @@ export class OrganizationsService implements OnModuleInit {
 
       const processes = [
         {
-          id: "representacao-jr-ps-2026",
-          organizationId: "representacao-jr",
-          title: "Processo Seletivo 2026.1 — RepresentAção Jr",
-          description: "Seleção de novos membros para as áreas de consultoria e marketing.",
-          vacancies: 5,
+          id: "comp-junior-ps-2026",
+          organizationId: "comp-junior",
+          title: "Processo Seletivo 2026.1 — Comp Júnior",
+          description:
+            "Seleção de novos membros para as áreas de desenvolvimento, design e gestão.",
+          vacancies: 6,
           startDate: new Date("2026-06-01"),
           endDate: new Date("2026-06-30"),
+        },
+        {
+          id: "nescau-ps-2026",
+          organizationId: "nescau-ufla",
+          title: "Seleção de Membros — NESCAU 2026",
+          description:
+            "Vagas para estudantes interessados em segurança da informação, CTF e auditoria de sistemas.",
+          vacancies: 10,
+          startDate: new Date("2026-06-10"),
+          endDate: new Date("2026-07-10"),
+        },
+        {
+          id: "robotica-jr-ps-2026",
+          organizationId: "robotica-junior",
+          title: "Processo Seletivo Robótica Júnior 2026.2",
+          description: "Seleção de trainees para as áreas de projetos em automação e controle.",
+          vacancies: 5,
+          startDate: new Date("2026-07-15"),
+          endDate: new Date("2026-08-15"),
         },
         {
           id: "nucleo-ia-ps-2026",
@@ -212,24 +233,6 @@ export class OrganizationsService implements OnModuleInit {
           vacancies: 8,
           startDate: new Date("2026-07-01"),
           endDate: new Date("2026-07-31"),
-        },
-        {
-          id: "biotech-jr-ps-2026",
-          organizationId: "biotech-jr",
-          title: "Processo Seletivo BioTech Jr 2026",
-          description: "Seleção de trainees para a empresa júnior de biotecnologia.",
-          vacancies: 4,
-          startDate: new Date("2026-04-01"),
-          endDate: new Date("2026-04-30"),
-        },
-        {
-          id: "verde-campus-ps-2026",
-          organizationId: "projeto-verde-campus",
-          title: "Voluntários Projeto Verde Campus",
-          description: "Recrutamento de voluntários para iniciativas de sustentabilidade.",
-          vacancies: 10,
-          startDate: new Date("2026-06-10"),
-          endDate: new Date("2026-07-10"),
         },
         {
           id: "extensao-cultural-ps-2026",
