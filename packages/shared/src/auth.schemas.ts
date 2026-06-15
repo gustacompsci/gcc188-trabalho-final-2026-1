@@ -29,7 +29,6 @@ export const signUpSchema = z
 
 export const forgetPasswordSchema = z.object({
   email: uflaEmail,
-  redirectTo: z.string().url().optional(),
 });
 
 export const resetPasswordSchema = z

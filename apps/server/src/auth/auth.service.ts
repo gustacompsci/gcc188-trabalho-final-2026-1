@@ -21,11 +21,19 @@ export class AuthService {
       emailAndPassword: {
         enabled: true,
         sendResetPassword: async ({ user, url }) => {
+          const safeUrl = new URL(url);
+          if (safeUrl.origin !== new URL(env.CORS_ORIGIN).origin) return;
+          const esc = (s: string) =>
+            s
+              .replace(/&/g, "&amp;")
+              .replace(/</g, "&lt;")
+              .replace(/>/g, "&gt;")
+              .replace(/"/g, "&quot;");
           await resend.emails.send({
             from: "ExtraUFLA <no-reply@extraufla.com.br>",
             to: user.email,
             subject: "Recuperação de senha — ExtraUFLA",
-            html: `<p>Olá, ${user.name}!</p><p>Clique no link abaixo para redefinir sua senha:</p><p><a href="${url}">${url}</a></p><p>O link expira em 1 hora.</p>`,
+            html: `<p>Olá, ${esc(user.name)}!</p><p>Clique no link abaixo para redefinir sua senha:</p><p><a href="${esc(safeUrl.toString())}">${esc(safeUrl.toString())}</a></p><p>O link expira em 1 hora.</p>`,
           });
         },
       },

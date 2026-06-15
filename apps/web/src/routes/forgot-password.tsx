@@ -23,10 +23,7 @@ function ForgotPasswordPage() {
     defaultValues: { email: "" },
     onSubmit: async ({ value }) => {
       try {
-        await forgetPassword({
-          email: value.email,
-          redirectTo: `${window.location.origin}/reset-password`,
-        });
+        await forgetPassword({ email: value.email });
         setSent(true);
       } catch (error) {
         const message = error instanceof Error ? error.message : "Erro ao solicitar recuperação.";

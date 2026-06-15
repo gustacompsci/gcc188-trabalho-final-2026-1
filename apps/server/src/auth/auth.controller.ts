@@ -10,6 +10,7 @@ import {
 } from "@extraufla/shared";
 import { Body, Controller, Get, HttpException, Post, Req, Res } from "@nestjs/common";
 import type { Request, Response } from "express";
+import { env } from "../common/env";
 import { ZodValidationPipe } from "../common/zod-validation.pipe";
 import { AuthService } from "./auth.service";
 
@@ -75,7 +76,7 @@ export class AuthController {
   @Post("forget-password")
   async forgetPassword(@Body(new ZodValidationPipe(forgetPasswordSchema)) body: ForgetPasswordDto) {
     const response = await this.authService.auth.api.requestPasswordReset({
-      body,
+      body: { ...body, redirectTo: `${env.CORS_ORIGIN}/reset-password` },
       asResponse: true,
     });
     if (!response.ok) {
