@@ -6,7 +6,7 @@ import { Label } from "@extraufla/ui/components/label";
 import { cn } from "@extraufla/ui/lib/utils";
 import { useForm } from "@tanstack/react-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
 
 import { signInMutation } from "@/lib/auth.queries";
@@ -82,7 +82,15 @@ export default function SignInForm({
               <form.Field name="password">
                 {(field) => (
                   <div className="flex flex-col gap-2">
-                    <Label htmlFor={field.name}>Senha</Label>
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor={field.name}>Senha</Label>
+                      <Link
+                        to="/forgot-password"
+                        className="text-muted-foreground text-xs hover:text-foreground"
+                      >
+                        Esqueci a senha
+                      </Link>
+                    </div>
                     <Input
                       id={field.name}
                       name={field.name}

@@ -9,15 +9,29 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as OrganizationsIndexRouteImport } from './routes/organizations/index'
+import { Route as OrganizationsNewRouteImport } from './routes/organizations/new'
 import { Route as OrganizationsOrganizationIdRouteImport } from './routes/organizations/$organizationId'
+import { Route as OrganizationsOrganizationIdNewProcessRouteImport } from './routes/organizations/$organizationId.new-process'
 
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
+  id: '/forgot-password',
+  path: '/forgot-password',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppRoute = AppRouteImport.update({
@@ -35,74 +49,126 @@ const OrganizationsIndexRoute = OrganizationsIndexRouteImport.update({
   path: '/organizations/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OrganizationsNewRoute = OrganizationsNewRouteImport.update({
+  id: '/organizations/new',
+  path: '/organizations/new',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OrganizationsOrganizationIdRoute =
   OrganizationsOrganizationIdRouteImport.update({
     id: '/organizations/$organizationId',
     path: '/organizations/$organizationId',
     getParentRoute: () => rootRouteImport,
   } as any)
+const OrganizationsOrganizationIdNewProcessRoute =
+  OrganizationsOrganizationIdNewProcessRouteImport.update({
+    id: '/new-process',
+    path: '/new-process',
+    getParentRoute: () => OrganizationsOrganizationIdRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/app': typeof AppRoute
+  '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
-  '/organizations/$organizationId': typeof OrganizationsOrganizationIdRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/organizations/$organizationId': typeof OrganizationsOrganizationIdRouteWithChildren
+  '/organizations/new': typeof OrganizationsNewRoute
   '/organizations/': typeof OrganizationsIndexRoute
+  '/organizations/$organizationId/new-process': typeof OrganizationsOrganizationIdNewProcessRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/app': typeof AppRoute
+  '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
-  '/organizations/$organizationId': typeof OrganizationsOrganizationIdRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/organizations/$organizationId': typeof OrganizationsOrganizationIdRouteWithChildren
+  '/organizations/new': typeof OrganizationsNewRoute
   '/organizations': typeof OrganizationsIndexRoute
+  '/organizations/$organizationId/new-process': typeof OrganizationsOrganizationIdNewProcessRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/app': typeof AppRoute
+  '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
-  '/organizations/$organizationId': typeof OrganizationsOrganizationIdRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/organizations/$organizationId': typeof OrganizationsOrganizationIdRouteWithChildren
+  '/organizations/new': typeof OrganizationsNewRoute
   '/organizations/': typeof OrganizationsIndexRoute
+  '/organizations/$organizationId/new-process': typeof OrganizationsOrganizationIdNewProcessRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/app'
+    | '/forgot-password'
     | '/login'
+    | '/reset-password'
     | '/organizations/$organizationId'
+    | '/organizations/new'
     | '/organizations/'
+    | '/organizations/$organizationId/new-process'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/app'
+    | '/forgot-password'
     | '/login'
+    | '/reset-password'
     | '/organizations/$organizationId'
+    | '/organizations/new'
     | '/organizations'
+    | '/organizations/$organizationId/new-process'
   id:
     | '__root__'
     | '/'
     | '/app'
+    | '/forgot-password'
     | '/login'
+    | '/reset-password'
     | '/organizations/$organizationId'
+    | '/organizations/new'
     | '/organizations/'
+    | '/organizations/$organizationId/new-process'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AppRoute: typeof AppRoute
+  ForgotPasswordRoute: typeof ForgotPasswordRoute
   LoginRoute: typeof LoginRoute
-  OrganizationsOrganizationIdRoute: typeof OrganizationsOrganizationIdRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
+  OrganizationsOrganizationIdRoute: typeof OrganizationsOrganizationIdRouteWithChildren
+  OrganizationsNewRoute: typeof OrganizationsNewRoute
   OrganizationsIndexRoute: typeof OrganizationsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/login': {
       id: '/login'
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/forgot-password': {
+      id: '/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/forgot-password'
+      preLoaderRoute: typeof ForgotPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/app': {
@@ -126,6 +192,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OrganizationsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/organizations/new': {
+      id: '/organizations/new'
+      path: '/organizations/new'
+      fullPath: '/organizations/new'
+      preLoaderRoute: typeof OrganizationsNewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/organizations/$organizationId': {
       id: '/organizations/$organizationId'
       path: '/organizations/$organizationId'
@@ -133,14 +206,40 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OrganizationsOrganizationIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/organizations/$organizationId/new-process': {
+      id: '/organizations/$organizationId/new-process'
+      path: '/new-process'
+      fullPath: '/organizations/$organizationId/new-process'
+      preLoaderRoute: typeof OrganizationsOrganizationIdNewProcessRouteImport
+      parentRoute: typeof OrganizationsOrganizationIdRoute
+    }
   }
 }
+
+interface OrganizationsOrganizationIdRouteChildren {
+  OrganizationsOrganizationIdNewProcessRoute: typeof OrganizationsOrganizationIdNewProcessRoute
+}
+
+const OrganizationsOrganizationIdRouteChildren: OrganizationsOrganizationIdRouteChildren =
+  {
+    OrganizationsOrganizationIdNewProcessRoute:
+      OrganizationsOrganizationIdNewProcessRoute,
+  }
+
+const OrganizationsOrganizationIdRouteWithChildren =
+  OrganizationsOrganizationIdRoute._addFileChildren(
+    OrganizationsOrganizationIdRouteChildren,
+  )
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AppRoute: AppRoute,
+  ForgotPasswordRoute: ForgotPasswordRoute,
   LoginRoute: LoginRoute,
-  OrganizationsOrganizationIdRoute: OrganizationsOrganizationIdRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
+  OrganizationsOrganizationIdRoute:
+    OrganizationsOrganizationIdRouteWithChildren,
+  OrganizationsNewRoute: OrganizationsNewRoute,
   OrganizationsIndexRoute: OrganizationsIndexRoute,
 }
 export const routeTree = rootRouteImport

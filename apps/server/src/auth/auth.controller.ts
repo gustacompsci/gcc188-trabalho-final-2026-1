@@ -1,6 +1,16 @@
-import { type SignInDto, type SignUpDto, signInSchema, signUpSchema } from "@extraufla/shared";
+import {
+  type ForgetPasswordDto,
+  forgetPasswordSchema,
+  type ResetPasswordDto,
+  resetPasswordSchema,
+  type SignInDto,
+  type SignUpDto,
+  signInSchema,
+  signUpSchema,
+} from "@extraufla/shared";
 import { Body, Controller, Get, HttpException, Post, Req, Res } from "@nestjs/common";
 import type { Request, Response } from "express";
+import { env } from "../common/env";
 import { ZodValidationPipe } from "../common/zod-validation.pipe";
 import { AuthService } from "./auth.service";
 
@@ -61,6 +71,36 @@ export class AuthController {
       headers: new Headers({ cookie: req.headers.cookie ?? "" }),
     });
     res.status(200).json(session);
+  }
+
+  @Post("forget-password")
+  async forgetPassword(@Body(new ZodValidationPipe(forgetPasswordSchema)) body: ForgetPasswordDto) {
+    const response = await this.authService.auth.api.requestPasswordReset({
+      body: { ...body, redirectTo: `${env.CORS_ORIGIN}/reset-password` },
+      asResponse: true,
+    });
+    if (!response.ok) {
+      const data = (await response.json()) as { message?: string };
+      throw new HttpException(
+        data.message ?? "Erro ao solicitar recuperação de senha",
+        response.status,
+      );
+    }
+    return { success: true };
+  }
+
+  @Post("reset-password")
+  async resetPassword(@Body(new ZodValidationPipe(resetPasswordSchema)) body: ResetPasswordDto) {
+    const { confirmPassword: _confirmPassword, ...resetBody } = body;
+    const response = await this.authService.auth.api.resetPassword({
+      body: resetBody,
+      asResponse: true,
+    });
+    if (!response.ok) {
+      const data = (await response.json()) as { message?: string };
+      throw new HttpException(data.message ?? "Erro ao redefinir senha", response.status);
+    }
+    return { success: true };
   }
 
   private forwardSetCookie(from: globalThis.Response, to: Response) {

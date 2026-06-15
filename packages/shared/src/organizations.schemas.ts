@@ -69,3 +69,32 @@ export const patchUserSchema = z.object({
   name: z.string().min(2).optional(),
 });
 export type PatchUserDto = z.infer<typeof patchUserSchema>;
+
+export const createOrganizationSchema = z.object({
+  id: z
+    .string()
+    .min(2)
+    .regex(/^[a-z0-9-]+$/, "Use apenas letras minúsculas, números e hífens"),
+  name: z.string().min(2, "Nome deve ter ao menos 2 caracteres"),
+  type: organizationTypeSchema,
+  description: z.string().min(10, "Descrição deve ter ao menos 10 caracteres"),
+  area: z.string().min(2, "Área obrigatória"),
+  contact: z.string().min(2, "Contato obrigatório"),
+  socialLinks: z.string().optional(),
+  logoUrl: z.string().url().optional(),
+});
+export type CreateOrganizationDto = z.infer<typeof createOrganizationSchema>;
+
+export const createSelectiveProcessSchema = z
+  .object({
+    title: z.string().min(3, "Título deve ter ao menos 3 caracteres"),
+    description: z.string().min(10, "Descrição deve ter ao menos 10 caracteres"),
+    vacancies: z.coerce.number().int().positive("Vagas deve ser um número positivo"),
+    startDate: z.coerce.number().int().positive(),
+    endDate: z.coerce.number().int().positive(),
+  })
+  .refine((d) => d.endDate > d.startDate, {
+    message: "A data de encerramento deve ser posterior à de início",
+    path: ["endDate"],
+  });
+export type CreateSelectiveProcessDto = z.infer<typeof createSelectiveProcessSchema>;

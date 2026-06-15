@@ -1,10 +1,19 @@
 import type {
+  CreateOrganizationDto,
+  CreateSelectiveProcessDto,
   ListOrganizationsQuery,
   OrganizationDetail,
   OrganizationListItem,
   SelectiveProcessStatus,
 } from "@extraufla/shared";
-import { Inject, Injectable, NotFoundException, OnModuleInit } from "@nestjs/common";
+import {
+  ConflictException,
+  ForbiddenException,
+  Inject,
+  Injectable,
+  NotFoundException,
+  OnModuleInit,
+} from "@nestjs/common";
 import type { SQL } from "drizzle-orm";
 import { and, eq, like, or } from "drizzle-orm";
 import { DATABASE, type DrizzleDB } from "../database/database.module";
@@ -122,6 +131,50 @@ export class OrganizationsService implements OnModuleInit {
       hasOpenProcess,
       processes: processesWithStatus,
     };
+  }
+
+  async createOrganization(dto: CreateOrganizationDto, leaderId: string) {
+    const existing = await this.db
+      .select({ id: organization.id })
+      .from(organization)
+      .where(eq(organization.id, dto.id));
+    if (existing.length > 0)
+      throw new ConflictException(`Organização com id '${dto.id}' já existe`);
+
+    const [org] = await this.db
+      .insert(organization)
+      .values({
+        ...dto,
+        socialLinks: dto.socialLinks ?? null,
+        logoUrl: dto.logoUrl ?? null,
+        leaderId,
+      })
+      .returning();
+    return org;
+  }
+
+  async createProcess(organizationId: string, dto: CreateSelectiveProcessDto, userId: string) {
+    const [org] = await this.db
+      .select()
+      .from(organization)
+      .where(eq(organization.id, organizationId));
+    if (!org) throw new NotFoundException(`Organização ${organizationId} não encontrada`);
+    if (org.leaderId !== userId)
+      throw new ForbiddenException("Apenas o líder da organização pode criar processos seletivos");
+
+    const [process] = await this.db
+      .insert(selectiveProcess)
+      .values({
+        id: crypto.randomUUID(),
+        organizationId,
+        title: dto.title,
+        description: dto.description,
+        vacancies: dto.vacancies,
+        startDate: new Date(dto.startDate),
+        endDate: new Date(dto.endDate),
+      })
+      .returning();
+    return process;
   }
 
   async seedOrganizations() {

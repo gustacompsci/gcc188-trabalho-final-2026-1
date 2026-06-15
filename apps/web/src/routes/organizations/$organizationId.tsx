@@ -1,7 +1,9 @@
 import type { SelectiveProcessStatus } from "@extraufla/shared";
 import { organizationTypeLabels } from "@extraufla/shared";
+import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 
+import { sessionQuery } from "@/lib/auth.queries";
 import { organizationDetailQuery } from "@/lib/organizations.queries";
 
 export const Route = createFileRoute("/organizations/$organizationId")({
@@ -33,7 +35,10 @@ function parseSocialLinks(raw: string | null): Record<string, string> | null {
 
 function OrganizationDetailPage() {
   const org = Route.useLoaderData();
+  const { data: session } = useQuery(sessionQuery());
   const socialLinks = parseSocialLinks(org.socialLinks);
+  const isLeader =
+    session && ["leader", "admin"].includes(session.user.role) && org.leaderId === session.user.id;
 
   return (
     <div className="container mx-auto max-w-3xl px-4 py-8">
@@ -94,7 +99,18 @@ function OrganizationDetailPage() {
 
       {org.processes.length > 0 && (
         <section>
-          <h2 className="mb-4 font-semibold text-lg">Processos Seletivos</h2>
+          <div className="mb-4 flex items-center justify-between">
+            <h2 className="font-semibold text-lg">Processos Seletivos</h2>
+            {isLeader && (
+              <Link
+                to="/organizations/$organizationId/new-process"
+                params={{ organizationId: org.id }}
+                className="rounded-md bg-primary px-3 py-1 text-primary-foreground text-xs hover:bg-primary/90"
+              >
+                + Novo processo
+              </Link>
+            )}
+          </div>
           <div className="flex flex-col gap-3">
             {org.processes.map((process) => (
               <div
@@ -122,7 +138,18 @@ function OrganizationDetailPage() {
       )}
 
       {org.processes.length === 0 && (
-        <p className="text-muted-foreground text-sm">Nenhum processo seletivo disponível.</p>
+        <div className="flex items-center justify-between">
+          <p className="text-muted-foreground text-sm">Nenhum processo seletivo disponível.</p>
+          {isLeader && (
+            <Link
+              to="/organizations/$organizationId/new-process"
+              params={{ organizationId: org.id }}
+              className="rounded-md bg-primary px-3 py-1 text-primary-foreground text-xs hover:bg-primary/90"
+            >
+              + Novo processo
+            </Link>
+          )}
+        </div>
       )}
     </div>
   );
