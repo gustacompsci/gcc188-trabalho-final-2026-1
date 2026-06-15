@@ -18,7 +18,8 @@ import { Route as AppIndexRouteImport } from './routes/app/index'
 import { Route as AppOrganizationsIndexRouteImport } from './routes/app/organizations/index'
 import { Route as AppOrganizationsNewRouteImport } from './routes/app/organizations/new'
 import { Route as AppOrganizationsOrganizationIdRouteImport } from './routes/app/organizations/$organizationId'
-import { Route as AppOrganizationsOrganizationIdNewProcessRouteImport } from './routes/app/organizations/$organizationId.new-process'
+import { Route as AppOrganizationsOrganizationIdIndexRouteImport } from './routes/app/organizations/$organizationId/index'
+import { Route as AppOrganizationsOrganizationIdNewProcessRouteImport } from './routes/app/organizations/$organizationId/new-process'
 
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
@@ -66,6 +67,12 @@ const AppOrganizationsOrganizationIdRoute =
     path: '/organizations/$organizationId',
     getParentRoute: () => AppRoute,
   } as any)
+const AppOrganizationsOrganizationIdIndexRoute =
+  AppOrganizationsOrganizationIdIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AppOrganizationsOrganizationIdRoute,
+  } as any)
 const AppOrganizationsOrganizationIdNewProcessRoute =
   AppOrganizationsOrganizationIdNewProcessRouteImport.update({
     id: '/new-process',
@@ -84,6 +91,7 @@ export interface FileRoutesByFullPath {
   '/app/organizations/new': typeof AppOrganizationsNewRoute
   '/app/organizations/': typeof AppOrganizationsIndexRoute
   '/app/organizations/$organizationId/new-process': typeof AppOrganizationsOrganizationIdNewProcessRoute
+  '/app/organizations/$organizationId/': typeof AppOrganizationsOrganizationIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -91,10 +99,10 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/reset-password': typeof ResetPasswordRoute
   '/app': typeof AppIndexRoute
-  '/app/organizations/$organizationId': typeof AppOrganizationsOrganizationIdRouteWithChildren
   '/app/organizations/new': typeof AppOrganizationsNewRoute
   '/app/organizations': typeof AppOrganizationsIndexRoute
   '/app/organizations/$organizationId/new-process': typeof AppOrganizationsOrganizationIdNewProcessRoute
+  '/app/organizations/$organizationId': typeof AppOrganizationsOrganizationIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -108,6 +116,7 @@ export interface FileRoutesById {
   '/app/organizations/new': typeof AppOrganizationsNewRoute
   '/app/organizations/': typeof AppOrganizationsIndexRoute
   '/app/organizations/$organizationId/new-process': typeof AppOrganizationsOrganizationIdNewProcessRoute
+  '/app/organizations/$organizationId/': typeof AppOrganizationsOrganizationIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -122,6 +131,7 @@ export interface FileRouteTypes {
     | '/app/organizations/new'
     | '/app/organizations/'
     | '/app/organizations/$organizationId/new-process'
+    | '/app/organizations/$organizationId/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -129,10 +139,10 @@ export interface FileRouteTypes {
     | '/login'
     | '/reset-password'
     | '/app'
-    | '/app/organizations/$organizationId'
     | '/app/organizations/new'
     | '/app/organizations'
     | '/app/organizations/$organizationId/new-process'
+    | '/app/organizations/$organizationId'
   id:
     | '__root__'
     | '/'
@@ -145,6 +155,7 @@ export interface FileRouteTypes {
     | '/app/organizations/new'
     | '/app/organizations/'
     | '/app/organizations/$organizationId/new-process'
+    | '/app/organizations/$organizationId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -220,6 +231,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppOrganizationsOrganizationIdRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/organizations/$organizationId/': {
+      id: '/app/organizations/$organizationId/'
+      path: '/'
+      fullPath: '/app/organizations/$organizationId/'
+      preLoaderRoute: typeof AppOrganizationsOrganizationIdIndexRouteImport
+      parentRoute: typeof AppOrganizationsOrganizationIdRoute
+    }
     '/app/organizations/$organizationId/new-process': {
       id: '/app/organizations/$organizationId/new-process'
       path: '/new-process'
@@ -232,12 +250,15 @@ declare module '@tanstack/react-router' {
 
 interface AppOrganizationsOrganizationIdRouteChildren {
   AppOrganizationsOrganizationIdNewProcessRoute: typeof AppOrganizationsOrganizationIdNewProcessRoute
+  AppOrganizationsOrganizationIdIndexRoute: typeof AppOrganizationsOrganizationIdIndexRoute
 }
 
 const AppOrganizationsOrganizationIdRouteChildren: AppOrganizationsOrganizationIdRouteChildren =
   {
     AppOrganizationsOrganizationIdNewProcessRoute:
       AppOrganizationsOrganizationIdNewProcessRoute,
+    AppOrganizationsOrganizationIdIndexRoute:
+      AppOrganizationsOrganizationIdIndexRoute,
   }
 
 const AppOrganizationsOrganizationIdRouteWithChildren =
