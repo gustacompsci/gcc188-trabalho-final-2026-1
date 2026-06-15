@@ -2,6 +2,7 @@ import { Inject, Injectable } from "@nestjs/common";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { eq } from "drizzle-orm";
+import { Resend } from "resend";
 import { env } from "../common/env";
 import { DATABASE, type DrizzleDB } from "../database/database.module";
 import * as schema from "../database/schema";
@@ -12,10 +13,22 @@ export class AuthService {
   private readonly _auth: ReturnType<typeof betterAuth<any>>;
 
   constructor(@Inject(DATABASE) private readonly db: DrizzleDB) {
+    const resend = new Resend(env.RESEND_API_KEY);
+
     this._auth = betterAuth({
       database: drizzleAdapter(this.db, { provider: "sqlite", schema }),
       trustedOrigins: [env.CORS_ORIGIN],
-      emailAndPassword: { enabled: true },
+      emailAndPassword: {
+        enabled: true,
+        sendResetPassword: async ({ user, url }) => {
+          await resend.emails.send({
+            from: "ExtraUFLA <no-reply@extraufla.com.br>",
+            to: user.email,
+            subject: "Recuperação de senha — ExtraUFLA",
+            html: `<p>Olá, ${user.name}!</p><p>Clique no link abaixo para redefinir sua senha:</p><p><a href="${url}">${url}</a></p><p>O link expira em 1 hora.</p>`,
+          });
+        },
+      },
       secret: env.BETTER_AUTH_SECRET,
       baseURL: env.BETTER_AUTH_URL,
       advanced: {
