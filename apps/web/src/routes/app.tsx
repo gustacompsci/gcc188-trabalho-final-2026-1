@@ -89,6 +89,12 @@ function RouteComponent() {
   const { data: courses, isPending: coursesLoading } = useQuery(coursesQuery());
   const { mutate: patchUser } = useMutation(patchUserMutation(queryClient));
 
+  const isLeaderOrAdmin = ["leader", "admin"].includes(session?.user.role ?? "");
+  const { data: myOrgs, isPending: myOrgsLoading } = useQuery({
+    ...organizationsQuery({ leaderId: session?.user.id }),
+    enabled: isLeaderOrAdmin && !!session?.user.id,
+  });
+
   const [selectedCourseId, setSelectedCourseId] = useState<string>("");
   const openOrgs = organizations?.filter((o) => o.hasOpenProcess).slice(0, 3) ?? [];
   const currentCourse = courses?.find((c) => c.id === session?.user.courseId);
@@ -160,10 +166,10 @@ function RouteComponent() {
         )}
       </section>
 
-      {["leader", "admin"].includes(session?.user.role ?? "") && (
+      {isLeaderOrAdmin && (
         <section className="mb-6 rounded-2xl border border-primary/20 bg-primary/5 p-4">
           <div className="mb-3 flex items-center justify-between">
-            <h2 className="font-medium">Área do Líder</h2>
+            <h2 className="font-medium">Minhas Organizações</h2>
             <Link
               to="/organizations/new"
               className="rounded-md bg-primary px-3 py-1 text-primary-foreground text-xs hover:bg-primary/90"
@@ -171,9 +177,41 @@ function RouteComponent() {
               + Nova organização
             </Link>
           </div>
-          <p className="text-muted-foreground text-sm">
-            Acesse uma organização que você lidera para abrir um processo seletivo.
-          </p>
+          {myOrgsLoading && (
+            <div className="flex flex-col gap-2">
+              <Skeleton className="h-12 rounded-xl" />
+              <Skeleton className="h-12 rounded-xl" />
+            </div>
+          )}
+          {!myOrgsLoading && myOrgs && myOrgs.length === 0 && (
+            <p className="text-muted-foreground text-sm">
+              Você ainda não criou nenhuma organização.
+            </p>
+          )}
+          {!myOrgsLoading && myOrgs && myOrgs.length > 0 && (
+            <div className="flex flex-col gap-2">
+              {myOrgs.map((org) => (
+                <Link
+                  key={org.id}
+                  to="/organizations/$organizationId"
+                  params={{ organizationId: org.id }}
+                  className="flex items-center justify-between rounded-xl border bg-background/60 px-3 py-2 transition-colors hover:bg-background"
+                >
+                  <div className="flex flex-col gap-0.5">
+                    <span className="font-medium text-sm">{org.name}</span>
+                    <span className="text-muted-foreground text-xs">
+                      {organizationTypeLabels[org.type]}
+                    </span>
+                  </div>
+                  {org.hasOpenProcess && (
+                    <span className="rounded-full bg-green-500/15 px-2 py-0.5 text-green-700 text-xs dark:text-green-400">
+                      Inscrições Abertas
+                    </span>
+                  )}
+                </Link>
+              ))}
+            </div>
+          )}
         </section>
       )}
 
@@ -191,12 +229,24 @@ function RouteComponent() {
         </section>
       )}
 
+      {!orgsLoading && openOrgs.length === 0 && (
+        <section className="rounded-2xl border p-4 ring-1 ring-foreground/5 dark:ring-foreground/10">
+          <h2 className="mb-1 font-medium">Processos Seletivos</h2>
+          <p className="text-muted-foreground text-sm">
+            Nenhum processo seletivo aberto no momento.{" "}
+            <Link to="/organizations" className="text-primary hover:underline">
+              Ver organizações
+            </Link>
+          </p>
+        </section>
+      )}
+
       {!orgsLoading && openOrgs.length > 0 && (
         <section>
           <div className="mb-3 flex items-center justify-between">
             <h2 className="font-medium">Processos Seletivos Abertos</h2>
             <Link to="/organizations" className="text-primary text-sm hover:underline">
-              Ver todas
+              Ver catálogo completo
             </Link>
           </div>
           <div className="flex flex-col gap-3">
