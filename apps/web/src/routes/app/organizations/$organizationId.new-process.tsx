@@ -11,18 +11,16 @@ import { z } from "zod";
 import { sessionQuery } from "@/lib/auth.queries";
 import { createProcessMutation } from "@/lib/organizations.queries";
 
-export const Route = createFileRoute("/organizations/$organizationId/new-process")({
+export const Route = createFileRoute("/app/organizations/$organizationId/new-process")({
   beforeLoad: async ({ context: { queryClient } }) => {
     const session = await queryClient.ensureQueryData(sessionQuery());
-    if (!session) redirect({ to: "/login", throw: true });
-    else if (!["leader", "admin"].includes(session.user.role)) {
+    if (!["leader", "admin"].includes(session?.user.role ?? "")) {
       redirect({ to: "/app", throw: true });
     }
   },
   component: NewProcessPage,
 });
 
-// Form validator with string dates (transformed to timestamps in onSubmit)
 const processFormSchema = z
   .object({
     title: z.string().min(3, "Título deve ter ao menos 3 caracteres"),
@@ -62,7 +60,10 @@ function NewProcessPage() {
           endDate: new Date(value.endDate).getTime(),
         });
         toast.success("Processo seletivo criado!");
-        navigate({ to: "/organizations/$organizationId", params: { organizationId } });
+        navigate({
+          to: "/app/organizations/$organizationId",
+          params: { organizationId },
+        });
       } catch (error) {
         const message = error instanceof Error ? error.message : "Erro ao criar processo.";
         toast.error(message);

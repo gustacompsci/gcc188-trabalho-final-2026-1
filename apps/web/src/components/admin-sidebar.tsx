@@ -13,12 +13,12 @@ import { Link } from "@tanstack/react-router";
 
 const navItems = [
   { title: "Painel", to: "/app" as const },
-  { title: "Organizações", to: "/organizations" as const },
+  { title: "Organizações", to: "/app/organizations" as const },
 ];
 
 export function AdminSidebar() {
   return (
-    <Sidebar collapsible="icon">
+    <Sidebar collapsible="none">
       <SidebarHeader className="px-3 py-3">
         <Link to="/" className="font-bold font-heading text-base text-foreground">
           Extra<span className="text-primary">UFLA</span>

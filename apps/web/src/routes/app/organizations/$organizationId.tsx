@@ -18,7 +18,7 @@ function OrganizationError({ error }: { error: unknown }) {
   );
 }
 
-export const Route = createFileRoute("/organizations/$organizationId")({
+export const Route = createFileRoute("/app/organizations/$organizationId")({
   loader: ({ context: { queryClient }, params }) =>
     queryClient.ensureQueryData(organizationDetailQuery(params.organizationId)),
   errorComponent: ({ error }) => <OrganizationError error={error} />,
@@ -118,7 +118,7 @@ function OrganizationDetailPage() {
             <h2 className="font-semibold text-lg">Processos Seletivos</h2>
             {isLeader && (
               <Link
-                to="/organizations/$organizationId/new-process"
+                to="/app/organizations/$organizationId/new-process"
                 params={{ organizationId: org.id }}
                 className="rounded-md bg-primary px-3 py-1 text-primary-foreground text-xs hover:bg-primary/90"
               >
@@ -157,7 +157,7 @@ function OrganizationDetailPage() {
           <p className="text-muted-foreground text-sm">Nenhum processo seletivo disponível.</p>
           {isLeader && (
             <Link
-              to="/organizations/$organizationId/new-process"
+              to="/app/organizations/$organizationId/new-process"
               params={{ organizationId: org.id }}
               className="rounded-md bg-primary px-3 py-1 text-primary-foreground text-xs hover:bg-primary/90"
             >

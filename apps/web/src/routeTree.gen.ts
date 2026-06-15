@@ -14,10 +14,11 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as OrganizationsIndexRouteImport } from './routes/organizations/index'
-import { Route as OrganizationsNewRouteImport } from './routes/organizations/new'
-import { Route as OrganizationsOrganizationIdRouteImport } from './routes/organizations/$organizationId'
-import { Route as OrganizationsOrganizationIdNewProcessRouteImport } from './routes/organizations/$organizationId.new-process'
+import { Route as AppIndexRouteImport } from './routes/app/index'
+import { Route as AppOrganizationsIndexRouteImport } from './routes/app/organizations/index'
+import { Route as AppOrganizationsNewRouteImport } from './routes/app/organizations/new'
+import { Route as AppOrganizationsOrganizationIdRouteImport } from './routes/app/organizations/$organizationId'
+import { Route as AppOrganizationsOrganizationIdNewProcessRouteImport } from './routes/app/organizations/$organizationId.new-process'
 
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
@@ -44,62 +45,69 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const OrganizationsIndexRoute = OrganizationsIndexRouteImport.update({
+const AppIndexRoute = AppIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppOrganizationsIndexRoute = AppOrganizationsIndexRouteImport.update({
   id: '/organizations/',
   path: '/organizations/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AppRoute,
 } as any)
-const OrganizationsNewRoute = OrganizationsNewRouteImport.update({
+const AppOrganizationsNewRoute = AppOrganizationsNewRouteImport.update({
   id: '/organizations/new',
   path: '/organizations/new',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AppRoute,
 } as any)
-const OrganizationsOrganizationIdRoute =
-  OrganizationsOrganizationIdRouteImport.update({
+const AppOrganizationsOrganizationIdRoute =
+  AppOrganizationsOrganizationIdRouteImport.update({
     id: '/organizations/$organizationId',
     path: '/organizations/$organizationId',
-    getParentRoute: () => rootRouteImport,
+    getParentRoute: () => AppRoute,
   } as any)
-const OrganizationsOrganizationIdNewProcessRoute =
-  OrganizationsOrganizationIdNewProcessRouteImport.update({
+const AppOrganizationsOrganizationIdNewProcessRoute =
+  AppOrganizationsOrganizationIdNewProcessRouteImport.update({
     id: '/new-process',
     path: '/new-process',
-    getParentRoute: () => OrganizationsOrganizationIdRoute,
+    getParentRoute: () => AppOrganizationsOrganizationIdRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/app': typeof AppRoute
+  '/app': typeof AppRouteWithChildren
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/reset-password': typeof ResetPasswordRoute
-  '/organizations/$organizationId': typeof OrganizationsOrganizationIdRouteWithChildren
-  '/organizations/new': typeof OrganizationsNewRoute
-  '/organizations/': typeof OrganizationsIndexRoute
-  '/organizations/$organizationId/new-process': typeof OrganizationsOrganizationIdNewProcessRoute
+  '/app/': typeof AppIndexRoute
+  '/app/organizations/$organizationId': typeof AppOrganizationsOrganizationIdRouteWithChildren
+  '/app/organizations/new': typeof AppOrganizationsNewRoute
+  '/app/organizations/': typeof AppOrganizationsIndexRoute
+  '/app/organizations/$organizationId/new-process': typeof AppOrganizationsOrganizationIdNewProcessRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/app': typeof AppRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/reset-password': typeof ResetPasswordRoute
-  '/organizations/$organizationId': typeof OrganizationsOrganizationIdRouteWithChildren
-  '/organizations/new': typeof OrganizationsNewRoute
-  '/organizations': typeof OrganizationsIndexRoute
-  '/organizations/$organizationId/new-process': typeof OrganizationsOrganizationIdNewProcessRoute
+  '/app': typeof AppIndexRoute
+  '/app/organizations/$organizationId': typeof AppOrganizationsOrganizationIdRouteWithChildren
+  '/app/organizations/new': typeof AppOrganizationsNewRoute
+  '/app/organizations': typeof AppOrganizationsIndexRoute
+  '/app/organizations/$organizationId/new-process': typeof AppOrganizationsOrganizationIdNewProcessRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/app': typeof AppRoute
+  '/app': typeof AppRouteWithChildren
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/reset-password': typeof ResetPasswordRoute
-  '/organizations/$organizationId': typeof OrganizationsOrganizationIdRouteWithChildren
-  '/organizations/new': typeof OrganizationsNewRoute
-  '/organizations/': typeof OrganizationsIndexRoute
-  '/organizations/$organizationId/new-process': typeof OrganizationsOrganizationIdNewProcessRoute
+  '/app/': typeof AppIndexRoute
+  '/app/organizations/$organizationId': typeof AppOrganizationsOrganizationIdRouteWithChildren
+  '/app/organizations/new': typeof AppOrganizationsNewRoute
+  '/app/organizations/': typeof AppOrganizationsIndexRoute
+  '/app/organizations/$organizationId/new-process': typeof AppOrganizationsOrganizationIdNewProcessRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -109,21 +117,22 @@ export interface FileRouteTypes {
     | '/forgot-password'
     | '/login'
     | '/reset-password'
-    | '/organizations/$organizationId'
-    | '/organizations/new'
-    | '/organizations/'
-    | '/organizations/$organizationId/new-process'
+    | '/app/'
+    | '/app/organizations/$organizationId'
+    | '/app/organizations/new'
+    | '/app/organizations/'
+    | '/app/organizations/$organizationId/new-process'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/app'
     | '/forgot-password'
     | '/login'
     | '/reset-password'
-    | '/organizations/$organizationId'
-    | '/organizations/new'
-    | '/organizations'
-    | '/organizations/$organizationId/new-process'
+    | '/app'
+    | '/app/organizations/$organizationId'
+    | '/app/organizations/new'
+    | '/app/organizations'
+    | '/app/organizations/$organizationId/new-process'
   id:
     | '__root__'
     | '/'
@@ -131,21 +140,19 @@ export interface FileRouteTypes {
     | '/forgot-password'
     | '/login'
     | '/reset-password'
-    | '/organizations/$organizationId'
-    | '/organizations/new'
-    | '/organizations/'
-    | '/organizations/$organizationId/new-process'
+    | '/app/'
+    | '/app/organizations/$organizationId'
+    | '/app/organizations/new'
+    | '/app/organizations/'
+    | '/app/organizations/$organizationId/new-process'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AppRoute: typeof AppRoute
+  AppRoute: typeof AppRouteWithChildren
   ForgotPasswordRoute: typeof ForgotPasswordRoute
   LoginRoute: typeof LoginRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
-  OrganizationsOrganizationIdRoute: typeof OrganizationsOrganizationIdRouteWithChildren
-  OrganizationsNewRoute: typeof OrganizationsNewRoute
-  OrganizationsIndexRoute: typeof OrganizationsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -185,62 +192,82 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/organizations/': {
-      id: '/organizations/'
+    '/app/': {
+      id: '/app/'
+      path: '/'
+      fullPath: '/app/'
+      preLoaderRoute: typeof AppIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/organizations/': {
+      id: '/app/organizations/'
       path: '/organizations'
-      fullPath: '/organizations/'
-      preLoaderRoute: typeof OrganizationsIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      fullPath: '/app/organizations/'
+      preLoaderRoute: typeof AppOrganizationsIndexRouteImport
+      parentRoute: typeof AppRoute
     }
-    '/organizations/new': {
-      id: '/organizations/new'
+    '/app/organizations/new': {
+      id: '/app/organizations/new'
       path: '/organizations/new'
-      fullPath: '/organizations/new'
-      preLoaderRoute: typeof OrganizationsNewRouteImport
-      parentRoute: typeof rootRouteImport
+      fullPath: '/app/organizations/new'
+      preLoaderRoute: typeof AppOrganizationsNewRouteImport
+      parentRoute: typeof AppRoute
     }
-    '/organizations/$organizationId': {
-      id: '/organizations/$organizationId'
+    '/app/organizations/$organizationId': {
+      id: '/app/organizations/$organizationId'
       path: '/organizations/$organizationId'
-      fullPath: '/organizations/$organizationId'
-      preLoaderRoute: typeof OrganizationsOrganizationIdRouteImport
-      parentRoute: typeof rootRouteImport
+      fullPath: '/app/organizations/$organizationId'
+      preLoaderRoute: typeof AppOrganizationsOrganizationIdRouteImport
+      parentRoute: typeof AppRoute
     }
-    '/organizations/$organizationId/new-process': {
-      id: '/organizations/$organizationId/new-process'
+    '/app/organizations/$organizationId/new-process': {
+      id: '/app/organizations/$organizationId/new-process'
       path: '/new-process'
-      fullPath: '/organizations/$organizationId/new-process'
-      preLoaderRoute: typeof OrganizationsOrganizationIdNewProcessRouteImport
-      parentRoute: typeof OrganizationsOrganizationIdRoute
+      fullPath: '/app/organizations/$organizationId/new-process'
+      preLoaderRoute: typeof AppOrganizationsOrganizationIdNewProcessRouteImport
+      parentRoute: typeof AppOrganizationsOrganizationIdRoute
     }
   }
 }
 
-interface OrganizationsOrganizationIdRouteChildren {
-  OrganizationsOrganizationIdNewProcessRoute: typeof OrganizationsOrganizationIdNewProcessRoute
+interface AppOrganizationsOrganizationIdRouteChildren {
+  AppOrganizationsOrganizationIdNewProcessRoute: typeof AppOrganizationsOrganizationIdNewProcessRoute
 }
 
-const OrganizationsOrganizationIdRouteChildren: OrganizationsOrganizationIdRouteChildren =
+const AppOrganizationsOrganizationIdRouteChildren: AppOrganizationsOrganizationIdRouteChildren =
   {
-    OrganizationsOrganizationIdNewProcessRoute:
-      OrganizationsOrganizationIdNewProcessRoute,
+    AppOrganizationsOrganizationIdNewProcessRoute:
+      AppOrganizationsOrganizationIdNewProcessRoute,
   }
 
-const OrganizationsOrganizationIdRouteWithChildren =
-  OrganizationsOrganizationIdRoute._addFileChildren(
-    OrganizationsOrganizationIdRouteChildren,
+const AppOrganizationsOrganizationIdRouteWithChildren =
+  AppOrganizationsOrganizationIdRoute._addFileChildren(
+    AppOrganizationsOrganizationIdRouteChildren,
   )
+
+interface AppRouteChildren {
+  AppIndexRoute: typeof AppIndexRoute
+  AppOrganizationsOrganizationIdRoute: typeof AppOrganizationsOrganizationIdRouteWithChildren
+  AppOrganizationsNewRoute: typeof AppOrganizationsNewRoute
+  AppOrganizationsIndexRoute: typeof AppOrganizationsIndexRoute
+}
+
+const AppRouteChildren: AppRouteChildren = {
+  AppIndexRoute: AppIndexRoute,
+  AppOrganizationsOrganizationIdRoute:
+    AppOrganizationsOrganizationIdRouteWithChildren,
+  AppOrganizationsNewRoute: AppOrganizationsNewRoute,
+  AppOrganizationsIndexRoute: AppOrganizationsIndexRoute,
+}
+
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AppRoute: AppRoute,
+  AppRoute: AppRouteWithChildren,
   ForgotPasswordRoute: ForgotPasswordRoute,
   LoginRoute: LoginRoute,
   ResetPasswordRoute: ResetPasswordRoute,
-  OrganizationsOrganizationIdRoute:
-    OrganizationsOrganizationIdRouteWithChildren,
-  OrganizationsNewRoute: OrganizationsNewRoute,
-  OrganizationsIndexRoute: OrganizationsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

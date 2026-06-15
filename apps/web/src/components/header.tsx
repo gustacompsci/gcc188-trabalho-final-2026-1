@@ -26,7 +26,7 @@ export default function Header() {
                 Painel
               </Link>
               <Link
-                to="/organizations"
+                to="/app/organizations"
                 className="text-muted-foreground text-sm transition-colors hover:text-foreground [&.active]:font-medium [&.active]:text-foreground"
               >
                 Organizações

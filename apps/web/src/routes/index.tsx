@@ -42,7 +42,7 @@ function HomeComponent() {
           você encontrar, participar e crescer.
         </p>
         <div className="mt-10 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-          <Link to="/organizations">
+          <Link to="/app/organizations">
             <Button size="lg">Explorar atividades</Button>
           </Link>
           <Link to="/login">

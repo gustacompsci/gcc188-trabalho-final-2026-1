@@ -23,11 +23,10 @@ import { z } from "zod";
 import { sessionQuery } from "@/lib/auth.queries";
 import { createOrganizationMutation } from "@/lib/organizations.queries";
 
-export const Route = createFileRoute("/organizations/new")({
+export const Route = createFileRoute("/app/organizations/new")({
   beforeLoad: async ({ context: { queryClient } }) => {
     const session = await queryClient.ensureQueryData(sessionQuery());
-    if (!session) redirect({ to: "/login", throw: true });
-    else if (!["leader", "admin"].includes(session.user.role)) {
+    if (!["leader", "admin"].includes(session?.user.role ?? "")) {
       redirect({ to: "/app", throw: true });
     }
   },
@@ -62,7 +61,10 @@ function NewOrganizationPage() {
           logoUrl: value.logoUrl || undefined,
         });
         toast.success("Organização criada com sucesso!");
-        navigate({ to: "/organizations/$organizationId", params: { organizationId: org.id } });
+        navigate({
+          to: "/app/organizations/$organizationId",
+          params: { organizationId: org.id },
+        });
       } catch (error) {
         const message = error instanceof Error ? error.message : "Erro ao criar organização.";
         toast.error(message);
