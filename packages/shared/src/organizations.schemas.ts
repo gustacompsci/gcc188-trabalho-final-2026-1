@@ -59,6 +59,7 @@ export type OrganizationDetail = z.infer<typeof organizationDetailSchema>;
 export const listOrganizationsQuerySchema = z.object({
   type: organizationTypeSchema.optional(),
   search: z.string().optional(),
+  leaderId: z.string().optional(),
   limit: z.coerce.number().int().positive().max(100).default(20),
   offset: z.coerce.number().int().min(0).default(0),
 });

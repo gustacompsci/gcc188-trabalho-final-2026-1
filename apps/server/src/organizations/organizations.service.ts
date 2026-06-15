@@ -52,6 +52,7 @@ export class OrganizationsService implements OnModuleInit {
   async listOrganizations({
     type,
     search,
+    leaderId,
     limit,
     offset,
   }: ListOrganizationsQuery): Promise<OrganizationListItem[]> {
@@ -59,6 +60,10 @@ export class OrganizationsService implements OnModuleInit {
 
     if (type) {
       conditions.push(eq(organization.type, type));
+    }
+
+    if (leaderId) {
+      conditions.push(eq(organization.leaderId, leaderId));
     }
 
     if (search) {

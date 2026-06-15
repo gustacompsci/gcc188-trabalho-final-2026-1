@@ -16,6 +16,7 @@ export const organizationsQuery = (params?: Partial<ListOrganizationsQuery>) => 
     const search = new URLSearchParams();
     if (params?.type) search.set("type", params.type);
     if (params?.search) search.set("search", params.search);
+    if (params?.leaderId) search.set("leaderId", params.leaderId);
     if (params?.limit) search.set("limit", String(params.limit));
     if (params?.offset) search.set("offset", String(params.offset));
     return http.get<OrganizationListItem[]>(`/organizations?${search}`);
