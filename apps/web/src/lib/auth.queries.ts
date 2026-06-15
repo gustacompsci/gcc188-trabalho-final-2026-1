@@ -1,4 +1,4 @@
-import type { SignInDto, SignUpDto } from "@extraufla/shared";
+import type { ForgetPasswordDto, ResetPasswordDto, SignInDto, SignUpDto } from "@extraufla/shared";
 import type { QueryClient } from "@tanstack/react-query";
 import { http } from "./http";
 
@@ -37,6 +37,16 @@ export const signUpMutation = (queryClient: QueryClient) => ({
   mutationFn: (input: SignUpDto) =>
     http.post("/auth/sign-up/email", { body: JSON.stringify(input) }),
   onSuccess: () => queryClient.invalidateQueries({ queryKey: ["auth", "session"] }),
+});
+
+export const forgetPasswordMutation = () => ({
+  mutationFn: (input: ForgetPasswordDto) =>
+    http.post("/auth/forget-password", { body: JSON.stringify(input) }),
+});
+
+export const resetPasswordMutation = () => ({
+  mutationFn: (input: ResetPasswordDto) =>
+    http.post("/auth/reset-password", { body: JSON.stringify(input) }),
 });
 
 export const signOutMutation = (queryClient: QueryClient) => ({
