@@ -20,7 +20,12 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "paths": {
+      "@extraufla/shared": ["../../packages/shared/src/index.ts"],
+      "@extraufla/shared/*": ["../../packages/shared/src/*"]
+    }
   },
+  "include": ["src"],
   "exclude": ["scripts"]
 }

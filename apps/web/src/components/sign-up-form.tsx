@@ -1,15 +1,25 @@
+import { signUpSchema } from "@extraufla/shared";
 import { Button } from "@extraufla/ui/components/button";
 import { Card, CardContent } from "@extraufla/ui/components/card";
+import {
+  Combobox,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxList,
+  ComboboxTrigger,
+} from "@extraufla/ui/components/combobox";
 import { Input } from "@extraufla/ui/components/input";
 import { Label } from "@extraufla/ui/components/label";
 import { cn } from "@extraufla/ui/lib/utils";
 import { useForm } from "@tanstack/react-form";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
-import z from "zod";
 
 import { signUpMutation } from "@/lib/auth.queries";
+import { coursesQuery } from "@/lib/courses.queries";
 import { ApiError } from "@/lib/http";
 
 export default function SignUpForm({
@@ -22,12 +32,13 @@ export default function SignUpForm({
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { mutateAsync: signUp } = useMutation(signUpMutation(queryClient));
+  const { data: courses = [] } = useQuery(coursesQuery());
 
   const form = useForm({
-    defaultValues: { name: "", email: "", password: "", confirmPassword: "" },
+    defaultValues: { name: "", email: "", password: "", confirmPassword: "", courseId: "" },
     onSubmit: async ({ value }) => {
       try {
-        await signUp({ email: value.email, password: value.password, name: value.name });
+        await signUp(value);
         navigate({ to: "/login" });
         toast.success("Cadastro realizado! Faça login para continuar.");
       } catch (error) {
@@ -39,24 +50,7 @@ export default function SignUpForm({
         }
       }
     },
-    validators: {
-      onSubmit: z
-        .object({
-          name: z.string().min(2, "O nome deve ter pelo menos 2 caracteres."),
-          email: z
-            .email("E-mail inválido")
-            .refine(
-              (email) => email.endsWith("@ufla.br") || email.endsWith("@estudante.ufla.br"),
-              "Utilize seu e-mail institucional (@ufla.br ou @estudante.ufla.br).",
-            ),
-          password: z.string().min(8, "A senha deve ter no mínimo 8 caracteres."),
-          confirmPassword: z.string().min(1, "Confirme sua senha."),
-        })
-        .refine((data) => data.password === data.confirmPassword, {
-          message: "As senhas não conferem.",
-          path: ["confirmPassword"],
-        }),
-    },
+    validators: { onSubmit: signUpSchema },
   });
 
   return (
@@ -130,6 +124,53 @@ export default function SignUpForm({
                     ))}
                   </div>
                 )}
+              </form.Field>
+
+              <form.Field name="courseId">
+                {(field) => {
+                  const selected = courses.find((c) => c.id === field.state.value) ?? null;
+                  return (
+                    <div className="flex flex-col gap-2">
+                      <Label>Curso</Label>
+                      <Combobox
+                        items={courses}
+                        value={selected}
+                        onValueChange={(course) =>
+                          field.handleChange((course as typeof selected)?.id ?? "")
+                        }
+                      >
+                        <ComboboxTrigger
+                          render={
+                            <Button
+                              variant="outline"
+                              className="w-full justify-between font-normal"
+                            />
+                          }
+                        >
+                          {selected?.name ?? (
+                            <span className="text-muted-foreground">Selecione seu curso</span>
+                          )}
+                        </ComboboxTrigger>
+                        <ComboboxContent>
+                          <ComboboxInput showTrigger={false} placeholder="Buscar curso..." />
+                          <ComboboxEmpty>Nenhum curso encontrado.</ComboboxEmpty>
+                          <ComboboxList>
+                            {(item) => (
+                              <ComboboxItem key={item.id} value={item}>
+                                {item.name}
+                              </ComboboxItem>
+                            )}
+                          </ComboboxList>
+                        </ComboboxContent>
+                      </Combobox>
+                      {field.state.meta.errors.map((error) => (
+                        <p key={error?.message} className="text-destructive text-xs">
+                          {error?.message}
+                        </p>
+                      ))}
+                    </div>
+                  );
+                }}
               </form.Field>
 
               <form.Field name="password">

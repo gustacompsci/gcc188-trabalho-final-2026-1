@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "../../",
+    "moduleResolution": "bundler",
+    "declaration": false,
+    "noEmit": true
+  },
+  "include": ["src", "../../packages/shared/src"]
+}

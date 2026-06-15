@@ -11,7 +11,9 @@
     "rootDirs": ["."],
     "paths": {
       "@/*": ["./src/*"],
-      "@extraufla/ui/*": ["../../packages/ui/src/*"]
+      "@extraufla/ui/*": ["../../packages/ui/src/*"],
+      "@extraufla/shared": ["../../packages/shared/src/index.ts"],
+      "@extraufla/shared/*": ["../../packages/shared/src/*"]
     }
   }
 }

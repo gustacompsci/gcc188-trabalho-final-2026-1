@@ -1,3 +1,4 @@
+import { signInSchema } from "@extraufla/shared";
 import { Button } from "@extraufla/ui/components/button";
 import { Card, CardContent } from "@extraufla/ui/components/card";
 import { Input } from "@extraufla/ui/components/input";
@@ -7,7 +8,6 @@ import { useForm } from "@tanstack/react-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
-import z from "zod";
 
 import { signInMutation } from "@/lib/auth.queries";
 
@@ -34,12 +34,7 @@ export default function SignInForm({
         toast.error(message);
       }
     },
-    validators: {
-      onSubmit: z.object({
-        email: z.email("E-mail inválido"),
-        password: z.string().min(8, "A senha deve ter no mínimo 8 caracteres."),
-      }),
-    },
+    validators: { onSubmit: signInSchema },
   });
 
   return (
