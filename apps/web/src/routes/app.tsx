@@ -8,11 +8,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@extraufla/ui/components/select";
+import { SidebarInset, SidebarProvider, SidebarTrigger } from "@extraufla/ui/components/sidebar";
 import { Skeleton } from "@extraufla/ui/components/skeleton";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, Link, redirect, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
+import { AdminSidebar } from "@/components/admin-sidebar";
 import { sessionQuery, signOutMutation } from "@/lib/auth.queries";
 import { coursesQuery, organizationsQuery, patchUserMutation } from "@/lib/organizations.queries";
 
@@ -100,7 +102,7 @@ function RouteComponent() {
   const currentCourse = courses?.find((c) => c.id === session?.user.courseId);
   const selectedCourseName = courses?.find((c) => c.id === selectedCourseId)?.name;
 
-  return (
+  const content = (
     <div className="container mx-auto max-w-3xl px-4 py-8">
       <div className="mb-6 flex items-center justify-between">
         <h1 className="font-bold text-2xl">Painel</h1>
@@ -273,4 +275,20 @@ function RouteComponent() {
       )}
     </div>
   );
+
+  if (session?.user.role === "admin") {
+    return (
+      <SidebarProvider>
+        <AdminSidebar />
+        <SidebarInset className="overflow-auto">
+          <div className="flex h-12 shrink-0 items-center gap-2 border-b px-4">
+            <SidebarTrigger />
+          </div>
+          {content}
+        </SidebarInset>
+      </SidebarProvider>
+    );
+  }
+
+  return content;
 }
