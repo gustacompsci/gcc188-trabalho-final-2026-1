@@ -16,8 +16,10 @@ import {
 } from "@nestjs/common";
 import type { SQL } from "drizzle-orm";
 import { and, eq, like, or } from "drizzle-orm";
+import { user } from "../auth/auth.sql";
 import { DATABASE, type DrizzleDB } from "../database/database.module";
-import { organization, selectiveProcess, user } from "../database/schema";
+import { organization } from "./organizations.sql";
+import { selectiveProcess } from "./selective_process.sql";
 
 function deriveStatus(startDate: Date, endDate: Date): SelectiveProcessStatus {
   const now = Date.now();
@@ -179,16 +181,19 @@ export class OrganizationsService implements OnModuleInit {
 
   async seedOrganizations() {
     try {
-      // Ensure a system user exists to use as leaderId
       await this.db
         .insert(user)
         .values({
           id: "system",
-          name: "Sistema",
+          name: "Sistema ExtraUFLA",
           email: "system@extraufla.internal",
           emailVerified: true,
+          role: "admin",
         })
-        .onConflictDoNothing();
+        .onConflictDoUpdate({
+          target: user.id,
+          set: { role: "admin" },
+        });
 
       const orgs = [
         {

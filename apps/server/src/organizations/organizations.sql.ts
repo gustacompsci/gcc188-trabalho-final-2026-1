@@ -1,7 +1,7 @@
 import { relations, sql } from "drizzle-orm";
 import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
-import { user } from "./auth";
-import { selectiveProcess } from "./selective_process";
+import { user } from "../auth/auth.sql";
+import { selectiveProcess } from "./selective_process.sql";
 
 export const organization = sqliteTable("organization", {
   id: text("id").primaryKey(),
