@@ -133,7 +133,7 @@ function RouteComponent() {
             <Select<string>
               value={selectedCourseId}
               onValueChange={(value) => {
-                if (value) {
+                if (value && value !== selectedCourseId) {
                   setSelectedCourseId(value);
                   patchUser(
                     { courseId: value },
