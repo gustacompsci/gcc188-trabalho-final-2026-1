@@ -17,6 +17,7 @@ import { useForm } from "@tanstack/react-form";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
+import { z } from "zod";
 
 import { signUpMutation } from "@/lib/auth.queries";
 import { coursesQuery } from "@/lib/courses.queries";
@@ -84,7 +85,10 @@ export default function SignUpForm({
                 </p>
               </div>
 
-              <form.Field name="name">
+              <form.Field
+                name="name"
+                validators={{ onBlur: z.string().min(2, "Nome deve ter ao menos 2 caracteres") }}
+              >
                 {(field) => (
                   <div className="flex flex-col gap-2">
                     <Label htmlFor={field.name}>Nome completo</Label>
@@ -104,7 +108,10 @@ export default function SignUpForm({
                 )}
               </form.Field>
 
-              <form.Field name="email">
+              <form.Field
+                name="email"
+                validators={{ onBlur: z.string().email("E-mail institucional inválido") }}
+              >
                 {(field) => (
                   <div className="flex flex-col gap-2">
                     <Label htmlFor={field.name}>E-mail institucional</Label>
@@ -173,7 +180,10 @@ export default function SignUpForm({
                 }}
               </form.Field>
 
-              <form.Field name="password">
+              <form.Field
+                name="password"
+                validators={{ onBlur: z.string().min(8, "Senha deve ter ao menos 8 caracteres") }}
+              >
                 {(field) => (
                   <div className="flex flex-col gap-2">
                     <Label htmlFor={field.name}>Senha</Label>
