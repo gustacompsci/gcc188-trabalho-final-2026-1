@@ -1,5 +1,7 @@
+import { type SignInDto, type SignUpDto, signInSchema, signUpSchema } from "@extraufla/shared";
 import { Body, Controller, Get, HttpException, Post, Req, Res } from "@nestjs/common";
 import type { Request, Response } from "express";
+import { ZodValidationPipe } from "../common/zod-validation.pipe";
 import { AuthService } from "./auth.service";
 
 @Controller("api/auth")
@@ -8,7 +10,7 @@ export class AuthController {
 
   @Post("sign-in/email")
   async signInEmail(
-    @Body() body: { email: string; password: string },
+    @Body(new ZodValidationPipe(signInSchema)) body: SignInDto,
     @Res({ passthrough: true }) res: Response,
   ) {
     const response = await this.authService.auth.api.signInEmail({
@@ -25,11 +27,12 @@ export class AuthController {
 
   @Post("sign-up/email")
   async signUpEmail(
-    @Body() body: { email: string; password: string; name: string },
+    @Body(new ZodValidationPipe(signUpSchema)) body: SignUpDto,
     @Res({ passthrough: true }) res: Response,
   ) {
+    const { courseId, confirmPassword: _confirmPassword, ...betterAuthBody } = body;
     const response = await this.authService.auth.api.signUpEmail({
-      body,
+      body: betterAuthBody,
       asResponse: true,
     });
     this.forwardSetCookie(response, res);
@@ -37,7 +40,9 @@ export class AuthController {
       const data = (await response.json()) as { message?: string };
       throw new HttpException(data.message ?? "Erro ao criar conta", response.status);
     }
-    return response.json();
+    const result = (await response.json()) as { user: { id: string } };
+    await this.authService.updateUserCourse(result.user.id, courseId);
+    return result;
   }
 
   @Post("sign-out")

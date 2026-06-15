@@ -1,3 +1,4 @@
+import type { SignInDto, SignUpDto } from "@extraufla/shared";
 import type { QueryClient } from "@tanstack/react-query";
 import { http } from "./http";
 
@@ -18,9 +19,6 @@ export type AuthSession = {
   };
 } | null;
 
-export type SignInInput = { email: string; password: string };
-export type SignUpInput = { email: string; password: string; name: string };
-
 export const sessionQuery = () =>
   ({
     queryKey: ["auth", "session"] as const,
@@ -29,13 +27,13 @@ export const sessionQuery = () =>
   }) as const;
 
 export const signInMutation = (queryClient: QueryClient) => ({
-  mutationFn: (input: SignInInput) =>
+  mutationFn: (input: SignInDto) =>
     http.post("/auth/sign-in/email", { body: JSON.stringify(input) }),
   onSuccess: () => queryClient.invalidateQueries({ queryKey: ["auth", "session"] }),
 });
 
 export const signUpMutation = (queryClient: QueryClient) => ({
-  mutationFn: (input: SignUpInput) =>
+  mutationFn: (input: SignUpDto) =>
     http.post("/auth/sign-up/email", { body: JSON.stringify(input) }),
   onSuccess: () => queryClient.invalidateQueries({ queryKey: ["auth", "session"] }),
 });

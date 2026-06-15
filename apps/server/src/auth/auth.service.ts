@@ -1,6 +1,7 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
+import { eq } from "drizzle-orm";
 import { env } from "../common/env";
 import { DATABASE, type DrizzleDB } from "../database/database.module";
 import * as schema from "../database/schema";
@@ -40,5 +41,9 @@ export class AuthService {
 
   get auth() {
     return this._auth;
+  }
+
+  async updateUserCourse(userId: string, courseId: string) {
+    await this.db.update(schema.user).set({ courseId }).where(eq(schema.user.id, userId));
   }
 }
