@@ -59,6 +59,7 @@ export type OrganizationDetail = z.infer<typeof organizationDetailSchema>;
 export const listOrganizationsQuerySchema = z.object({
   type: organizationTypeSchema.optional(),
   search: z.string().optional(),
+  leaderId: z.string().optional(),
   limit: z.coerce.number().int().positive().max(100).default(20),
   offset: z.coerce.number().int().min(0).default(0),
 });
@@ -71,10 +72,6 @@ export const patchUserSchema = z.object({
 export type PatchUserDto = z.infer<typeof patchUserSchema>;
 
 export const createOrganizationSchema = z.object({
-  id: z
-    .string()
-    .min(2)
-    .regex(/^[a-z0-9-]+$/, "Use apenas letras minúsculas, números e hífens"),
   name: z.string().min(2, "Nome deve ter ao menos 2 caracteres"),
   type: organizationTypeSchema,
   description: z.string().min(10, "Descrição deve ter ao menos 10 caracteres"),

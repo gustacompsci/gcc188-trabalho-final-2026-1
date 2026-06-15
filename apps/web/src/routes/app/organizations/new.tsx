@@ -1,7 +1,19 @@
+import {
+  createOrganizationSchema,
+  type OrganizationType,
+  organizationTypeLabels,
+} from "@extraufla/shared";
 import { Button } from "@extraufla/ui/components/button";
 import { Card, CardContent } from "@extraufla/ui/components/card";
 import { Input } from "@extraufla/ui/components/input";
 import { Label } from "@extraufla/ui/components/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@extraufla/ui/components/select";
 import { useForm } from "@tanstack/react-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
@@ -9,71 +21,61 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 import { sessionQuery } from "@/lib/auth.queries";
-import { createProcessMutation } from "@/lib/organizations.queries";
+import { createOrganizationMutation } from "@/lib/organizations.queries";
 
-export const Route = createFileRoute("/organizations/$organizationId/new-process")({
+export const Route = createFileRoute("/app/organizations/new")({
   beforeLoad: async ({ context: { queryClient } }) => {
     const session = await queryClient.ensureQueryData(sessionQuery());
-    if (!session) redirect({ to: "/login", throw: true });
-    else if (!["leader", "admin"].includes(session.user.role)) {
+    if (!["leader", "admin"].includes(session?.user.role ?? "")) {
       redirect({ to: "/app", throw: true });
     }
   },
-  component: NewProcessPage,
+  component: NewOrganizationPage,
 });
 
-// Form validator with string dates (transformed to timestamps in onSubmit)
-const processFormSchema = z
-  .object({
-    title: z.string().min(3, "Título deve ter ao menos 3 caracteres"),
-    description: z.string().min(10, "Descrição deve ter ao menos 10 caracteres"),
-    vacancies: z.number().int().positive("Vagas deve ser um número positivo"),
-    startDate: z.string().min(1, "Data de início obrigatória"),
-    endDate: z.string().min(1, "Data de encerramento obrigatória"),
-  })
-  .refine((d) => new Date(d.endDate) > new Date(d.startDate), {
-    message: "A data de encerramento deve ser posterior à de início",
-    path: ["endDate"],
-  });
+const formSchema = createOrganizationSchema.extend({
+  socialLinks: z.string(),
+  logoUrl: z.string(),
+});
 
-function NewProcessPage() {
-  const { organizationId } = Route.useParams();
+function NewOrganizationPage() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const { mutateAsync: createProcess } = useMutation(
-    createProcessMutation(queryClient, organizationId),
-  );
+  const { mutateAsync: createOrg } = useMutation(createOrganizationMutation(queryClient));
 
   const form = useForm({
     defaultValues: {
-      title: "",
+      name: "",
+      type: "" as "junior_company" | "extension_project" | "study_group",
       description: "",
-      vacancies: 1,
-      startDate: "",
-      endDate: "",
+      area: "",
+      contact: "",
+      socialLinks: "",
+      logoUrl: "",
     },
     onSubmit: async ({ value }) => {
       try {
-        await createProcess({
-          title: value.title,
-          description: value.description,
-          vacancies: value.vacancies,
-          startDate: new Date(value.startDate).getTime(),
-          endDate: new Date(value.endDate).getTime(),
+        const org = await createOrg({
+          ...value,
+          socialLinks: value.socialLinks || undefined,
+          logoUrl: value.logoUrl || undefined,
         });
-        toast.success("Processo seletivo criado!");
-        navigate({ to: "/organizations/$organizationId", params: { organizationId } });
+        toast.success("Organização criada com sucesso!");
+        navigate({
+          to: "/app/organizations/$organizationId",
+          params: { organizationId: org.id },
+        });
       } catch (error) {
-        const message = error instanceof Error ? error.message : "Erro ao criar processo.";
+        const message = error instanceof Error ? error.message : "Erro ao criar organização.";
         toast.error(message);
       }
     },
-    validators: { onSubmit: processFormSchema },
+    validators: { onSubmit: formSchema },
   });
 
   return (
     <div className="container mx-auto max-w-2xl px-4 py-8">
-      <h1 className="mb-6 font-bold text-2xl">Novo Processo Seletivo</h1>
+      <h1 className="mb-6 font-bold text-2xl">Nova Organização</h1>
       <Card>
         <CardContent className="p-6">
           <form
@@ -84,16 +86,13 @@ function NewProcessPage() {
             }}
             className="flex flex-col gap-4"
           >
-            <form.Field
-              name="title"
-              validators={{ onBlur: z.string().min(3, "Título deve ter ao menos 3 caracteres") }}
-            >
+            <form.Field name="name" validators={{ onBlur: createOrganizationSchema.shape.name }}>
               {(field) => (
                 <div className="flex flex-col gap-2">
-                  <Label htmlFor={field.name}>Título</Label>
+                  <Label htmlFor={field.name}>Nome</Label>
                   <Input
                     id={field.name}
-                    placeholder="Processo Seletivo 2026.2"
+                    placeholder="Comp Júnior"
                     value={field.state.value}
                     onBlur={field.handleBlur}
                     onChange={(e) => field.handleChange(e.target.value)}
@@ -107,11 +106,45 @@ function NewProcessPage() {
               )}
             </form.Field>
 
+            <form.Field name="type">
+              {(field) => (
+                <div className="flex flex-col gap-2">
+                  <Label>Tipo</Label>
+                  <Select<string>
+                    value={field.state.value}
+                    onValueChange={(v) => field.handleChange(v as typeof field.state.value)}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Selecionar tipo...">
+                        {field.state.value
+                          ? organizationTypeLabels[field.state.value as OrganizationType]
+                          : undefined}
+                      </SelectValue>
+                    </SelectTrigger>
+                    <SelectContent>
+                      {(
+                        Object.keys(organizationTypeLabels) as Array<
+                          keyof typeof organizationTypeLabels
+                        >
+                      ).map((k) => (
+                        <SelectItem key={k} value={k}>
+                          {organizationTypeLabels[k]}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  {field.state.meta.errors.map((e) => (
+                    <p key={e?.message} className="text-destructive text-xs">
+                      {e?.message}
+                    </p>
+                  ))}
+                </div>
+              )}
+            </form.Field>
+
             <form.Field
               name="description"
-              validators={{
-                onBlur: z.string().min(10, "Descrição deve ter ao menos 10 caracteres"),
-              }}
+              validators={{ onBlur: createOrganizationSchema.shape.description }}
             >
               {(field) => (
                 <div className="flex flex-col gap-2">
@@ -133,35 +166,14 @@ function NewProcessPage() {
               )}
             </form.Field>
 
-            <form.Field name="vacancies">
-              {(field) => (
-                <div className="flex flex-col gap-2">
-                  <Label htmlFor={field.name}>Vagas</Label>
-                  <Input
-                    id={field.name}
-                    type="number"
-                    min={1}
-                    value={field.state.value}
-                    onBlur={field.handleBlur}
-                    onChange={(e) => field.handleChange(Number(e.target.value))}
-                  />
-                  {field.state.meta.errors.map((e) => (
-                    <p key={e?.message} className="text-destructive text-xs">
-                      {e?.message}
-                    </p>
-                  ))}
-                </div>
-              )}
-            </form.Field>
-
             <div className="grid grid-cols-2 gap-4">
-              <form.Field name="startDate">
+              <form.Field name="area" validators={{ onBlur: createOrganizationSchema.shape.area }}>
                 {(field) => (
                   <div className="flex flex-col gap-2">
-                    <Label htmlFor={field.name}>Início</Label>
+                    <Label htmlFor={field.name}>Área</Label>
                     <Input
                       id={field.name}
-                      type="date"
+                      placeholder="Tecnologia"
                       value={field.state.value}
                       onBlur={field.handleBlur}
                       onChange={(e) => field.handleChange(e.target.value)}
@@ -175,13 +187,16 @@ function NewProcessPage() {
                 )}
               </form.Field>
 
-              <form.Field name="endDate">
+              <form.Field
+                name="contact"
+                validators={{ onBlur: createOrganizationSchema.shape.contact }}
+              >
                 {(field) => (
                   <div className="flex flex-col gap-2">
-                    <Label htmlFor={field.name}>Encerramento</Label>
+                    <Label htmlFor={field.name}>Contato</Label>
                     <Input
                       id={field.name}
-                      type="date"
+                      placeholder="contato@org.com.br"
                       value={field.state.value}
                       onBlur={field.handleBlur}
                       onChange={(e) => field.handleChange(e.target.value)}
@@ -196,12 +211,33 @@ function NewProcessPage() {
               </form.Field>
             </div>
 
+            <form.Field name="logoUrl">
+              {(field) => (
+                <div className="flex flex-col gap-2">
+                  <Label htmlFor={field.name}>URL do Logo (opcional)</Label>
+                  <Input
+                    id={field.name}
+                    type="url"
+                    placeholder="https://..."
+                    value={field.state.value}
+                    onBlur={field.handleBlur}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                  />
+                  {field.state.meta.errors.map((e) => (
+                    <p key={e?.message} className="text-destructive text-xs">
+                      {e?.message}
+                    </p>
+                  ))}
+                </div>
+              )}
+            </form.Field>
+
             <form.Subscribe
               selector={(s) => ({ canSubmit: s.canSubmit, isSubmitting: s.isSubmitting })}
             >
               {({ canSubmit, isSubmitting }) => (
                 <Button type="submit" disabled={!canSubmit || isSubmitting}>
-                  {isSubmitting ? "Criando..." : "Criar processo"}
+                  {isSubmitting ? "Criando..." : "Criar organização"}
                 </Button>
               )}
             </form.Subscribe>

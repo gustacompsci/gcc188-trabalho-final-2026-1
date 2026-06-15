@@ -6,7 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@extraufla/ui/components/card";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/")({
   component: HomeComponent,
@@ -42,10 +42,14 @@ function HomeComponent() {
           você encontrar, participar e crescer.
         </p>
         <div className="mt-10 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-          <Button size="lg">Explorar atividades</Button>
-          <Button size="lg" variant="outline">
-            Saiba mais
-          </Button>
+          <Link to="/app/organizations">
+            <Button size="lg">Explorar atividades</Button>
+          </Link>
+          <Link to="/login">
+            <Button size="lg" variant="outline">
+              Entrar
+            </Button>
+          </Link>
         </div>
       </section>
 

@@ -45,6 +45,9 @@ export default function UserMenu() {
             {session.user.email}
           </DropdownMenuItem>
           <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={() => navigate({ to: "/app/organizations" })}>
+            Organizações
+          </DropdownMenuItem>
           <DropdownMenuItem onClick={() => navigate({ to: "/app" })}>Painel</DropdownMenuItem>
           <DropdownMenuItem
             variant="destructive"

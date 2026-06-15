@@ -15,7 +15,7 @@ const searchSchema = z.object({
   search: z.string().optional(),
 });
 
-export const Route = createFileRoute("/organizations/")({
+export const Route = createFileRoute("/app/organizations/")({
   validateSearch: searchSchema,
   component: OrganizationsPage,
 });
@@ -28,7 +28,7 @@ const TYPE_FILTERS: { label: string; value: OrganizationType | undefined }[] = [
 ];
 
 function OrganizationsPage() {
-  const navigate = useNavigate({ from: "/organizations/" });
+  const navigate = useNavigate({ from: "/app/organizations/" });
   const { type, search } = Route.useSearch();
   const [searchInput, setSearchInput] = useState(search ?? "");
 
@@ -83,7 +83,7 @@ function OrganizationsPage() {
           {organizations.map((org) => (
             <Link
               key={org.id}
-              to="/organizations/$organizationId"
+              to="/app/organizations/$organizationId"
               params={{ organizationId: org.id }}
               className="flex flex-col gap-2 rounded-2xl border p-4 ring-1 ring-foreground/5 transition-colors hover:bg-muted/50 dark:ring-foreground/10"
             >

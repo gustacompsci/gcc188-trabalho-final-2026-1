@@ -148,6 +148,16 @@ graph TD
   W_App --> W_UI
 ```
 
+## Módulos do backend
+
+| Módulo | Responsabilidade | Depende de |
+|---|---|---|
+| `DatabaseModule` | Provê o token `DATABASE` (Drizzle + libSQL) globalmente | — |
+| `AuthModule` | Autenticação e sessões via Better Auth; expõe `AuthService` e `AuthGuard` | `DatabaseModule` |
+| `CoursesModule` | Listagem e seed de cursos de graduação | `DatabaseModule` |
+| `OrganizationsModule` | CRUD de organizações e processos seletivos | `DatabaseModule`, `AuthModule` |
+| `UsersModule` | Atualização de perfil (`PATCH /users/me`) | `DatabaseModule`, `AuthModule` |
+
 ---
 
 ## Apresentação (GCC188)
