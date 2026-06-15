@@ -60,18 +60,25 @@ function OrganizationDetailPage() {
         <p className="text-muted-foreground text-sm">{org.contact}</p>
         {socialLinks ? (
           <ul className="flex flex-wrap gap-3">
-            {Object.entries(socialLinks).map(([key, url]) => (
-              <li key={key}>
-                <a
-                  href={url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-primary text-sm hover:underline"
-                >
-                  {key}
-                </a>
-              </li>
-            ))}
+            {Object.entries(socialLinks).map(([key, url]) => {
+              const safeUrl = /^https?:\/\//i.test(url) ? url : null;
+              return (
+                <li key={key}>
+                  {safeUrl ? (
+                    <a
+                      href={safeUrl}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      className="text-primary text-sm hover:underline"
+                    >
+                      {key}
+                    </a>
+                  ) : (
+                    <span className="text-muted-foreground text-sm">{key}</span>
+                  )}
+                </li>
+              );
+            })}
           </ul>
         ) : org.socialLinks ? (
           <p className="text-muted-foreground text-sm">{org.socialLinks}</p>
