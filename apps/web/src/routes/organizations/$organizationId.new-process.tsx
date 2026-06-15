@@ -84,7 +84,10 @@ function NewProcessPage() {
             }}
             className="flex flex-col gap-4"
           >
-            <form.Field name="title">
+            <form.Field
+              name="title"
+              validators={{ onBlur: z.string().min(3, "Título deve ter ao menos 3 caracteres") }}
+            >
               {(field) => (
                 <div className="flex flex-col gap-2">
                   <Label htmlFor={field.name}>Título</Label>
@@ -104,7 +107,12 @@ function NewProcessPage() {
               )}
             </form.Field>
 
-            <form.Field name="description">
+            <form.Field
+              name="description"
+              validators={{
+                onBlur: z.string().min(10, "Descrição deve ter ao menos 10 caracteres"),
+              }}
+            >
               {(field) => (
                 <div className="flex flex-col gap-2">
                   <Label htmlFor={field.name}>Descrição</Label>

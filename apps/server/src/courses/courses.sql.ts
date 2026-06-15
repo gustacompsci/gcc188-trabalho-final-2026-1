@@ -1,6 +1,6 @@
 import { relations, sql } from "drizzle-orm";
 import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
-import { user } from "./auth";
+import { user } from "../auth/auth.sql";
 
 export const course = sqliteTable("course", {
   id: text("id").primaryKey(),

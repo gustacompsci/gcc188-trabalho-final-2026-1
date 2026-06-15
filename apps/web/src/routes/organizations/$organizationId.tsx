@@ -6,9 +6,22 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { sessionQuery } from "@/lib/auth.queries";
 import { organizationDetailQuery } from "@/lib/organizations.queries";
 
+function OrganizationError({ error }: { error: unknown }) {
+  const message =
+    error instanceof Error && error.message.includes("404")
+      ? "Organização não encontrada."
+      : "Erro ao carregar organização. Tente novamente.";
+  return (
+    <div className="container mx-auto max-w-3xl px-4 py-8">
+      <p className="text-destructive text-sm">{message}</p>
+    </div>
+  );
+}
+
 export const Route = createFileRoute("/organizations/$organizationId")({
   loader: ({ context: { queryClient }, params }) =>
     queryClient.ensureQueryData(organizationDetailQuery(params.organizationId)),
+  errorComponent: ({ error }) => <OrganizationError error={error} />,
   component: OrganizationDetailPage,
 });
 

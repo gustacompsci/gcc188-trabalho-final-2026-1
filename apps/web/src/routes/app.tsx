@@ -8,6 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@extraufla/ui/components/select";
+import { Skeleton } from "@extraufla/ui/components/skeleton";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, Link, redirect, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
@@ -41,35 +42,40 @@ function EditNameInline({ currentName }: { currentName: string }) {
     );
   }
 
+  const hasError = name.length > 0 && name.length < 2;
+
   return (
-    <div className="mt-2 flex items-center gap-2">
-      <Input
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        className="h-7 w-48 text-sm"
-        autoFocus
-      />
-      <Button
-        size="sm"
-        disabled={isPending || name.length < 2}
-        onClick={() =>
-          patchUser(
-            { name },
-            {
-              onSuccess: () => {
-                setEditing(false);
-                toast.success("Nome atualizado!");
+    <div className="mt-2 flex flex-col gap-1">
+      <div className="flex items-center gap-2">
+        <Input
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          className="h-7 w-48 text-sm"
+          autoFocus
+        />
+        <Button
+          size="sm"
+          disabled={isPending || name.length < 2}
+          onClick={() =>
+            patchUser(
+              { name },
+              {
+                onSuccess: () => {
+                  setEditing(false);
+                  toast.success("Nome atualizado!");
+                },
+                onError: () => toast.error("Erro ao atualizar nome."),
               },
-              onError: () => toast.error("Erro ao atualizar nome."),
-            },
-          )
-        }
-      >
-        Salvar
-      </Button>
-      <Button size="sm" variant="ghost" onClick={() => setEditing(false)}>
-        Cancelar
-      </Button>
+            )
+          }
+        >
+          Salvar
+        </Button>
+        <Button size="sm" variant="ghost" onClick={() => setEditing(false)}>
+          Cancelar
+        </Button>
+      </div>
+      {hasError && <p className="text-destructive text-xs">Nome deve ter ao menos 2 caracteres</p>}
     </div>
   );
 }
@@ -79,8 +85,8 @@ function RouteComponent() {
   const queryClient = useQueryClient();
   const { data: session } = useQuery(sessionQuery());
   const { mutate: signOut } = useMutation(signOutMutation(queryClient));
-  const { data: organizations } = useQuery(organizationsQuery());
-  const { data: courses } = useQuery(coursesQuery());
+  const { data: organizations, isPending: orgsLoading } = useQuery(organizationsQuery());
+  const { data: courses, isPending: coursesLoading } = useQuery(coursesQuery());
   const { mutate: patchUser } = useMutation(patchUserMutation(queryClient));
 
   const openOrgs = organizations?.filter((o) => o.hasOpenProcess).slice(0, 3) ?? [];
@@ -113,14 +119,23 @@ function RouteComponent() {
 
       <section className="mb-6 rounded-2xl border p-4 ring-1 ring-foreground/5 dark:ring-foreground/10">
         <h2 className="mb-3 font-medium">Curso</h2>
-        {currentCourse ? (
+        {coursesLoading ? (
+          <Skeleton className="h-5 w-48" />
+        ) : currentCourse ? (
           <p className="text-sm">{currentCourse.name}</p>
         ) : (
           <div className="flex flex-col gap-2">
             <p className="text-muted-foreground text-sm">Selecione seu curso:</p>
             <Select<string>
               onValueChange={(value) => {
-                if (value) patchUser({ courseId: value });
+                if (value)
+                  patchUser(
+                    { courseId: value },
+                    {
+                      onSuccess: () => toast.success("Curso atualizado!"),
+                      onError: () => toast.error("Erro ao atualizar curso."),
+                    },
+                  );
               }}
             >
               <SelectTrigger className="w-full max-w-sm">
@@ -155,7 +170,21 @@ function RouteComponent() {
         </section>
       )}
 
-      {openOrgs.length > 0 && (
+      {orgsLoading && (
+        <section>
+          <div className="mb-3 flex items-center justify-between">
+            <Skeleton className="h-5 w-48" />
+            <Skeleton className="h-4 w-16" />
+          </div>
+          <div className="flex flex-col gap-3">
+            {[0, 1, 2].map((i) => (
+              <Skeleton key={i} className="h-20 rounded-2xl" />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {!orgsLoading && openOrgs.length > 0 && (
         <section>
           <div className="mb-3 flex items-center justify-between">
             <h2 className="font-medium">Processos Seletivos Abertos</h2>

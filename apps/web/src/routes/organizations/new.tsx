@@ -83,7 +83,7 @@ function NewOrganizationPage() {
             className="flex flex-col gap-4"
           >
             <div className="grid grid-cols-2 gap-4">
-              <form.Field name="id">
+              <form.Field name="id" validators={{ onBlur: createOrganizationSchema.shape.id }}>
                 {(field) => (
                   <div className="flex flex-col gap-2">
                     <Label htmlFor={field.name}>ID (slug)</Label>
@@ -103,7 +103,7 @@ function NewOrganizationPage() {
                 )}
               </form.Field>
 
-              <form.Field name="name">
+              <form.Field name="name" validators={{ onBlur: createOrganizationSchema.shape.name }}>
                 {(field) => (
                   <div className="flex flex-col gap-2">
                     <Label htmlFor={field.name}>Nome</Label>
@@ -156,7 +156,10 @@ function NewOrganizationPage() {
               )}
             </form.Field>
 
-            <form.Field name="description">
+            <form.Field
+              name="description"
+              validators={{ onBlur: createOrganizationSchema.shape.description }}
+            >
               {(field) => (
                 <div className="flex flex-col gap-2">
                   <Label htmlFor={field.name}>Descrição</Label>
@@ -178,7 +181,7 @@ function NewOrganizationPage() {
             </form.Field>
 
             <div className="grid grid-cols-2 gap-4">
-              <form.Field name="area">
+              <form.Field name="area" validators={{ onBlur: createOrganizationSchema.shape.area }}>
                 {(field) => (
                   <div className="flex flex-col gap-2">
                     <Label htmlFor={field.name}>Área</Label>
@@ -198,7 +201,10 @@ function NewOrganizationPage() {
                 )}
               </form.Field>
 
-              <form.Field name="contact">
+              <form.Field
+                name="contact"
+                validators={{ onBlur: createOrganizationSchema.shape.contact }}
+              >
                 {(field) => (
                   <div className="flex flex-col gap-2">
                     <Label htmlFor={field.name}>Contato</Label>

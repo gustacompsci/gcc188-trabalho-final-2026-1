@@ -1,7 +1,7 @@
 import { Inject, Injectable, OnModuleInit } from "@nestjs/common";
 import coursesData from "../../data/courses.json";
 import { DATABASE, type DrizzleDB } from "../database/database.module";
-import { course } from "../database/schema";
+import { course } from "./courses.sql";
 
 @Injectable()
 export class CoursesService implements OnModuleInit {

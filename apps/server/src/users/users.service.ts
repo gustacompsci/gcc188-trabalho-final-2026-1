@@ -1,8 +1,8 @@
 import type { PatchUserDto } from "@extraufla/shared";
 import { Inject, Injectable } from "@nestjs/common";
 import { eq } from "drizzle-orm";
+import { user } from "../auth/auth.sql";
 import { DATABASE, type DrizzleDB } from "../database/database.module";
-import { user } from "../database/schema";
 
 @Injectable()
 export class UsersService {
