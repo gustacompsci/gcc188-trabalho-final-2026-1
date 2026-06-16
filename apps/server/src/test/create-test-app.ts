@@ -1,8 +1,8 @@
+import * as path from "node:path";
+import { fileURLToPath } from "node:url";
 import type { INestApplication } from "@nestjs/common";
 import { Test } from "@nestjs/testing";
 import { migrate } from "drizzle-orm/libsql/migrator";
-import * as path from "path";
-import { fileURLToPath } from "url";
 import { AppModule } from "../app.module";
 import { course } from "../courses/courses.sql";
 import { DATABASE, type DrizzleDB } from "../database/database.module";
