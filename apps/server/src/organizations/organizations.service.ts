@@ -4,7 +4,6 @@ import type {
   ListOrganizationsQuery,
   OrganizationDetail,
   OrganizationListItem,
-  SelectiveProcessStatus,
 } from "@extraufla/shared";
 import {
   ConflictException,
@@ -17,29 +16,10 @@ import {
 import type { SQL } from "drizzle-orm";
 import { and, eq, like, or } from "drizzle-orm";
 import { user } from "../auth/auth.sql";
+import { deriveStatus, slugify } from "../common/utils";
 import { DATABASE, type DrizzleDB } from "../database/database.module";
 import { organization } from "./organizations.sql";
 import { selectiveProcess } from "./selective_process.sql";
-
-function slugify(name: string): string {
-  return name
-    .normalize("NFD")
-    .replace(/\p{M}/gu, "")
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9\s-]/g, "")
-    .replace(/\s+/g, "-")
-    .replace(/-+/g, "-");
-}
-
-function deriveStatus(startDate: Date, endDate: Date): SelectiveProcessStatus {
-  const now = Date.now();
-  const start = startDate.getTime();
-  const end = endDate.getTime();
-  if (now < start) return "scheduled";
-  if (now > end) return "closed";
-  return "open";
-}
 
 @Injectable()
 export class OrganizationsService implements OnModuleInit {

@@ -8,7 +8,7 @@ import {
   signInSchema,
   signUpSchema,
 } from "@extraufla/shared";
-import { Body, Controller, Get, HttpException, Post, Req, Res } from "@nestjs/common";
+import { Body, Controller, Get, HttpCode, HttpException, Post, Req, Res } from "@nestjs/common";
 import type { Request, Response } from "express";
 import { env } from "../common/env";
 import { ZodValidationPipe } from "../common/zod-validation.pipe";
@@ -19,6 +19,7 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post("sign-in/email")
+  @HttpCode(200)
   async signInEmail(
     @Body(new ZodValidationPipe(signInSchema)) body: SignInDto,
     @Res({ passthrough: true }) res: Response,
@@ -56,6 +57,7 @@ export class AuthController {
   }
 
   @Post("sign-out")
+  @HttpCode(200)
   async signOut(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
     const response = await this.authService.auth.api.signOut({
       headers: new Headers({ cookie: req.headers.cookie ?? "" }),
@@ -74,6 +76,7 @@ export class AuthController {
   }
 
   @Post("forget-password")
+  @HttpCode(200)
   async forgetPassword(@Body(new ZodValidationPipe(forgetPasswordSchema)) body: ForgetPasswordDto) {
     const response = await this.authService.auth.api.requestPasswordReset({
       body: { ...body, redirectTo: `${env.CORS_ORIGIN}/reset-password` },
@@ -90,6 +93,7 @@ export class AuthController {
   }
 
   @Post("reset-password")
+  @HttpCode(200)
   async resetPassword(@Body(new ZodValidationPipe(resetPasswordSchema)) body: ResetPasswordDto) {
     const { confirmPassword: _confirmPassword, ...resetBody } = body;
     const response = await this.authService.auth.api.resetPassword({
